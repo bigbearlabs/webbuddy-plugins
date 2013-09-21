@@ -1,0 +1,13 @@
+<h3>output:</h3>
+<p>{{expression.output}}</p>
+<!-- if expression.error -->
+<h3>Error:</h3>
+<p>{{expression.error}}</p>
+<!-- testing. -->
+<input ng-model='expression.output' type='text'>
+<p>some other stuff - how quickly does this get applied?</p>
+<!--
+  the key thing to figure out in order to finish this piece is the interfacing between data and hosting environment.
+  on the client we should accept nothing other than stuff that can be json'ed.
+  exposing it as a temporarily saved json file should be a quick way to get it out of sketch status and hosted.
+-->

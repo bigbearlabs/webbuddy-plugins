@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html class='no-js'>
+  <head>
+    <meta charset='utf-8'>
+    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+    <title></title>
+    <meta content='' name='description'>
+    <meta content='width=device-width' name='viewport'>
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!-- build:css styles/main.css -->
+    <link href='styles/main.css' rel='stylesheet'>
+    <!-- endbuild -->
+  </head>
+  <body ng-app='modulesApp'>
+    <!-- Add your site or application content here -->
+    <div class='container' ng-view=''></div>
+    <script src='bower_components/angular/angular.js'></script>
+    <script src='bower_components/lodash/lodash.js'></script>
+    <script src='bower_components/restangular/dist/restangular.min.js'></script>
+    <!-- build:js({.tmp,app}) scripts/scripts.js -->
+    <script src='scripts/app.js'></script>
+    <script src='scripts/controllers/output.js'></script>
+    <!-- endbuild -->
+    <script>
+      var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
+      (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+      g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+      s.parentNode.insertBefore(g,s)}(document,'script'));
+    </script>
+  </body>
+</html>
