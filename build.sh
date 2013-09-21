@@ -1,4 +1,9 @@
+dist="./modules"
+
+# build
 (cd output; grunt build)
 
-# copy to the WebBuddy project.
-rsync -av output/dist/* ../WebBuddy/modules/output/
+# copy
+mkdir -p $dist
+rsync -av output/dist/* $dist/output/
+rsync -av assets welcome intro switcher $dist/

@@ -1,0 +1,18 @@
+<div class="suggestions">
+  <h2>Search suggestions for '{{input}}'</h2>
+  <li class="item" data-ng-mouseleave="highlight(null)" data-ng-mouseover="highlight(item)" data-ng-repeat="item in data.suggestions">
+    <p>{{item}}</p>
+  </li>
+</div>
+<div class="searches">
+  <h2>Recent searches matching '{{input}}'</h2>
+  <li class="item" data-ng-repeat="item in data.searches">
+    <p>{{item}}</p>
+  </li>
+</div>
+<div class="pages">
+  <h2>Pages matching '{{input}}'</h2>
+  <li class="item" data-ng-repeat="item in data.pages">
+    <p>{{item}}</p>
+  </li>
+</div>

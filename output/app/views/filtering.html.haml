@@ -1,0 +1,25 @@
+.suggestions
+
+  %h2 Search suggestions for '{{input}}'
+
+  -# %p( ng-include="partials.collection" on-load="$scope.items = data.suggestions")
+
+  %li.item( data-ng-repeat="item in data.suggestions"
+    data-ng-mouseleave="highlight(null)"
+    data-ng-mouseover="highlight(item)"
+    )
+    %p {{item}}
+
+.searches
+  %h2 Recent searches matching '{{input}}'
+
+  %li.item( data-ng-repeat="item in data.searches"
+    )
+    %p {{item}}
+
+.pages
+  %h2 Pages matching '{{input}}'
+
+  %li.item( data-ng-repeat="item in data.pages"
+    )
+    %p {{item}}
