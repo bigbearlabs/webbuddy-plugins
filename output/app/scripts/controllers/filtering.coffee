@@ -9,7 +9,10 @@ angular.module('modulesApp')
 
     $scope.input = "a test search"
 
-    $scope.data = window.data
+    # $scope.data = window.data
+
+    $scope.evaluate = (input) ->
+      $scope.dev_output = eval(input)
 
 
 window.data =

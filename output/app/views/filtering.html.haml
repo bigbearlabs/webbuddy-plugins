@@ -23,3 +23,8 @@
   %li.item( data-ng-repeat="item in data.pages"
     )
     %p {{item}}
+
+
+.dev
+  %input( ng-model="dev_input" ng-change="evaluate(dev_input)")
+  %p {{dev_output}}

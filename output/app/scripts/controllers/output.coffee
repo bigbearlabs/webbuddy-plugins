@@ -14,5 +14,3 @@ angular.module('modulesApp')
     # debug
     $scope.debug =
       restangular: Restangular
-      moduleName: moduleName
-      route: $route
