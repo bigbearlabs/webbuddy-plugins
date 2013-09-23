@@ -27,13 +27,17 @@
 
     .container{"ng-view" => ""}
 
-    %script{src: "bower_components/angular/angular.js"}
+    %script{src: "bower_components/jquery/jquery.min.js"}
     %script{src: "bower_components/lodash/lodash.js"}
+    %script{src: "bower_components/angular/angular.js"}
     %script{src: "bower_components/restangular/dist/restangular.min.js"}
+    %script{src: "bower_components/isotope/jquery.isotope.min.js"}
+    %script{src: "bower_components/angular-isotope/dist/angular-isotope.min.js"}
 
     / build:js({.tmp,app}) scripts/scripts.js
     %script{src: "scripts/app.js"}
     %script{src: "scripts/controllers/output.js"}
+    %script{src: "scripts/controllers/filtering.js"}
     / endbuild
 
     -# / Google Analytics: change UA-XXXXX-X to be your site's ID.

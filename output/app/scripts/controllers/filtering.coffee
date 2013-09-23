@@ -1,7 +1,14 @@
 'use strict'
 
 angular.module('modulesApp')
-  .controller 'FilteringCtrl', ($scope) ->
+  .controller 'FilteringCtrl', ($scope, $timeout) ->
+
+    # initialise isotope.
+    $timeout ->
+      $('#isotopeContainer').isotope
+        itemSelector: '.item'
+    , 0
+
     # view consts.
     $scope.partials =
       collection: 'views/collection.html'
@@ -9,25 +16,28 @@ angular.module('modulesApp')
 
     $scope.input = "a test search"
 
-    # $scope.data = window.data
+
+    $scope.data =
+      suggestions: [
+        'suggestion 1'
+        'suggestion 2'
+      ]
+      searches: [
+        'previous search 1'
+        'previous search 2'
+      ]
+      pages: [
+        'matching page 1'
+        'matching page 2'
+      ]
+
 
     $scope.evaluate = (input) ->
       $scope.dev_output = eval(input)
 
+    $scope.filter = (filter) ->
+      # isotope action.
 
-window.data =
-  suggestions: [
-    'suggestion 1'
-    'suggestion 2'
-  ]
-  searches: [
-    'previous search 1'
-    'previous search 2'
-  ]
-  pages: [
-    'matching page 1'
-    'matching page 2'
-  ]
 
 
 # expression for the scope: angular.element(document.getElementsByClassName('container')).scope()

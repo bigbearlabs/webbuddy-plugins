@@ -29,25 +29,27 @@ module.exports = function (grunt) {
   } catch (e) {}
 
   grunt.initConfig({
-    // haml: {
-    //   language: 'ruby',
-    //   rubyHamlCommand: 'haml',
-    //   all: {
-    //     files: grunt.file.expandMapping(['app/**/*.haml'], 'app/', {
-    //       rename: function(base, path) {
-    //         return base + path.replace(/\.haml$/, '');
-    //       }
-    //     })
-    //   }
-    // },
     yeoman: yeomanConfig,
+    haml: {
+      options: {
+        language: 'ruby',
+        rubyHamlCommand: 'haml',
+      },
+      all: {
+        files: grunt.file.expandMapping(['app/**/*.haml'], './', {
+          rename: function(base, path) {
+            return base + path.replace(/\.haml$/, '');
+          }
+        })
+      }
+    },
     watch: {
       haml: {
         files: [
           'app/*.haml',
           'app/views/*.haml',
         ],
-        tasks: 'haml'
+        tasks: ['haml']
       },
       coffee: {
         files: ['<%= yeoman.app %>/scripts/{,*/}*.coffee'],

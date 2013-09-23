@@ -14,13 +14,16 @@
   <body ng-app='modulesApp'>
     <!-- Add your site or application content here -->
     <div class='container' ng-view=''></div>
-    <script src='bower_components/angular/angular.js'></script>
+    <script src='bower_components/jquery/jquery.min.js'></script>
     <script src='bower_components/lodash/lodash.js'></script>
+    <script src='bower_components/angular/angular.js'></script>
     <script src='bower_components/restangular/dist/restangular.min.js'></script>
+    <script src='bower_components/isotope/jquery.isotope.min.js'></script>
+    <script src='bower_components/angular-isotope/dist/angular-isotope.min.js'></script>
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
     <script src='scripts/app.js'></script>
     <script src='scripts/controllers/output.js'></script>
-    <script src="scripts/controllers/filtering.js"></script>
+    <script src='scripts/controllers/filtering.js'></script>
     <!-- endbuild -->
     <script>
       var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
