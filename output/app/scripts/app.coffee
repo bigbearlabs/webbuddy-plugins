@@ -1,6 +1,6 @@
 'use strict'
 
-angular.module('modulesApp',  ['restangular'])
+angular.module('modulesApp',  ['restangular', 'iso.directives'])
   .config ($routeProvider) ->
     $routeProvider
       .when '/',

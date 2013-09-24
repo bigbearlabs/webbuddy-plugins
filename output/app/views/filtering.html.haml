@@ -1,24 +1,25 @@
+.searches
+  %h2 Recent searches matching '{{data.input}}'
+
+  %ul( id="isotopeContainer" isotope-container )
+
+    %li.item( data-ng-repeat="item in data.searches"
+      data-ng-mouseleave="highlight(null)"
+      data-ng-mouseover="highlight(item)"
+      isotope-item
+      )
+      %img( ng-src="{{item.thumbnail_url}}")
+      %p {{item.name}}
+
+
 .suggestions
 
-  %div( ng-init="")
-
-  -# %div( ng-init="xList=[
-  -#   {name:'a', number:'1', date:'1360413309421', class:'purple'}
-  -#   ,{name:'b', number:'5', date:'1360213309421', class:'orange'}
-  -#   ,{name:'c', number:'10', date:'1360113309421', class:'blue'}
-  -#   ,{name:'d', number:'2', date:'1360113309421', class:'green'}
-  -#   ,{name:'e', number:'6', date:'1350613309421', class:'green'}
-  -#   ,{name:'f', number:'21', date:'1350613309421', class:'orange'}
-  -#   ,{name:'g', number:'3', date:'1340613309421', class:'blue'}
-  -#   ,{name:'h', number:'7', date:'1330613309001', class:'purple'}
-  -#   ,{name:'i', number:'22', date:'1360412309421', class:'blue'}
-  -#   ] ")
-
-  %h2 Search suggestions for '{{input}}'
+  %h2 Search suggestions for '{{data.input}}'
 
   -# %p( ng-include="partials.collection" on-load="$scope.items = data.suggestions")
 
-  %ul( id="isotopeContainer" isotope-container iso-options-subscribe="my-iso-opts" iso-method-subscribe="my-iso-method")
+  %ul()
+
     %li.item( data-ng-repeat="item in data.suggestions"
       data-ng-mouseleave="highlight(null)"
       data-ng-mouseover="highlight(item)"
@@ -27,24 +28,17 @@
       %p {{item}}
 
 
-.searches
-  %h2 Recent searches matching '{{input}}'
+-# .pages(ng-hide)
+-#   %h2 Pages matching '{{data.input}}'
 
-  %li.item( data-ng-repeat="item in data.searches"
-    )
-    %p {{item}}
-
-.pages
-  %h2 Pages matching '{{input}}'
-
-  %li.item( data-ng-repeat="item in data.pages"
-    )
-    %p {{item}}
+-#   %li.item( data-ng-repeat="item in data.pages"
+-#     )
+-#     %p {{item}}
 
 
 .dev
   %h3 Filter
-  %input( ng-model="filter_input" ng-change="filter(filter_input)")
+  %input( ng-model="data.input" ng-change="filter()")
 
   %h3 Evaluator
   %input( ng-model="dev_input" ng-change="evaluate(dev_input)")
