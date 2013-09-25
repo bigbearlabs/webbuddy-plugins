@@ -1,12 +1,32 @@
+.dev
+  %h3 Filter
+  %input( ng-model="data.input" ng-change="filter(data.input);")
+
+  %h3 Evaluator
+  %input( ng-model="dev_input" ng-change="evaluate(dev_input)")
+  %p {{dev_output}}
+
+
+
 .searches
   %h2 Recent searches matching '{{data.input}}'
 
   %ul( id="isotopeContainer" isotope-container )
 
     %li.item( data-ng-repeat="item in data.searches"
-      data-ng-mouseleave="highlight(null)"
-      data-ng-mouseover="highlight(item)"
       isotope-item
+      )
+      %img( ng-src="{{item.thumbnail_url}}")
+      %p {{item.name}}
+
+
+
+.pages(ng-hide)
+  %h2 Pages matching '{{data.input}}'
+
+  %ul( id="isotopeContainer" isotope-container )
+
+    %li.item( data-ng-repeat="item in data.pages" isotope-item
       )
       %img( ng-src="{{item.thumbnail_url}}")
       %p {{item.name}}
@@ -28,18 +48,3 @@
       %p {{item}}
 
 
--# .pages(ng-hide)
--#   %h2 Pages matching '{{data.input}}'
-
--#   %li.item( data-ng-repeat="item in data.pages"
--#     )
--#     %p {{item}}
-
-
-.dev
-  %h3 Filter
-  %input( ng-model="data.input" ng-change="filter()")
-
-  %h3 Evaluator
-  %input( ng-model="dev_input" ng-change="evaluate(dev_input)")
-  %p {{dev_output}}

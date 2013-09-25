@@ -1,7 +1,23 @@
+<div class='dev'>
+  <h3>Filter</h3>
+  <input ng-change='filter(data.input);' ng-model='data.input'>
+  <h3>Evaluator</h3>
+  <input ng-change='evaluate(dev_input)' ng-model='dev_input'>
+  <p>{{dev_output}}</p>
+</div>
 <div class='searches'>
   <h2>Recent searches matching '{{data.input}}'</h2>
   <ul id='isotopeContainer' isotope-container>
-    <li class='item' data-ng-mouseleave='highlight(null)' data-ng-mouseover='highlight(item)' data-ng-repeat='item in data.searches' isotope-item>
+    <li class='item' data-ng-repeat='item in data.searches' isotope-item>
+      <img ng-src='{{item.thumbnail_url}}'>
+      <p>{{item.name}}</p>
+    </li>
+  </ul>
+</div>
+<div class='pages' ng-hide>
+  <h2>Pages matching '{{data.input}}'</h2>
+  <ul id='isotopeContainer' isotope-container>
+    <li class='item' data-ng-repeat='item in data.pages' isotope-item>
       <img ng-src='{{item.thumbnail_url}}'>
       <p>{{item.name}}</p>
     </li>
@@ -14,11 +30,4 @@
       <p>{{item}}</p>
     </li>
   </ul>
-</div>
-<div class='dev'>
-  <h3>Filter</h3>
-  <input ng-change='filter()' ng-model='data.input'>
-  <h3>Evaluator</h3>
-  <input ng-change='evaluate(dev_input)' ng-model='dev_input'>
-  <p>{{dev_output}}</p>
 </div>

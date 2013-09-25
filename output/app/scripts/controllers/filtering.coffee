@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('modulesApp')
-  .controller 'FilteringCtrl', ($scope, $timeout) ->
+  .controller 'FilteringCtrl', ($scope, $timeout, Restangular) ->
 
     # view consts. unused
     $scope.partials =
@@ -11,10 +11,21 @@ angular.module('modulesApp')
       itemSelector: '.item'
       layoutMode : 'straightAcross'
 
-    # attach stub data to root, so the running environment can override it.
     $scope.data =
       input: "stub input"
       searches: [
+        {
+          name: 'previous search 1'
+        }
+        {
+          name: 'previous search 1'
+        }
+        {
+          name: 'previous search 1'
+        }
+        {
+          name: 'previous search 1'
+        }
         {
           name: 'previous search 1'
         }
@@ -31,15 +42,34 @@ angular.module('modulesApp')
         'matching page 2'
       ]
 
+    $scope.isotope = ->
+      # initialise isotope.
+      $timeout ->
+        $('#isotopeContainer').isotope $scope.options
+        $('#isotopeContainer').isotope 'reLayout'
+      , 0
+
+
+    $scope.isotope()
+
+    # attach stub data to root, so the running environment can override it.
+    Restangular.setBaseUrl("data");
+    Restangular.one('filtering.json').get().then (data) ->
+      $scope.update_data data
+      # $scope.$apply()
+
+    #   $scope.isotope()
+
+
     # dev features.
     $scope.evaluate = (input) ->
       $scope.dev_output = eval(input)
 
     ## ops.
 
-    $scope.$root.filter = ->
+    $scope.$root.filter = (input)->
       opts =
-        filter: ".item:contains(#{$scope.data.input})"
+        filter: ".item:contains(#{input})"
         # itemSelector: '.item'
         # layoutMode : 'straightAcross'
 
@@ -58,13 +88,14 @@ angular.module('modulesApp')
       # TODO move out to the document and wire as shown in angular-isotope
       $scope.data = new_data
       $scope.$apply()
-      $('#isotopeContainer').isotope 'reloadItems'
+
+      # $('#isotopeContainer').isotope 'reloadItems'
+
       # $('#isotopeContainer').isotope
       #   itemSelector: '.item'
       #   layoutMode : 'straightAcross'
 
+      ## the only way to get this work consistently.
+      $('#isotopeContainer').isotope 'destroy'
+      $scope.isotope()
 
-    # # initialise isotope.
-    $timeout ->
-      $('#isotopeContainer').isotope $scope.options
-    , 0
