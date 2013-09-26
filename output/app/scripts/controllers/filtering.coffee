@@ -7,7 +7,7 @@ angular.module('modulesApp')
     $scope.partials =
       collection: 'views/collection.html'
 
-    isotope_lists = [ '.search-list', '.page-list', '.suggestion-list' ]
+    isotope_containers = [ '.search-list', '.page-list', '.suggestion-list' ]
 
     $scope.options =
       itemSelector: '.item'
@@ -34,7 +34,7 @@ angular.module('modulesApp')
         # layoutMode : 'straightAcross'
 
       $timeout ->
-        isotope_lists.map (selector)->
+        isotope_containers.map (selector)->
           $(selector).isotope opts
       , 0
 
@@ -56,7 +56,7 @@ angular.module('modulesApp')
       #   layoutMode : 'straightAcross'
 
       ## the only way to get this work consistently.
-      isotope_lists.map (selector)->
+      isotope_containers.map (selector)->
         $timeout ->
           $(selector).isotope 'destroy'
           $scope.isotope selector
@@ -65,15 +65,16 @@ angular.module('modulesApp')
 
     ## doit.
 
-    isotope_lists.map (selector)-> $scope.isotope selector
+    isotope_containers.map (selector)-> $scope.isotope selector
 
-    # attach stub data to root, so the running environment can override it.
-    Restangular.setBaseUrl("data");
-    Restangular.one('filtering.json').get().then (data) ->
-      $scope.update_data data
-      # $scope.$apply()
+    ## dev
+    # # attach stub data to root, so the running environment can override it.
+    # Restangular.setBaseUrl("data");
+    # Restangular.one('filtering.json').get().then (data) ->
+    #   $scope.update_data data
+    #   # $scope.$apply()
 
-    #   $scope.isotope()
+    # #   $scope.isotope()
 
 
 

@@ -13,15 +13,14 @@
 
   %ul.search-list( isotope-container )
 
-    %li.item( data-ng-repeat="item in data.searches"
-      isotope-item
+    %li.item( data-ng-repeat="item in data.searches" isotope-item
       )
       %img( ng-src="{{item.thumbnail_url}}")
       %p {{item.name}}
 
 
 
-.pages(ng-hide)
+.pages
   %h2 Pages matching '{{data.input}}'
 
   %ul.page-list( isotope-container )
