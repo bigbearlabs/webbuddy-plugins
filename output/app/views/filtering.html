@@ -7,7 +7,7 @@
 </div>
 <div class='searches'>
   <h2>Recent searches matching '{{data.input}}'</h2>
-  <ul id='isotopeContainer' isotope-container>
+  <ul class='search-list' isotope-container>
     <li class='item' data-ng-repeat='item in data.searches' isotope-item>
       <img ng-src='{{item.thumbnail_url}}'>
       <p>{{item.name}}</p>
@@ -16,7 +16,7 @@
 </div>
 <div class='pages' ng-hide>
   <h2>Pages matching '{{data.input}}'</h2>
-  <ul id='isotopeContainer-2' isotope-container>
+  <ul class='page-list' isotope-container>
     <li class='item' data-ng-repeat='item in data.pages' isotope-item>
       <img ng-src='{{item.thumbnail_url}}'>
       <p>{{item.name}}</p>
@@ -25,8 +25,8 @@
 </div>
 <div class='suggestions'>
   <h2>Search suggestions for '{{data.input}}'</h2>
-  <ul>
-    <li class='item' data-ng-mouseleave='highlight(null)' data-ng-mouseover='highlight(item)' data-ng-repeat='item in data.suggestions' isotope-item>
+  <ul class='suggestion-list' isotope-container>
+    <li class='item' data-ng-repeat='item in data.suggestions' isotope-item>
       <p>{{item}}</p>
     </li>
   </ul>

@@ -7,28 +7,19 @@ angular.module('modulesApp')
     $scope.partials =
       collection: 'views/collection.html'
 
+    isotope_lists = [ '.search-list', '.page-list', '.suggestion-list' ]
+
     $scope.options =
       itemSelector: '.item'
-      layoutMode : 'straightAcross'
+      layoutMode: 'straightAcross'
 
-    $scope.isotope = ->
-      # initialise isotope.
+
+    # initialise isotope.
+    $scope.isotope = (selector_for_container)->
       $timeout ->
-        $('#isotopeContainer').isotope $scope.options
-        $('#isotopeContainer').isotope 'reLayout'
+        $(selector_for_container).isotope $scope.options
+        $(selector_for_container).isotope 'reLayout'
       , 0
-
-
-    $scope.isotope()
-
-    # attach stub data to root, so the running environment can override it.
-    Restangular.setBaseUrl("data");
-    Restangular.one('filtering.json').get().then (data) ->
-      $scope.update_data data
-      # $scope.$apply()
-
-    #   $scope.isotope()
-
 
     # dev features.
     $scope.evaluate = (input) ->
@@ -43,8 +34,8 @@ angular.module('modulesApp')
         # layoutMode : 'straightAcross'
 
       $timeout ->
-        $('#isotopeContainer').isotope opts
-        # $('#isotopeContainer').isotope 'reloadItems'
+        isotope_lists.map (selector)->
+          $(selector).isotope opts
       , 0
 
     # data exchange interface.
@@ -56,7 +47,7 @@ angular.module('modulesApp')
 
       # TODO move out to the document and wire as shown in angular-isotope
       $scope.$root.data = new_data
-      $scope.$apply()
+      # $scope.$apply()
 
       # $('#isotopeContainer').isotope 'reloadItems'
 
@@ -65,6 +56,24 @@ angular.module('modulesApp')
       #   layoutMode : 'straightAcross'
 
       ## the only way to get this work consistently.
-      $('#isotopeContainer').isotope 'destroy'
-      $scope.isotope()
+      isotope_lists.map (selector)->
+        $timeout ->
+          $(selector).isotope 'destroy'
+          $scope.isotope selector
+        , 0
+
+
+    ## doit.
+
+    isotope_lists.map (selector)-> $scope.isotope selector
+
+    # attach stub data to root, so the running environment can override it.
+    Restangular.setBaseUrl("data");
+    Restangular.one('filtering.json').get().then (data) ->
+      $scope.update_data data
+      # $scope.$apply()
+
+    #   $scope.isotope()
+
+
 
