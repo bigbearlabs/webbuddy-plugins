@@ -6,7 +6,7 @@
   <p>{{dev_output}}</p>
 </div>
 <div class='searches'>
-  <h2>Recent searches matching '{{data.input}}'</h2>
+  <h2>Searches</h2>
   <ul class='search-list' isotope-container>
     <li class='item' data-ng-repeat='item in data.searches' isotope-item>
       <img ng-src='{{item.thumbnail_url}}'>
@@ -15,7 +15,7 @@
   </ul>
 </div>
 <div class='pages'>
-  <h2>Pages matching '{{data.input}}'</h2>
+  <h2>Pages</h2>
   <ul class='page-list' isotope-container>
     <li class='item' data-ng-repeat='item in data.pages' isotope-item>
       <img ng-src='{{item.thumbnail_url}}'>
@@ -23,7 +23,7 @@
     </li>
   </ul>
 </div>
-<div class='suggestions'>
+<div class='suggestions' style='display:none;'>
   <h2>Search suggestions for '{{data.input}}'</h2>
   <ul class='suggestion-list' isotope-container>
     <li class='item' data-ng-repeat='item in data.suggestions' isotope-item>

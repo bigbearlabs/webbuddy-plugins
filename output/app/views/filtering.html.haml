@@ -9,7 +9,7 @@
 
 
 .searches
-  %h2 Recent searches matching '{{data.input}}'
+  %h2 Searches
 
   %ul.search-list( isotope-container )
 
@@ -21,7 +21,7 @@
 
 
 .pages
-  %h2 Pages matching '{{data.input}}'
+  %h2 Pages
 
   %ul.page-list( isotope-container )
 
@@ -31,11 +31,9 @@
       %p {{item.name}}
 
 
-.suggestions
 
+.suggestions( style="display:none;" )
   %h2 Search suggestions for '{{data.input}}'
-
-  -# %p( ng-include="partials.collection" on-load="$scope.items = data.suggestions")
 
   %ul.suggestion-list( isotope-container )
 

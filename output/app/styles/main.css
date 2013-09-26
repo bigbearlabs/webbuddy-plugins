@@ -4,20 +4,41 @@ body {
     color: #333;
 }
 
-
-.isotope {
-  /*isotope horizontal layout need height set on container */
-  height: 120px;
-}
-
-.item {
-  height: 100px;
-  width: 100px;
-}
-
 li {
   list-style: none;
 }
+
+
+.isotope {
+  /*isotope horizontal layout needs height set on container */
+  height: 120px;
+}
+
+.item img {
+  width: 70px;
+  height: 70px;
+}
+
+
+.searches item {
+  width: 300%;
+}
+
+.searches img {
+  display: none;
+}
+
+.searches p {
+  font-size: 150%;
+}
+
+
+.pages .item {
+  width: 120px;
+  height: 120px;
+}
+
+
 
 .hero-unit {
     margin: 50px auto 0 auto;

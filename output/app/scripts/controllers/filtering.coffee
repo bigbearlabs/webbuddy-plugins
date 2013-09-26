@@ -16,14 +16,15 @@ angular.module('modulesApp')
 
     # initialise isotope.
     $scope.isotope = (selector_for_container)->
-      $timeout ->
-        $(selector_for_container).isotope $scope.options
-        $(selector_for_container).isotope 'reLayout'
-      , 0
+      # $timeout ->
+      #   $(selector_for_container).isotope $scope.options
+      #   $(selector_for_container).isotope 'reLayout'
+      # , 0
 
     # dev features.
     $scope.evaluate = (input) ->
       $scope.dev_output = eval(input)
+
 
     ## ops.
 
@@ -55,26 +56,28 @@ angular.module('modulesApp')
       #   itemSelector: '.item'
       #   layoutMode : 'straightAcross'
 
-      ## the only way to get this work consistently.
-      isotope_containers.map (selector)->
-        $timeout ->
-          $(selector).isotope 'destroy'
-          $scope.isotope selector
-        , 0
+      # ## the only way to get this work consistently.
+      # isotope_containers.map (selector)->
+      #   $timeout ->
+      #     $(selector).isotope 'destroy'
+      #     $scope.isotope selector
+      #   , 0
 
 
     ## doit.
 
-    isotope_containers.map (selector)-> $scope.isotope selector
 
     ## dev
-    # # attach stub data to root, so the running environment can override it.
-    # Restangular.setBaseUrl("data");
-    # Restangular.one('filtering.json').get().then (data) ->
-    #   $scope.update_data data
-    #   # $scope.$apply()
+    # attach stub data to root, so the running environment can override it.
+    Restangular.setBaseUrl("data");
+    Restangular.one('filtering.json').get().then (data) ->
+      isotope_containers.map (selector)-> $scope.isotope selector
 
-    # #   $scope.isotope()
+      ## alt
+      $scope.update_data data
+      # $scope.$apply()
+
+    #   $scope.isotope()
 
 
 
