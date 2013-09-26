@@ -11,37 +11,6 @@ angular.module('modulesApp')
       itemSelector: '.item'
       layoutMode : 'straightAcross'
 
-    $scope.data =
-      input: "stub input"
-      searches: [
-        {
-          name: 'previous search 1'
-        }
-        {
-          name: 'previous search 1'
-        }
-        {
-          name: 'previous search 1'
-        }
-        {
-          name: 'previous search 1'
-        }
-        {
-          name: 'previous search 1'
-        }
-        {
-          name: 'previous search 2'
-        }
-      ]
-      suggestions: [
-        'suggestion 1'
-        'suggestion 2'
-      ]
-      pages: [
-        'matching page 1'
-        'matching page 2'
-      ]
-
     $scope.isotope = ->
       # initialise isotope.
       $timeout ->
@@ -86,7 +55,7 @@ angular.module('modulesApp')
       # new_data.searches.map (e)-> searches.push e
 
       # TODO move out to the document and wire as shown in angular-isotope
-      $scope.data = new_data
+      $scope.$root.data = new_data
       $scope.$apply()
 
       # $('#isotopeContainer').isotope 'reloadItems'
