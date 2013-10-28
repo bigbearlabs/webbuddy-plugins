@@ -15,6 +15,9 @@ li {
   height: 100%;
 }
 
+.item {
+  background-color: lightyellow;
+}
 .item img {
   width: 70px;
   height: 70px;

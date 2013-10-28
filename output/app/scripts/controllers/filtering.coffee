@@ -11,19 +11,18 @@ angular.module('modulesApp')
 
     $scope.options =
       itemSelector: '.item'
-      layoutMode: 'straightAcross'
-
+      layoutMode: 'straightDown'
+      # layoutMode: 'straightAcross'
 
     # watch model.
     $scope.$watch 'data.input', ->
-      $scope.filter $scope.data.input
+      $scope.filter $scope.data?.input
 
     # initialise isotope.
-    $scope.isotope = (selector_for_container)->
-      # $timeout ->
-      #   $(selector_for_container).isotope $scope.options
-      #   $(selector_for_container).isotope 'reLayout'
-      # , 0
+    $scope.isotope = (selector_for_container, options = $scope.options)->
+      $timeout ->
+        $(selector_for_container).isotope options
+      , 0
 
     # dev features.
     $scope.evaluate = (input) ->
@@ -33,15 +32,11 @@ angular.module('modulesApp')
     ## ops.
 
     $scope.$root.filter = (input)->
-      opts =
-        filter: ".item:contains(#{input})"
-        # itemSelector: '.item'
-        # layoutMode : 'straightAcross'
+      options = {}
+      options.filter = ".item:contains(#{input})"
 
-      $timeout ->
-        isotope_containers.map (selector)->
-          $(selector).isotope opts
-      , 0
+      isotope_containers.map (selector)->
+        $scope.isotope $(selector), options
 
     # data exchange interface.
     $scope.$root.update_data = (new_data)->
@@ -52,9 +47,13 @@ angular.module('modulesApp')
 
       # TODO move out to the document and wire as shown in angular-isotope
       $scope.$root.data = new_data
-      $scope.$apply()
+      # $scope.$apply()
 
-      # $('#isotopeContainer').isotope 'reloadItems'
+      $timeout ->
+        # isotope item acquisition somehow unstable without this call
+        isotope_containers.map (selector)->
+          $(selector).isotope 'reloadItems'
+      , 0
 
       # $('#isotopeContainer').isotope
       #   itemSelector: '.item'
@@ -75,10 +74,13 @@ angular.module('modulesApp')
     # attach stub data to root, so the running environment can override it.
     Restangular.setBaseUrl("data");
     Restangular.one('filtering.json').get().then (data) ->
-      isotope_containers.map (selector)-> $scope.isotope selector
+      isotope_containers.map (selector)->
+        $scope.isotope selector
+        $timeout ->
+          $(selector).isotope()
+        , 0
 
       $scope.update_data data
-      # $scope.$apply()
 
 
     # $scope.isotope()

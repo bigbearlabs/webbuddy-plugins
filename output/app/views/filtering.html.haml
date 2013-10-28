@@ -11,9 +11,9 @@
 .searches
   %h2 Searches
 
-  %ul.search-list( disabled-isotope-container )
+  %ul.search-list
 
-    %li.item( data-ng-repeat="item in data.searches | limitTo:5" disabled-isotope-item
+    %li.item( data-ng-repeat="item in data.searches | limitTo:5"
       )
       %img( ng-src="{{item.thumbnail_url}}")
       %p {{item.name}}
@@ -25,9 +25,9 @@
 .pages( style="display:none;" )
   %h2 Pages
 
-  %ul.page-list( disabled-isotope-container )
+  %ul.page-list(  )
 
-    %li.item( data-ng-repeat="item in data.pages" disabled-isotope-item
+    %li.item( data-ng-repeat="item in data.pages"
       )
       %img( ng-src="{{item.thumbnail_url}}")
       %p {{item.name}}
@@ -37,10 +37,10 @@
 .suggestions( style="display:none;" )
   %h2 Search suggestions for '{{data.input}}'
 
-  %ul.suggestion-list( disabled-isotope-container )
+  %ul.suggestion-list(  )
 
     %li.item( data-ng-repeat="item in data.suggestions"
-      disabled-isotope-item
+
       )
       %p {{item}}
 
@@ -48,10 +48,10 @@
 .highlights( )
   %h2 Highlighted content for '{{data.input}}'
 
-  %ul.highlight-list( disabled-isotope-container )
+  %ul.highlight-list(  )
 
     %li.item( data-ng-repeat="item in data.highlights"
-      disabled-isotope-item
+
       )
       %p {{item}}
 
