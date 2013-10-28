@@ -11,21 +11,23 @@
 .searches
   %h2 Searches
 
-  %ul.search-list( isotope-container )
+  %ul.search-list( disabled-isotope-container )
 
-    %li.item( data-ng-repeat="item in data.searches" isotope-item
+    %li.item( data-ng-repeat="item in data.searches | limitTo:5" disabled-isotope-item
       )
       %img( ng-src="{{item.thumbnail_url}}")
       %p {{item.name}}
 
+    %li.item
+      %p More...
 
-
-.pages
+-# design note: in order to reduce info that has to be processed at a glance, we need to move these entities into interaction results in a coarser-grain entity. Candidates: hanging them off searches or keywords.
+.pages( style="display:none;" )
   %h2 Pages
 
-  %ul.page-list( isotope-container )
+  %ul.page-list( disabled-isotope-container )
 
-    %li.item( data-ng-repeat="item in data.pages" isotope-item
+    %li.item( data-ng-repeat="item in data.pages" disabled-isotope-item
       )
       %img( ng-src="{{item.thumbnail_url}}")
       %p {{item.name}}
@@ -35,11 +37,23 @@
 .suggestions( style="display:none;" )
   %h2 Search suggestions for '{{data.input}}'
 
-  %ul.suggestion-list( isotope-container )
+  %ul.suggestion-list( disabled-isotope-container )
 
     %li.item( data-ng-repeat="item in data.suggestions"
-      isotope-item
+      disabled-isotope-item
       )
       %p {{item}}
 
 
+.highlights( )
+  %h2 Highlighted content for '{{data.input}}'
+
+  %ul.highlight-list( disabled-isotope-container )
+
+    %li.item( data-ng-repeat="item in data.highlights"
+      disabled-isotope-item
+      )
+      %p {{item}}
+
+
+-# SCRIBBLE design candidate: list with category pane at left or top
