@@ -14,6 +14,10 @@ angular.module('modulesApp')
       layoutMode: 'straightAcross'
 
 
+    # watch model.
+    $scope.$watch 'data.input', ->
+      $scope.filter $scope.data.input
+
     # initialise isotope.
     $scope.isotope = (selector_for_container)->
       # $timeout ->
@@ -48,7 +52,7 @@ angular.module('modulesApp')
 
       # TODO move out to the document and wire as shown in angular-isotope
       $scope.$root.data = new_data
-      # $scope.$apply()
+      $scope.$apply()
 
       # $('#isotopeContainer').isotope 'reloadItems'
 
@@ -73,11 +77,11 @@ angular.module('modulesApp')
     Restangular.one('filtering.json').get().then (data) ->
       isotope_containers.map (selector)-> $scope.isotope selector
 
-      ## alt
       $scope.update_data data
       # $scope.$apply()
 
-    #   $scope.isotope()
+
+    # $scope.isotope()
 
 
 
