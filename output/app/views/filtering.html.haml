@@ -13,21 +13,21 @@
 
   %ul.search-list
 
-    %li.item( data-ng-repeat="item in data.searches | limitTo:5"
+    %li.item( data-ng-repeat="item in view_model.searches"
+      ng-click="click_item(item)"
       )
-      %img( ng-src="{{item.thumbnail_url}}")
       %p {{item.name}}
 
     %li.item
-      %p More...
+      %p( style="display:none;" ) More...
 
 -# design note: in order to reduce info that has to be processed at a glance, we need to move these entities into interaction results in a coarser-grain entity. Candidates: hanging them off searches or keywords.
-.pages( style="display:none;" )
+.pages
   %h2 Pages
 
   %ul.page-list(  )
 
-    %li.item( data-ng-repeat="item in data.pages"
+    %li.item( data-ng-repeat="item in view_model.pages"
       )
       %img( ng-src="{{item.thumbnail_url}}")
       %p {{item.name}}

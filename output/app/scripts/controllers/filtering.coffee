@@ -14,15 +14,20 @@ angular.module('modulesApp')
       layoutMode: 'straightDown'
       # layoutMode: 'straightAcross'
 
+
     # watch model.
     $scope.$watch 'data.input', ->
       $scope.filter $scope.data?.input
 
     # initialise isotope.
     $scope.isotope = (selector_for_container, options = $scope.options)->
-      $timeout ->
-        $(selector_for_container).isotope options
-      , 0
+      # $timeout ->
+      #   # re-isotope
+      #   $(selector_for_container).isotope options
+
+      #   # hide elems after limit
+      #   # $(selector_for_container).find('.item:gt(4)').
+      # , 0
 
     # dev features.
     $scope.evaluate = (input) ->
@@ -31,12 +36,30 @@ angular.module('modulesApp')
 
     ## ops.
 
-    $scope.$root.filter = (input)->
-      options = {}
-      options.filter = ".item:contains(#{input})"
+    $scope.click_item = (item)->
+      console.log "#{item} clicked!"
 
-      isotope_containers.map (selector)->
-        $scope.isotope $(selector), options
+      # TODO toggle member view.
+
+
+    $scope.$root.filter = (input)->
+      ## filter using isotope.
+      # options = {}
+      # options.filter = ".item:contains(#{input})"
+
+      # isotope_containers.map (selector)->
+      #   $scope.isotope $(selector), options
+
+      ## filter using view model.
+      $scope.view_model.searches = $scope.data?.searches?.filter (search)->
+        search.name?.match input
+
+      $scope.view_model.pages = $scope.data?.pages?.filter (page)->
+        page.name?.match input
+
+      # isotope_containers.map (selector)->
+      #   $scope.isotope $(selector)
+      #   $(selector).isotope 'reloadItems'
 
     # data exchange interface.
     $scope.$root.update_data = (new_data)->
@@ -49,11 +72,11 @@ angular.module('modulesApp')
       $scope.$root.data = new_data
       # $scope.$apply()
 
-      $timeout ->
-        # isotope item acquisition somehow unstable without this call
-        isotope_containers.map (selector)->
-          $(selector).isotope 'reloadItems'
-      , 0
+      # $timeout ->
+      #   # isotope item acquisition somehow unstable without this call
+      #   isotope_containers.map (selector)->
+      #     $(selector).isotope 'reloadItems'
+      # , 0
 
       # $('#isotopeContainer').isotope
       #   itemSelector: '.item'
@@ -69,16 +92,18 @@ angular.module('modulesApp')
 
     ## doit.
 
+    $scope.view_model ||= {}
+    $scope.$root.data ||= {}
 
     ## dev
     # attach stub data to root, so the running environment can override it.
     Restangular.setBaseUrl("data");
     Restangular.one('filtering.json').get().then (data) ->
-      isotope_containers.map (selector)->
-        $scope.isotope selector
-        $timeout ->
-          $(selector).isotope()
-        , 0
+      # isotope_containers.map (selector)->
+      #  $scope.isotope selector
+      #  $timeout ->
+      #    $(selector).isotope()
+      #  , 0
 
       $scope.update_data data
 

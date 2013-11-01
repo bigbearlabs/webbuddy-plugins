@@ -15,34 +15,38 @@ li {
   height: 100%;
 }
 
+
+.searches .list-container {
+  /* set height to 5x items */
+  height: 350px;
+}
+
 .item {
   background-color: lightyellow;
 }
 .item img {
+  display: inline-block;
+
   width: 70px;
   height: 70px;
 }
-
-
-.searches item {
-  width: 300%;
+.item p {
+  display: inline-block;
 }
 
-.searches img {
-  display: none;
-}
-
-.searches p {
+.searches .item p {
   font-size: 150%;
 }
 
-
 .pages .item {
+/*
   width: 120px;
   height: 120px;
+*/
 }
-
-
+.pages .item p {
+  max-width: 80%;
+}
 
 .hero-unit {
     margin: 50px auto 0 auto;
