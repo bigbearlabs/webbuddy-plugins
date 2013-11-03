@@ -18,7 +18,7 @@ li {
 }
 
 
-.searches, .pages {
+section {
   @include grid-row;  // horizontal sections
 }
 
@@ -27,62 +27,36 @@ li {
   display: none;
 }
 
-.searches .list-container {
-  /* set height to 5x items */
-  height: 350px;
-}
-
 .item {
   // @include grid-column(4);  // 3-column layout
 
   background-color: lightyellow;
-}
-.item img {
-  /*display: inline-block;*/
 
-  width: 100px;
-  height: 100px;
-}
-.item p {
-  /*display: inline-block;*/
+  img {
+    // display: none;
+    display: inline-block;
+
+    width: 50px;
+    height: 50px;
+  }
+
+  p {
+    display: inline-block;
+  }
 }
 
 .searches {
-  text-align: left;
-
-  .item > img {
-    display: none;
-  }
-  .item > p {
-    margin-top: 1.25em;
-    margin-bottom: 0;
-    font-size: 150%;
-  }
 }
 .searches .thumbnails {
+  display: none;
 }
-.searches .thumbnail {
-  display: inline-block;
-}
-.searches .thumbnail p {
-}
-
 .pages {
 
   .item {
-    text-align: center;
-
     img {
-      width: 200px;
-      height: 200px;
     }
 
     p {
-      /*max-width: 80%;*/
-
-      font-size: 80%;
-
-      text-align: center;
     }
   }
 }

@@ -8,7 +8,7 @@
 
 
 
-.searches
+%section.searches( ng-show="view_model.searches.length > 0" )
   %h2 Searches
 
   %ul.search-list
@@ -35,7 +35,7 @@
     -#   %p( style="display:none;" ) More...
 
 -# design note: in order to reduce info that has to be processed at a glance, we need to move these entities into interaction results in a coarser-grain entity. Candidates: hanging them off searches or keywords.
-.pages
+%section.pages( ng-show="view_model.pages.length > 0" )
   %h2 Pages
 
   %ul.page-list(  )
@@ -47,7 +47,7 @@
 
 
 
-.suggestions( style="display:none;" )
+%section.suggestions( style="display:none;" )
   %h2 Search suggestions for '{{data.input}}'
 
   %ul.suggestion-list(  )
@@ -58,7 +58,7 @@
       %p {{item}}
 
 
-.highlights( )
+%section.highlights( )
   %h2 Highlighted content for '{{data.input}}'
 
   %ul.highlight-list(  )
