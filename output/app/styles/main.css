@@ -4,17 +4,18 @@ body {
     color: #333;
 }
 
+ul {
+  text-align: center;
+}
 li {
   list-style: none;
 }
 
 
-.isotope {
-  /*isotope horizontal layout needs height set on container */
-  /*height: 120px;*/
-  height: 100%;
+.searches, .pages {
+  display: inline-block;
+  width: 40%;
 }
-
 
 .searches .list-container {
   /* set height to 5x items */
@@ -23,19 +24,34 @@ li {
 
 .item {
   background-color: lightyellow;
+
+  display: inline-block;
+
+  margin-right: 7%;
 }
 .item img {
-  display: inline-block;
+  /*display: inline-block;*/
 
-  width: 70px;
-  height: 70px;
+  width: 200px;
+  height: 200px;
 }
 .item p {
-  display: inline-block;
+  /*display: inline-block;*/
+  font-size: 80%;
 }
 
+.searches .item {
+}
 .searches .item p {
-  font-size: 150%;
+  /*font-size: 150%;*/
+}
+.searches .thumbnails {
+  display: none;
+}
+.searches .thumbnail {
+  display: inline-block;
+}
+.searches .thumbnail p {
 }
 
 .pages .item {
@@ -45,7 +61,8 @@ li {
 */
 }
 .pages .item p {
-  max-width: 80%;
+  /*max-width: 80%;*/
+  width: 200px;
 }
 
 .hero-unit {
@@ -67,6 +84,12 @@ li {
 
 
 /**** Isotope Filtering ****/
+
+.isotope {
+  /*isotope horizontal layout needs height set on container */
+  /*height: 120px;*/
+  height: 100%;
+}
 
 .isotope-item {
   z-index: 2;
