@@ -5,10 +5,13 @@ body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   color: #333;
   /*display: none;*/
+
+  margin-left: 10%;
+  margin-right: 10%;
 }
 
 ul {
-  text-align: center;
+  // text-align: center;
 }
 li {
   list-style: none;
@@ -16,12 +19,7 @@ li {
 
 
 .searches, .pages {
-  // @include grid-row;  // horizontal sections
-
-  @include grid-column(6); // vertical sections
-
-  // position: relative;
-  height: 100vh;
+  @include grid-row;  // horizontal sections
 }
 
 .highlights {
@@ -42,21 +40,26 @@ li {
 .item img {
   /*display: inline-block;*/
 
-  width: 200px;
-  height: 200px;
+  width: 100px;
+  height: 100px;
 }
 .item p {
   /*display: inline-block;*/
-  font-size: 80%;
 }
 
-.searches .item {
-}
-.searches .item p {
-  /*font-size: 150%;*/
+.searches {
+  text-align: left;
+
+  .item > img {
+    display: none;
+  }
+  .item > p {
+    margin-top: 1.25em;
+    margin-bottom: 0;
+    font-size: 150%;
+  }
 }
 .searches .thumbnails {
-  display: none;
 }
 .searches .thumbnail {
   display: inline-block;
@@ -64,16 +67,27 @@ li {
 .searches .thumbnail p {
 }
 
-.pages .item {
-/*
-  width: 120px;
-  height: 120px;
-*/
+.pages {
+
+  .item {
+    text-align: center;
+
+    img {
+      width: 200px;
+      height: 200px;
+    }
+
+    p {
+      /*max-width: 80%;*/
+
+      font-size: 80%;
+
+      text-align: center;
+    }
+  }
 }
-.pages .item p {
-  /*max-width: 80%;*/
-  width: 200px;
-}
+
+
 
 .hero-unit {
     margin: 50px auto 0 auto;
