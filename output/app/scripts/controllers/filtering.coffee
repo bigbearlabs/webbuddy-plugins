@@ -52,10 +52,10 @@ angular.module('modulesApp')
 
       ## filter using view model.
       $scope.view_model.searches = $scope.data?.searches?.filter (search)->
-        search.name?.match input
+        search.name?.toLowerCase().match input.toLowerCase()
 
       $scope.view_model.pages = $scope.data?.pages?.filter (page)->
-        page.name?.match input
+        page.name?.toLowerCase().match input.toLowerCase()
 
       # isotope_containers.map (selector)->
       #   $scope.isotope $(selector)
