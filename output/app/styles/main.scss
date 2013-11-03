@@ -1,10 +1,10 @@
 @import "../bower_components/foundation/scss/foundation";
 
 body {
-    background: #fafafa;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    color: #333;
-    /*display: none;*/
+  background: #fafafa;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: #333;
+  /*display: none;*/
 }
 
 ul {
@@ -16,8 +16,17 @@ li {
 
 
 .searches, .pages {
-  display: inline-block;
-  width: 40%;
+  // @include grid-row;  // horizontal sections
+
+  @include grid-column(6); // vertical sections
+
+  // position: relative;
+  height: 100vh;
+}
+
+.highlights {
+  // @include grid-row;
+  display: none;
 }
 
 .searches .list-container {
@@ -26,11 +35,9 @@ li {
 }
 
 .item {
+  // @include grid-column(4);  // 3-column layout
+
   background-color: lightyellow;
-
-  display: inline-block;
-
-  margin-right: 7%;
 }
 .item img {
   /*display: inline-block;*/
