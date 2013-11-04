@@ -32,6 +32,10 @@ section {
 
   background-color: lightyellow;
 
+  .search-icon {
+    display: none;
+  }
+
   img {
     // display: none;
     display: inline-block;
@@ -43,51 +47,41 @@ section {
   p {
     display: inline-block;
   }
+
+  .thumbnails {
+    // text-align: center;
+    overflow-y: scroll;
+    white-space: nowrap;
+
+    .thumbnail {
+      display: inline-block;
+
+      img {
+        // width: 300px;
+        // height: 300px;
+      }
+      p {
+        display: block;
+        display: none;
+      }
+    }
+  }
 }
 
-.searches {
+// showing the zoomed-in thumbnail.
+.item .thumbnails {
+  // display: none;
 }
-.searches .thumbnails {
-  display: none;
-}
-.searches:hover .thumbnails {
+.item:hover .thumbnails {
+  // background-color: lightpink;
+
   display: inherit;
-  position: fixed;
-  top: 20%;
-  left: 20%;
-  width: 60%;
-  height: 60%;
-
-  background-color: lightpink;
-
-  text-align: center;
-  overflow-y: scroll;
-  white-space: nowrap;
-
-  .thumbnail {
-    display: inline-block;
-
-    img {
-      width: 300px;
-      height: 300px;
-    }
-    p {
-      display: block;
-    }
-  }
+  // position: fixed;
+  // top: 20%;
+  // left: 20%;
+  // width: 60%;
+  // height: 60%;
 }
-.pages {
-
-  .item {
-    img {
-    }
-
-    p {
-    }
-  }
-}
-
-
 
 .hero-unit {
     margin: 50px auto 0 auto;
