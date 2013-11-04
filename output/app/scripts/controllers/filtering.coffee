@@ -1,7 +1,9 @@
 'use strict'
 
 angular.module('modulesApp')
-  .controller 'FilteringCtrl', ($scope, $timeout, Restangular) ->
+  .controller 'FilteringCtrl', ($scope, $window, $timeout, Restangular) ->
+
+    $scope.$window = $window
 
     # view consts. unused
     $scope.partials =
@@ -92,7 +94,8 @@ angular.module('modulesApp')
 
     ## doit.
 
-    $scope.view_model ||= {}
+    $scope.view_model ||=
+      limit: 5
     $scope.$root.data ||= {}
 
     ## dev

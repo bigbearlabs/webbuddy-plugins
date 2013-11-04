@@ -1,4 +1,4 @@
-.dev(ng-show="{{window.chrome != null}}")
+%section.dev(ng-show="$window.chrome != null")
   %h3 Filter
   %input( ng-model="data.input" ng-change="")
 
@@ -13,26 +13,25 @@
 
   %ul.search-list
 
-    %li.item( data-ng-repeat="item in view_model.searches | limitTo:3"
+    %li.item( data-ng-repeat="item in view_model.searches | limitTo:view_model.limit"
       ng-click="click_item(item)"
       )
 
-      %img
-      %p {{item.name}}
+      -# result list item
+      %a( href="{{item.url}}")
+        %img.search-icon( ng-src="{{item.thumbnail_url}}")
+        %p {{item.name}}
 
-      .thumbnails
-        .thumbnail
-          %img
-          %p stub page
-        .thumbnail
-          %img
-          %p stub page
-        .thumbnail
-          %img
-          %p stub page
+      -# zoom-in view
+      %ul.thumbnails
+        %li.thumbnail( data-ng-repeat="page_item in item.pages" )
+          %a( href="{{page_item.url}}")
+            %img( ng-src="{{page_item.thumbnail_url}}")
+            %p {{page_item.name}}
 
-    -# %li.item
-    -#   %p( style="display:none;" ) More...
+    %li.item( ng-show="view_model.searches.length > view_model.limit" )
+      %p More...
+
 
 -# design note: in order to reduce info that has to be processed at a glance, we need to move these entities into interaction results in a coarser-grain entity. Candidates: hanging them off searches or keywords.
 %section.pages( ng-show="view_model.pages.length > 0" )
@@ -40,11 +39,20 @@
 
   %ul.page-list(  )
 
-    %li.item( data-ng-repeat="item in view_model.pages"
+    %li.item( data-ng-repeat="item in view_model.pages | limitTo:view_model.limit"
       )
-      %img( ng-src="{{item.thumbnail_url}}")
-      %p {{item.name}}
+      %a( href="{{item.url}}")
+        %img( ng-src="{{item.thumbnail_url}}")
+        %p {{item.name}}
 
+        .thumbnails
+          .thumbnail
+            %a( href="{{item.url}}")
+              %img( ng-src="{{item.thumbnail_url}}")
+              %p {{item.name}}
+
+    %li.item( ng-show="view_model.pages.length > view_model.limit" )
+      %p More...
 
 
 %section.suggestions( style="display:none;" )
