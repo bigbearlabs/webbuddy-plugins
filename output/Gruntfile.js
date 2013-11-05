@@ -402,6 +402,7 @@ module.exports = function (grunt) {
   grunt.registerTask('build', [
     'clean:dist',
     'useminPrepare',
+    'compass:dist',
     'concurrent:dist',
     'autoprefixer',
     'concat',
