@@ -8,8 +8,8 @@
 
 
 
-%section.searches( ng-show="view_model.searches.length > 0" )
-  %h2 Searches
+%section.results( ng-show="view_model.searches.length > 0" )
+  %h2( ng-show="false" ) Hits
 
   %ul.search-list
 
@@ -32,12 +32,7 @@
     -# %li.item( ng-show="view_model.searches.length > view_model.limit" )
     -#   %p More...
 
-
--# design note: in order to reduce info that has to be processed at a glance, we need to move these entities into interaction results in a coarser-grain entity. Candidates: hanging them off searches or keywords.
-%section.pages( ng-show="view_model.pages.length > 0" )
-  %h2 Pages
-
-  %ul.page-list(  )
+    -# separator TODO
 
     %li.item( data-ng-repeat="item in view_model.pages | limitTo:view_model.limit"
       )
@@ -55,8 +50,8 @@
       %p More...
 
 
-%section.suggestions( style="display:none;" )
-  %h2 Search suggestions for '{{data.input}}'
+%section.suggestions
+  %h2 Suggestions
 
   %ul.suggestion-list(  )
 

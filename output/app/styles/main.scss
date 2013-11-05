@@ -12,6 +12,10 @@ body {
 
 ul {
   // text-align: center;
+
+  // horizontally scrollable.
+  white-space: nowrap;
+  overflow: scroll;
 }
 li {
   list-style: none;
@@ -27,18 +31,24 @@ section {
   display: none;
 }
 
+.search-icon {
+  // display: none;
+}
+
+
 .item {
   // @include grid-column(4);  // 3-column layout
 
   background-color: lightyellow;
 
-  .search-icon {
-    display: none;
-  }
+  // horizontal layout
+  display: inline-block;
 
   img {
     // display: none;
-    display: inline-block;
+
+    // display: inline-block;
+    display: block;
 
     width: 50px;
     height: 50px;
@@ -50,11 +60,12 @@ section {
 
   .thumbnails {
     // text-align: center;
-    overflow-y: scroll;
+    overflow: scroll;
     white-space: nowrap;
 
     .thumbnail {
-      // display: inline-block;
+      // horizontal layout
+      display: inline-block;
 
       img {
         width: 300px;
@@ -63,6 +74,9 @@ section {
       p {
         display: block;
         // display: none;
+
+        // align width to elem cell
+        width: 300px;
       }
     }
   }
