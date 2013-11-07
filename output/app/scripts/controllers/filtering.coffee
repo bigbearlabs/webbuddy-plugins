@@ -41,7 +41,7 @@ angular.module('modulesApp')
     $scope.preview = (item) ->
       $scope.view_model.details =
         name: item.name
-        items: item.pages
+        items: if item.pages then item.pages else [ item ]
 
 
     $scope.$root.filter = (input)->

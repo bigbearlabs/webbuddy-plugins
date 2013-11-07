@@ -35,7 +35,8 @@
     -# separator TODO
 
     %li.item( data-ng-repeat="item in view_model.pages | limitTo:view_model.limit"
-      )
+      ng-mouseover="preview(item)"
+    )
       %a( href="{{item.url}}")
         %img( ng-src="{{item.thumbnail_url}}")
         %p {{item.name}}
