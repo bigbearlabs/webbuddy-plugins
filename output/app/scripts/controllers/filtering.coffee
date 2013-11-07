@@ -38,10 +38,10 @@ angular.module('modulesApp')
 
     ## ops.
 
-    $scope.click_item = (item)->
-      console.log "#{item} clicked!"
-
-      # TODO toggle member view.
+    $scope.preview = (item) ->
+      $scope.view_model.details =
+        name: item.name
+        items: item.pages
 
 
     $scope.$root.filter = (input)->

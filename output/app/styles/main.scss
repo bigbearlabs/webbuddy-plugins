@@ -6,6 +6,7 @@ body {
   color: #333;
   /*display: none;*/
 
+  margin-top: 30px;
   margin-left: 10%;
   margin-right: 10%;
 }
@@ -56,6 +57,10 @@ section {
 
   p {
     display: inline-block;
+
+    width: 50px; // limit spillover
+
+    overflow: hidden;
   }
 
   .thumbnails {
@@ -63,40 +68,38 @@ section {
     overflow: scroll;
     white-space: nowrap;
 
-    .thumbnail {
-      // horizontal layout
-      display: inline-block;
-
-      img {
-        width: 300px;
-        height: 300px;
-      }
-      p {
-        display: block;
-        // display: none;
-
-        // align width to elem cell
-        width: 300px;
-      }
-    }
   }
 }
 
-// showing the zoomed-in thumbnail.
+.thumbnail {
+  // horizontal layout
+  display: inline-block;
+
+  img {
+    width: 300px;
+    height: 300px;
+  }
+  p {
+    display: block;
+    // display: none;
+
+    // align width to elem cell
+    width: 300px;
+    overflow: hidden;
+  }
+}
+
+.search-list {
+  .item {
+    margin-right: 10px;
+  }
+}
+
+// thumbnails now handled by another model prop - ignore .thumbnails
 .item .thumbnails {
   display: none;
 }
-.item:hover .thumbnails {
-  // background-color: lightpink;
 
-  display: inherit;
-
-  position: fixed;
-  top: 20%;
-  left: 20%;
-  width: 60%;
-  height: 60%;
-}
 
 
 .hero-unit {
