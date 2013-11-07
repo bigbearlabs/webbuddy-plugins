@@ -27,8 +27,19 @@ section {
   @include grid-row;  // horizontal sections
 }
 
-
 .search-list {
+  display: flex;
+
+  .item {
+    min-width: 50px;  // constrain min item size
+  }
+  .item img {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+.detail-list {
   // flexbox layout
   display: flex;
   flex-direction: row;
@@ -40,19 +51,11 @@ section {
   .item {
     margin-right: 10px;
 
-    flex: 1 1 auto;
+    flex: 0 1 auto;
 
     // constrain minimum size.
     min-width: 10%;
   }
-}
-
-.search-icon {
-  // display: none;
-}
-
-.detail-item {
-  max-width: 100%;
 }
 
 .highlights {
@@ -66,9 +69,6 @@ section {
   // @include grid-column(4);  // 3-column layout
 
   background-color: lightyellow;
-
-  // horizontal layout
-  display: inline-block;
 
   img {
     // display: none;
