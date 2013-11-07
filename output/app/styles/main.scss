@@ -27,14 +27,39 @@ section {
   @include grid-row;  // horizontal sections
 }
 
-.highlights {
-  // @include grid-row;
-  display: none;
+
+.search-list {
+  // flexbox layout
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-content: stretch;
+  align-items: flex-start;
+
+  .item {
+    margin-right: 10px;
+
+    flex: 1 1 auto;
+
+    // constrain minimum size.
+    min-width: 10%;
+  }
 }
 
 .search-icon {
   // display: none;
 }
+
+.detail-item {
+  max-width: 100%;
+}
+
+.highlights {
+  // @include grid-row;
+  display: none;
+}
+
 
 
 .item {
@@ -51,8 +76,11 @@ section {
     // display: inline-block;
     display: block;
 
-    width: 50px;
-    height: 50px;
+    // width: 50px;
+    // height: 50px;
+
+    // size according to parent elem
+    width: 100%;
   }
 
   p {
@@ -68,6 +96,8 @@ section {
     overflow: scroll;
     white-space: nowrap;
 
+    // thumbnails now handled by another model prop - ignore .thumbnails
+    display: none;
   }
 }
 
@@ -87,17 +117,6 @@ section {
     width: 300px;
     overflow: hidden;
   }
-}
-
-.search-list {
-  .item {
-    margin-right: 10px;
-  }
-}
-
-// thumbnails now handled by another model prop - ignore .thumbnails
-.item .thumbnails {
-  display: none;
 }
 
 
