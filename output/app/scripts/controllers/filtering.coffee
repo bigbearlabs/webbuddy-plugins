@@ -9,18 +9,12 @@ angular.module('modulesApp')
     $scope.partials =
       collection: 'views/collection.html'
 
+    # isotope bits
     isotope_containers = [ '.search-list', '.page-list', '.suggestion-list' ]
-
     $scope.options =
       itemSelector: '.item'
       layoutMode: 'straightDown'
       # layoutMode: 'straightAcross'
-
-
-    # watch model.
-    $scope.$watch 'data.input', ->
-      $scope.filter $scope.data?.input
-
     # initialise isotope.
     $scope.isotope = (selector_for_container, options = $scope.options)->
       # $timeout ->
@@ -31,12 +25,18 @@ angular.module('modulesApp')
       #   # $(selector_for_container).find('.item:gt(4)').
       # , 0
 
+
+    # watch model.
+    $scope.$watch 'data.input', ->
+      $scope.filter $scope.data?.input
+
+
     # dev features.
     $scope.evaluate = (input) ->
       $scope.dev_output = eval(input)
 
 
-    ## ops.
+    ## ui ops.
 
     $scope.preview = (item) ->
       $scope.view_model.details =
@@ -63,6 +63,12 @@ angular.module('modulesApp')
       #   $scope.isotope $(selector)
       #   $(selector).isotope 'reloadItems'
 
+
+    ## data ops.
+
+    $scope.data_loaded = ->
+      if $window.data then true else false  # external interface element.
+
     # data exchange interface.
     $scope.$root.update_data = (new_data)->
       # # must mutate $scope.$root.data due to isotope limitations.
@@ -73,6 +79,10 @@ angular.module('modulesApp')
       # TODO move out to the document and wire as shown in angular-isotope
       $scope.$root.data = new_data
       # $scope.$apply()
+
+      # update the condition for the test method.
+      $window.data = new_data
+
 
       # $timeout ->
       #   # isotope item acquisition somehow unstable without this call
@@ -96,22 +106,24 @@ angular.module('modulesApp')
 
     $scope.view_model ||=
       limit: 5
-    $scope.$root.data ||= {}
 
     ## dev
     # attach stub data to root, so the running environment can override it.
-    Restangular.setBaseUrl("data");
-    Restangular.one('filtering.json').get().then (data) ->
-      # isotope_containers.map (selector)->
-      #  $scope.isotope selector
-      #  $timeout ->
-      #    $(selector).isotope()
-      #  , 0
+    if $scope.data_loaded()
+      $scope.update_data $window.data
+    else
+      Restangular.setBaseUrl("data");
+      Restangular.one('filtering.json').get().then (data) ->
+        # isotope_containers.map (selector)->
+        #  $scope.isotope selector
+        #  $timeout ->
+        #    $(selector).isotope()
+        #  , 0
 
-      $scope.update_data data
+        $scope.update_data data
 
 
-    # $scope.isotope()
+      # $scope.isotope()
 
 
 
