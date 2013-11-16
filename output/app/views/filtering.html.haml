@@ -55,7 +55,8 @@
   %h2 {{view_model.details.name}}
 
   %ul.detail-list
-    %li.detail-item.thumbnail( ng-repeat="detail_item in view_model.details.items" )
+    %li.item.thumbnail( ng-repeat="detail_item in view_model.details.items" )
+      %a( href="{{detail_item.url}}")
       %img( ng-src="{{detail_item.thumbnail_url}}" )
       %p {{detail_item.name}}
 
