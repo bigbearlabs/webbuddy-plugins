@@ -13,7 +13,7 @@
 
   %ul.search-list
 
-    %li.item( data-ng-repeat="item in view_model.searches | limitTo:view_model.limit"
+    %li.item( data-ng-repeat="item in view_model.searches"
       ng-mouseover="preview(item)"
     )
 
@@ -34,7 +34,7 @@
 
     -# separator TODO
 
-    %li.item( data-ng-repeat="item in view_model.pages | limitTo:view_model.limit"
+    %li.item( data-ng-repeat="item in view_model.pages"
       ng-mouseover="preview(item)"
     )
       %a( href="{{item.url}}")
