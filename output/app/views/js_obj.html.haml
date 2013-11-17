@@ -1,0 +1,7 @@
+%ul( ng-if=" typeof(dev_output) == 'object' ")
+  -# an object.
+  %li( ng-repeat="(prop, val) in dev_output" )
+    %p {{prop}} : {{ typeof(val) }}
+
+-# a primitive.
+%p {{dev_output}}

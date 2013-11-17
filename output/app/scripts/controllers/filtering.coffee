@@ -4,8 +4,6 @@ angular.module('modulesApp')
   .controller 'FilteringCtrl', ($scope, $window, $timeout, $q,
     Restangular) ->
 
-    $scope.$window = $window   # used by the view layer. UGLY
-
     # view consts. unused
     $scope.partials =
       collection: 'views/collection.html'
@@ -34,8 +32,22 @@ angular.module('modulesApp')
 
     # dev features.
     $scope.evaluate = (input) ->
-      $scope.dev_output = eval(input)
+      eval_result = eval(input)
+      $scope.dev_output =
 
+        # keys: Object.keys eval_result
+        # functions: do ->
+        #   fs = {}
+        #   for k, v of eval_result
+        #     fs[k] = String(v)
+        #   fs
+
+        eval_result
+
+    # kick it.
+    $timeout ->
+      $scope.evaluate $scope.data.dev_input
+    , 500
 
     ## ui ops.
 
@@ -65,53 +77,33 @@ angular.module('modulesApp')
       #   $(selector).isotope 'reloadItems'
 
 
-    ## data ops.
+    ## webbuddy global property
+    # set up a stub hosting environment if it hasn't beeen set up already. EXTRACT
+    $window.webbuddy ||=
+      env:
+        name: 'stub'
+      module: {}
 
-    # dispatch the rest to avoid ensure setup from host environment has execution priority.
-    # $timeout ->
-
-    # @return promise taking (data)->
-    $scope.fetch_data = (env = webbuddy.env.name)->
-      switch env
-        when 'stub'
-          # load the data file. # GENERALISE / EXTRACT
-          Restangular.setBaseUrl("data");
-          Restangular.one('filtering.json').get()
-        else
-          # return data from the module.data property
-          deferred = $q.defer()
-          deferred.resolve webbuddy.module.data
-
-          deferred.promise
+    # define webbuddy.module  EXTRACT
+    $window.webbuddy.module.data_updated = (data)->
+      $scope.$root.data = data
+      # $scope.$apply()
 
 
     ## statics
     $scope.view_model ||=
       limit: 5
+      show_dev: true
+      # show_dev: webbuddy.env.name is 'stub'
 
-    ## webbuddy - module contract
-    # set up a stub hosting environment if it hasn't beeen set up already. EXTRACT
-    $window.webbuddy ||=
-      env:
-        name: 'stub'
-
-    # the module object acts as the exchange interface between the hosting env and this module.
-    $window.webbuddy.module =
-      #init data.
-      data: {}  # pvt.
-
-      # data param will be used by hosting env only.
-      update_data: (data = null)->
-        @data = data unless data?
-
-        $scope.fetch_data().then (data)->
-          $scope.$root.data = data
-
-        # FIXME when we move this method out to the module framework, contract needs to change to a property off the global obj, as $scope will not be available when we define behaviour.
-        # then we must watch the global prop and update a model prop on the scope.
 
     ## doit.
-    $window.webbuddy.module.update_data()
+    switch webbuddy.env.name
+      when 'stub'
+        Restangular.setBaseUrl("data");
+        Restangular.one('filtering.json').get().then (data)->
+          webbuddy.module.data_updated data
+
 
 
     # isotope_containers.map (selector)->

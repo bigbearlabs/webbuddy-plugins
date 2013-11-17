@@ -1,0 +1,6 @@
+<ul ng-if=" typeof(dev_output) == 'object' ">
+  <li ng-repeat='(prop, val) in dev_output'>
+    <p>{{prop}} : {{ typeof(val) }}</p>
+  </li>
+</ul>
+<p>{{dev_output}}</p>

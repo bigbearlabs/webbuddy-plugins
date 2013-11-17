@@ -1,11 +1,12 @@
-%section.dev(ng-show="$window.webbuddy.env.name != 'webbuddy'")
+%section.dev( ng-show="view_model.show_dev" )
   %h3 Filter
   %input( ng-model="data.input" ng-change="")
 
   %h3 Evaluator
-  %input( ng-model="dev_input" ng-change="evaluate(dev_input)")
-  %p {{dev_output}}
-
+  %input( ng-model="data.dev_input" ng-change="evaluate(data.dev_input)")
+  -# %p {{dev_output}}
+  -# TODO honour line-breaks, pretty-format json objects, make things clickable.
+  %p( ng-include="'views/js_obj.html'" )
 
 
 %section.results( ng-show="view_model.searches.length > 0" )
