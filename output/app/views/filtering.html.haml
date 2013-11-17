@@ -1,4 +1,4 @@
-%section.dev(ng-show="$window.chrome != null")
+%section.dev(ng-show="$window.webbuddy.env.name != 'webbuddy'")
   %h3 Filter
   %input( ng-model="data.input" ng-change="")
 
@@ -57,8 +57,8 @@
   %ul.detail-list
     %li.item.thumbnail( ng-repeat="detail_item in view_model.details.items" )
       %a( href="{{detail_item.url}}")
-      %img( ng-src="{{detail_item.thumbnail_url}}" )
-      %p {{detail_item.name}}
+        %img( ng-src="{{detail_item.thumbnail_url}}" )
+        %p {{detail_item.name}}
 
 
 %section.suggestions( ng-show="false" )
