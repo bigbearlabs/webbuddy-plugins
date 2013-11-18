@@ -1,7 +1,24 @@
-%ul( ng-if=" typeof(dev_output) == 'object' ")
-  -# an object.
-  %li( ng-repeat="(prop, val) in dev_output" )
-    %p {{prop}} : {{ typeof(val) }}
+%script( type="text/ng-template" id="obj-tree.html" )
 
--# a primitive.
-%p {{dev_output}}
+  -# my properties.
+  %ul( )
+    %li( ng-repeat="key in obj_keys(obj)" )
+      %p(  ) {{key}}:
+      -# set obj and recursively render the template.
+      %p(  ng-include="'obj-tree.html'" ng-init="obj = obj[key]" )
+
+  -# me.
+  %p {{to_displayable(obj)}}
+
+.tree-view( ng-controller="ObjTreeCtrl")
+  %input( ng-model="dev_input" ng-change="evaluate(dev_input)")
+
+  %ng-include( src="'obj-tree.html'" )
+
+
+-# TODO honour line-breaks, pretty-format json objects, make things clickable.
+
+-# define an ng-template.
+
+-# define top-level view element
+

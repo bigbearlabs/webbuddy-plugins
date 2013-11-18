@@ -30,24 +30,11 @@ angular.module('modulesApp')
       $scope.filter $scope.data?.input
 
 
-    # dev features.
-    $scope.evaluate = (input) ->
-      eval_result = eval(input)
-      $scope.dev_output =
 
-        # keys: Object.keys eval_result
-        # functions: do ->
-        #   fs = {}
-        #   for k, v of eval_result
-        #     fs[k] = String(v)
-        #   fs
-
-        eval_result
-
-    # kick it.
-    $timeout ->
-      $scope.evaluate $scope.data.dev_input
-    , 500
+    # # kick it.
+    # $timeout ->
+    #   $scope.evaluate $scope.data?.dev_input
+    # , 500
 
     ## ui ops.
 
@@ -144,3 +131,29 @@ angular.module('modulesApp')
 
     # , 0
 
+
+# EXTRACT
+angular.module('modulesApp')
+  .controller 'ObjTreeCtrl', ($scope) ->
+
+    # dev features.
+    $scope.evaluate = (input) ->
+      eval_result = eval(input)
+      $scope.obj = eval_result
+
+    $scope.obj_keys = (val)->
+      if typeof(val) == 'object'
+        Object.keys val
+      else
+        []
+
+    $scope.to_displayable = (val)->
+      switch typeof(val)
+        when 'object'
+          ''
+        when 'function'
+          String(val)
+        else
+          val
+
+        # TODO arrays

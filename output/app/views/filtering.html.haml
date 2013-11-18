@@ -3,11 +3,7 @@
   %input( ng-model="data.input" ng-change="")
 
   %h3 Evaluator
-  %input( ng-model="data.dev_input" ng-change="evaluate(data.dev_input)")
-  -# %p {{dev_output}}
-  -# TODO honour line-breaks, pretty-format json objects, make things clickable.
-  %p( ng-include="'views/js_obj.html'" )
-
+  .evaluator( ng-include="'views/js_obj.html'" )
 
 %section.results( ng-show="view_model.searches.length > 0" )
   %h2( ng-show="false" ) Hits
