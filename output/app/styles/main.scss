@@ -28,9 +28,11 @@ section {
 }
 
 .search-list {
-  display: flex;
+  // display: flex;  // how sad, flex not supported with webview.
+  display: -webkit-flex;
 
   .item {
+    display: inline-block;
     min-width: 50px;  // constrain min item size
   }
   .item img {
