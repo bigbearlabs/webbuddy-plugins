@@ -11,7 +11,7 @@
   %ul.search-list
 
     %li.item( data-ng-repeat="item in view_model.searches"
-      ng-mouseover="preview(item)"
+      ng-mouseover="preview(item)" ng-mouseleave="hide_preview(item)"
     )
 
       -# result list item

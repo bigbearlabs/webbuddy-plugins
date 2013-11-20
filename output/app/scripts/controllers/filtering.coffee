@@ -56,6 +56,8 @@ angular.module('modulesApp')
         name: item.name
         items: if item.pages then item.pages else [ item ]
 
+    $scope.hide_preview = (item) ->
+      $scope.view_model.details = null
 
     $scope.$root.filter = (input)->
       ## filter using isotope.
