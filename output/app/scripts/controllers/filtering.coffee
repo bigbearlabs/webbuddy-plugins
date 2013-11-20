@@ -4,6 +4,18 @@ angular.module('modulesApp')
   .controller 'FilteringCtrl', ($scope, $window, $timeout, $q,
     Restangular) ->
 
+    ## EXTRACT common module functionality
+
+    ## webbuddy global property
+    # set up a stub hosting environment if it hasn't beeen set up already. EXTRACT
+    $window.webbuddy ||=
+      env:
+        name: 'stub'
+      module: {}
+
+    # expose the scope so the hosting environment can interact with the view.
+    $window.webbuddy.module.filter_scope = $scope
+
     # view consts. unused
     $scope.partials =
       collection: 'views/collection.html'
@@ -25,16 +37,17 @@ angular.module('modulesApp')
       # , 0
 
 
+
     # watch model to trigger view behaviour.
     $scope.$watch 'data.input', ->
       $scope.filter $scope.data?.input
 
 
+    ## view ops.
 
-    # # kick it.
-    # $timeout ->
-    #   $scope.evaluate $scope.data?.dev_input
-    # , 500
+    $scope.refresh_data = ->
+      $scope.data = $window.webbuddy.module.data
+      $scope.$apply()
 
     ## ui ops.
 
@@ -64,19 +77,6 @@ angular.module('modulesApp')
       #   $(selector).isotope 'reloadItems'
 
 
-    ## webbuddy global property
-    # set up a stub hosting environment if it hasn't beeen set up already. EXTRACT
-    $window.webbuddy ||=
-      env:
-        name: 'stub'
-      module: {}
-
-    # define webbuddy.module  EXTRACT
-    $window.webbuddy.module.data_updated = (data)->
-      $scope.$root.data = data
-      # $scope.$apply()
-
-
     ## statics
     $scope.view_model ||=
       limit: 5
@@ -89,8 +89,13 @@ angular.module('modulesApp')
       when 'stub'
         Restangular.setBaseUrl("data");
         Restangular.one('filtering.json').get().then (data)->
-          webbuddy.module.data_updated data
 
+          $window.webbuddy.module.data = data
+
+          $scope.refresh_data()
+          # $scope.$apply()
+      else
+        $scope.refresh_data()
 
 
     # isotope_containers.map (selector)->
@@ -100,31 +105,6 @@ angular.module('modulesApp')
     #  , 0
 
     # $window.webbuddy.module.update_data data
-
-
-    # ## set up the module. EXTRACT
-    # # members of this object work around the unavailability of angular scope to the hosting env when the page is loading.
-    # $window.webbuddy.module =
-    #   # storage.
-    #   data: {}
-
-    #   # applies deltas.
-    #   update_data: (data = {})->
-    #     new_data = _.clone $window.webbuddy.module.data
-
-    #     # overwrite entries with data.
-    #     for key, val of data
-    #       new_data[key] = val
-
-    #     # update module.data first.
-    #     $window.webbuddy.module.data = new_data
-
-    #     # update the scope.
-    #     $scope.$root.data = new_data
-    #     $scope.$apply()
-
-    # # post-load update. future updates should be triggered by hosting env.
-    # $window.webbuddy.module.update_data()
 
 
     # $scope.isotope()
@@ -137,23 +117,31 @@ angular.module('modulesApp')
   .controller 'ObjTreeCtrl', ($scope) ->
 
     # dev features.
-    $scope.evaluate = (input) ->
-      eval_result = eval(input)
-      $scope.obj = eval_result
+    $scope.evaluate = (expr) ->
+      try
+        eval_result = eval(expr)
+        $scope.obj = {}
+        $scope.obj[expr] = eval_result
+      catch e
+        e
 
     $scope.obj_keys = (val)->
-      if typeof(val) == 'object'
+      return [] if val is null
+
+      if typeof val is 'object'
+        # console.log "val: #{val}, type: #{typeof val}"
         Object.keys val
       else
         []
 
     $scope.to_displayable = (val)->
+      return '<null>' if val is null
+
       switch typeof(val)
         when 'object'
           ''
         when 'function'
           String(val)
+        # TODO arrays, other types falling under js quirks
         else
           val
-
-        # TODO arrays

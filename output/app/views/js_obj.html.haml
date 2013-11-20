@@ -1,19 +1,19 @@
-%script( type="text/ng-template" id="obj-tree.html" )
+%script( type="text/ng-template" id="obj-node.html" )
 
   -# my properties.
   %ul( )
-    %li( ng-repeat="key in obj_keys(obj)" )
-      %p(  ) {{key}}:
-      -# set obj and recursively render the template.
-      %p(  ng-include="'obj-tree.html'" ng-init="obj = obj[key]" )
+    %li( ng-repeat="key in obj_keys(obj)")
+      %p <span ng-click="collapsed= ( ! collapsed)">{{key}}</span>: {{to_displayable(obj)}}
+      -# FIXME if obj graph has cycles, this will hang the runtime.
 
-  -# me.
-  %p {{to_displayable(obj)}}
+      -# set obj and recursively render the template.
+      %p(  ng-show="! collapsed" ng-include="'obj-node.html'" ng-init="obj = obj[key]" )
+
 
 .tree-view( ng-controller="ObjTreeCtrl")
-  %input( ng-model="dev_input" ng-change="evaluate(dev_input)")
+  %input( ng-model="expression" ng-change="evaluate(expression)")
 
-  %ng-include( src="'obj-tree.html'" )
+  %ng-include( src="'obj-node.html'" )
 
 
 -# TODO honour line-breaks, pretty-format json objects, make things clickable.
