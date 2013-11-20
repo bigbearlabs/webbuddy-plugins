@@ -3,18 +3,18 @@
   %input( ng-model="data.input" ng-change="")
 
 
-%section.results( ng-show="view_model.searches.length > 0" )
+%section.results
   %h2( ng-show="false" ) Hits
 
-  %ul.search-list
+  %ul.hit-list( ng-show="view_model.hits.length > 0" )
 
-    %li.item( data-ng-repeat="item in view_model.searches"
+    %li.item( data-ng-repeat="item in view_model.hits"
       ng-mouseover="preview(item)" ng-mouseleave="hide_preview(item)"
     )
 
       -# result list item
       %a( href="{{item.url}}")
-        %img.search-icon( ng-src="{{item.thumbnail_url}}")
+        %img.hit-icon( ng-src="{{item.thumbnail_url}}")
         %p {{item.name}}
 
       -# zoom-in view
@@ -24,7 +24,7 @@
             %img( ng-src="{{page_item.thumbnail_url}}")
             %p {{page_item.name}}
 
-    -# %li.item( ng-show="view_model.searches.length > view_model.limit" )
+    -# %li.item( ng-show="view_model.hits.length > view_model.limit" )
     -#   %p More...
 
     -# separator TODO
@@ -45,7 +45,11 @@
     -# %li.item( ng-show="view_model.pages.length > view_model.limit" )
     -#   %p More...
 
+  %section.no-results( ng-show="view_model.hits.length == 0")
+    %h3 Oh Noes!?!!
+    %p No results found for '{{data.input}}'
 
+-# display details for the highlighted item in results
 %section.details
   %h2 {{view_model.details.name}}
 
@@ -56,9 +60,6 @@
         %p {{detail_item.name}}
 
 
-%section.no-results( ng-show="view_model.searches.length == 0")
-  %h3 Oh Noes!?!!
-  %p No results found for '{{data.input}}'
 
 %section.suggestions( ng-show="false" )
   %h2 Suggestions
@@ -80,6 +81,7 @@
 
       )
       %p {{item}}
+
 
 %section.evaluator
   %h3 Evaluator

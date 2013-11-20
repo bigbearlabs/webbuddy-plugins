@@ -67,18 +67,14 @@ angular.module('modulesApp')
       # isotope_containers.map (selector)->
       #   $scope.isotope $(selector), options
 
-      ## special case values.
-      if input == ''
-        $scope.view_model.searches = _.clone $scope.data?.searches
-        $scope.view_model.pages = _.clone $scope.data?.pages
-        return
-
       ## filter the view model.
       $scope.view_model.searches = $scope.data?.searches?.filter (search)->
         search.name?.toLowerCase().match input.toLowerCase()
 
       $scope.view_model.pages = $scope.data?.pages?.filter (page)->
         page.name?.toLowerCase().match input.toLowerCase()
+
+      $scope.view_model.hits = $scope.view_model.searches.concat $scope.view_model.pages
 
       # isotope_containers.map (selector)->
       #   $scope.isotope $(selector)

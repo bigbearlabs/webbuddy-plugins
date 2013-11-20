@@ -27,7 +27,7 @@ section {
   @include grid-row;  // horizontal sections
 }
 
-.search-list {
+.hit-list {
   // display: flex;  // how sad, flex not supported with webview.
   display: -webkit-flex;
 
