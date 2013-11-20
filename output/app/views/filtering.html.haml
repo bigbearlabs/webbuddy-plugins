@@ -2,8 +2,6 @@
   %h3 Filter
   %input( ng-model="data.input" ng-change="")
 
-  %h3 Evaluator
-  .evaluator( ng-include="'views/js_obj.html'" )
 
 %section.results( ng-show="view_model.searches.length > 0" )
   %h2( ng-show="false" ) Hits
@@ -82,6 +80,10 @@
 
       )
       %p {{item}}
+
+%section.evaluator
+  %h3 Evaluator
+  .evaluator( ng-include="'views/js_obj.html'" )
 
 
 -# SCRIBBLE design candidate: list with category pane at left or top
