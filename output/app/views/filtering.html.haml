@@ -58,6 +58,10 @@
         %p {{detail_item.name}}
 
 
+%section.no-results( ng-show="view_model.searches.length == 0")
+  %h3 Oh Noes!?!!
+  %p No results found for '{{data.input}}'
+
 %section.suggestions( ng-show="false" )
   %h2 Suggestions
 
