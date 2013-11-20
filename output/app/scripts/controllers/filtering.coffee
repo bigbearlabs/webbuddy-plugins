@@ -82,8 +82,8 @@ angular.module('modulesApp')
     ## statics
     $scope.view_model ||=
       limit: 5
-      show_dev: true
-      # show_dev: webbuddy.env.name is 'stub'
+      # show_dev: true
+      show_dev: webbuddy.env.name is 'stub'
 
 
     ## doit.
