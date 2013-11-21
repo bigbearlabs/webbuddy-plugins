@@ -25,6 +25,8 @@ li {
 
 section {
   @include grid-row;  // horizontal sections
+
+  text-align: center;
 }
 
 .hit-list {
@@ -86,7 +88,7 @@ section {
   }
 
   p {
-    display: inline-block;
+    // display: inline-block;
 
     width: 50px; // limit spillover
 
@@ -94,7 +96,6 @@ section {
   }
 
   .thumbnails {
-    // text-align: center;
     overflow: scroll;
     white-space: nowrap;
 
