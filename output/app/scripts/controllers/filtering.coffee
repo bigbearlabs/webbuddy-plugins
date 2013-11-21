@@ -53,8 +53,11 @@ angular.module('modulesApp')
 
     $scope.preview = (item) ->
       $scope.view_model.details =
-        name: item.name
-        items: if item.pages then item.pages else [ item ]
+        if item
+          name: item.name
+          items: if item.pages then item.pages else [ item ]
+        else
+          null
 
     $scope.hide_preview = (item) ->
       $scope.view_model.details = null
@@ -70,11 +73,21 @@ angular.module('modulesApp')
       ## filter the view model.
       $scope.view_model.searches = $scope.data?.searches?.filter (search)->
         search.name?.toLowerCase().match input.toLowerCase()
+      $scope.view_model.searches ||= []
 
       $scope.view_model.pages = $scope.data?.pages?.filter (page)->
         page.name?.toLowerCase().match input.toLowerCase()
 
-      $scope.view_model.hits = $scope.view_model.searches.concat $scope.view_model.pages
+      if $scope.view_model.pages.length > 0
+        page_stack =
+          name: 'Matching pages'
+          pages: $scope.view_model.pages
+
+        $scope.view_model.hits = $scope.view_model.searches.concat page_stack
+
+      # update the selected one.
+      $scope.preview $scope.view_model.hits[0]
+      # $scope.$apply()
 
       # isotope_containers.map (selector)->
       #   $scope.isotope $(selector)
