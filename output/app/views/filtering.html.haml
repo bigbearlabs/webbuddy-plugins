@@ -9,38 +9,20 @@
   %ul.hit-list( ng-show="view_model.hits.length > 0" )
 
     %li.item( data-ng-repeat="item in view_model.hits"
-      ng-mouseover="preview(item)" ng-mouseleave="hide_preview(item)"
+      ng-mouseover="preview(item)"
+      ng-class="classname(item)"
     )
+      -# ng-mouseleave="hide_preview(item)"
 
       -# result list item
       %a( href="{{item.url}}")
         %img.hit-icon( ng-src="{{item.thumbnail_url}}")
         %p {{item.name}}
 
-      -# zoom-in view
-      %ul.thumbnails
-        %li.thumbnail( data-ng-repeat="page_item in item.pages" )
-          %a( href="{{page_item.url}}")
-            %img( ng-src="{{page_item.thumbnail_url}}")
-            %p {{page_item.name}}
-
     -# %li.item( ng-show="view_model.hits.length > view_model.limit" )
     -#   %p More...
 
-    -# separator TODO
-
-    %li.item( data-ng-repeat="item in view_model.pages"
-      ng-mouseover="preview(item)"
-    )
-      %a( href="{{item.url}}")
-        %img( ng-src="{{item.thumbnail_url}}")
-        %p {{item.name}}
-
-        .thumbnails
-          .thumbnail
-            %a( href="{{item.url}}")
-              %img( ng-src="{{item.thumbnail_url}}")
-              %p {{item.name}}
+    -# separators between stack groups TODO
 
     -# %li.item( ng-show="view_model.pages.length > view_model.limit" )
     -#   %p More...
@@ -60,7 +42,6 @@
         %p {{detail_item.name}}
 
 
-
 %section.suggestions( ng-show="false" )
   %h2 Suggestions
 
@@ -78,7 +59,6 @@
   %ul.highlight-list(  )
 
     %li.item( data-ng-repeat="item in data.highlights"
-
       )
       %p {{item}}
 

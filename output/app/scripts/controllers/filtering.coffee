@@ -47,11 +47,11 @@ angular.module('modulesApp')
 
     $scope.refresh_data = ->
       $scope.data = $window.webbuddy.module.data
-      $scope.$apply()
 
     ## ui ops.
 
     $scope.preview = (item) ->
+      $scope.view_model.selected_item = item
       $scope.view_model.details =
         if item
           name: item.name
@@ -75,15 +75,18 @@ angular.module('modulesApp')
         search.name?.toLowerCase().match input.toLowerCase()
       $scope.view_model.searches ||= []
 
+      $scope.view_model.hits = _.clone $scope.view_model.searches
+
       $scope.view_model.pages = $scope.data?.pages?.filter (page)->
         page.name?.toLowerCase().match input.toLowerCase()
 
-      if $scope.view_model.pages.length > 0
+      if $scope.view_model?.pages?.length > 0
         page_stack =
           name: 'Matching pages'
           pages: $scope.view_model.pages
 
-        $scope.view_model.hits = $scope.view_model.searches.concat page_stack
+        $scope.view_model.hits.push page_stack
+
 
       # update the selected one.
       $scope.preview $scope.view_model.hits[0]
@@ -92,6 +95,12 @@ angular.module('modulesApp')
       # isotope_containers.map (selector)->
       #   $scope.isotope $(selector)
       #   $(selector).isotope 'reloadItems'
+
+    $scope.classname = (item) ->
+      if $scope.view_model.selected_item is item
+        'selected'
+      else
+        ''
 
 
     ## statics
@@ -110,7 +119,7 @@ angular.module('modulesApp')
           $window.webbuddy.module.data = data
 
           $scope.refresh_data()
-          # $scope.$apply()
+
       else
         $scope.refresh_data()
 

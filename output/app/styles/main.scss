@@ -15,11 +15,14 @@ ul {
   // text-align: center;
 
   // horizontally scrollable.
-  white-space: nowrap;
   overflow: scroll;
 }
 li {
   list-style: none;
+
+  p {
+    white-space: nowrap;
+  }
 }
 
 
@@ -45,12 +48,13 @@ section {
 
 .detail-list {
   // flexbox layout
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
+  // display: flex;
+  // flex-direction: row;
+  // flex-wrap: nowrap;
+  // align-items: flex-start;
+  // align-content: stretch;
+
   justify-content: center;
-  align-content: stretch;
-  align-items: flex-start;
 
   .item {
     margin-right: 10px;
@@ -59,6 +63,11 @@ section {
 
     // constrain minimum size.
     min-width: 10%;
+
+    img {
+      min-width: 100px;
+      min-height: 100px;
+    }
   }
 }
 
@@ -109,19 +118,23 @@ section {
   display: inline-block;
 
   img {
-    width: 300px;
-    height: 300px;
   }
   p {
     display: block;
     // display: none;
 
     // align width to elem cell
-    width: 300px;
+    width: 100px;
     overflow: hidden;
   }
 }
 
+
+// visual roles
+
+.selected {
+  background-color: pink;
+}
 
 
 .hero-unit {

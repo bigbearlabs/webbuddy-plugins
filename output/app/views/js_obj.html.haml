@@ -7,7 +7,7 @@
       -# FIXME if obj graph has cycles, this will hang the runtime.
 
       -# set obj and recursively render the template.
-      %p(  ng-show="! collapsed" ng-include="'obj-node.html'" ng-init="obj = obj[key]" )
+      %p( ng-show="! collapsed" ng-include="'obj-node.html'" ng-init="obj = obj[key]" )
 
 
 .tree-view( ng-controller="ObjTreeCtrl")
