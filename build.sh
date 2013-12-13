@@ -1,4 +1,4 @@
-dist="./modules"
+dist="./dist"
 
 # build
 (cd output; grunt build)
