@@ -9,12 +9,14 @@ angular.module('modulesApp')
     ## webbuddy global property
     # set up a stub hosting environment if it hasn't beeen set up already. EXTRACT
     $window.webbuddy ||=
-      env:
-        name: 'stub'
+      env: {}
       module: {}
 
+    $window.webbuddy.env.name ||= 'stub'
+
+
     # expose the scope so the hosting environment can interact with the view.
-    $window.webbuddy.module.filter_scope = $scope
+    $window.webbuddy.module.scope = $scope
 
     # view consts. unused
     $scope.partials =
@@ -46,7 +48,8 @@ angular.module('modulesApp')
     ## view ops.
 
     $scope.refresh_data = ->
-      $scope.data = $window.webbuddy.module.data
+      $timeout ->
+        $scope.data = $window.webbuddy.module.data
 
     ## ui ops.
 
@@ -111,18 +114,20 @@ angular.module('modulesApp')
 
 
     ## doit.
+    # FIXME make polymorphic.
     switch webbuddy.env.name
       when 'stub'
         Restangular.setBaseUrl("data");
         Restangular.one('filtering.json').get().then (data)->
 
-          $window.webbuddy.module.data = data
+          # guard against a race from the attach op.
+          unless $window.webbuddy.module.data
+            $window.webbuddy.module.data = data
 
-          $scope.refresh_data()
+            $scope.refresh_data()
 
       else
         $scope.refresh_data()
-
 
     # isotope_containers.map (selector)->
     #  $scope.isotope selector

@@ -32,12 +32,27 @@ section {
   text-align: center;
 }
 
-.hit-list {
-  // display: flex;  // how sad, flex not supported with webview.
-  display: -webkit-flex;
+@mixin vertical-panel {
+  float: left;
 
+  height: 80vh;
+  overflow: scroll;
+}
+
+section.results {
+  @include vertical-panel;
+
+  width: 20%;
+}
+section.details {
+  @include vertical-panel;
+
+  width: 80%;
+}
+
+.hit-list {
   .item {
-    display: inline-block;
+    // display: inline-block;
     min-width: 50px;  // constrain min item size
   }
   .item img {
@@ -47,19 +62,14 @@ section {
 }
 
 .detail-list {
-  // flexbox layout
-  // display: flex;
-  // flex-direction: row;
-  // flex-wrap: nowrap;
-  // align-items: flex-start;
-  // align-content: stretch;
 
   justify-content: center;
 
   .item {
     margin-right: 10px;
 
-    flex: 0 1 auto;
+    // flex: 0 1 auto;
+    display: inline-block;
 
     // constrain minimum size.
     min-width: 10%;
@@ -67,6 +77,11 @@ section {
     img {
       min-width: 100px;
       min-height: 100px;
+
+      // width: 250px;
+      // height: 250px;
+      width: 10em;
+      height: 10em;
     }
   }
 }
@@ -84,8 +99,6 @@ section {
   background-color: lightyellow;
 
   img {
-    // display: none;
-
     // display: inline-block;
     display: block;
 
@@ -115,7 +128,7 @@ section {
 
 .thumbnail {
   // horizontal layout
-  display: inline-block;
+  // display: inline-block;
 
   img {
   }
