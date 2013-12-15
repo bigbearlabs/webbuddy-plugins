@@ -129,6 +129,8 @@ angular.module('modulesApp')
       else
         $scope.refresh_data()
 
+
+    # isotope doit. UNUSED
     # isotope_containers.map (selector)->
     #  $scope.isotope selector
     #  $timeout ->
@@ -151,6 +153,10 @@ angular.module('modulesApp')
     $scope.evaluate = (expr) ->
       try
         eval_result = eval(expr)
+
+        # work around cyclic refs tripping up JSON.stringify
+        eval_result = JSON.decycle eval_result
+
         $scope.obj = {}
         $scope.obj[expr] = eval_result
       catch e
@@ -165,6 +171,7 @@ angular.module('modulesApp')
       else
         []
 
+    # quick-hack terminal transformation to ensure recursive rendering succeeds.
     $scope.to_displayable = (val)->
       return '<null>' if val is null
 
