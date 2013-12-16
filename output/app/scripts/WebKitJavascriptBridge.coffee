@@ -14,6 +14,7 @@ connectWebViewJavascriptBridge (bridge) ->
   # init with handler from hosting env
   bridge.init (message, responseCallback) ->
     console.log "Received message: " + message
+    eval message
     responseCallback "Right back atcha"  if responseCallback
 
   # test some js->objc sends

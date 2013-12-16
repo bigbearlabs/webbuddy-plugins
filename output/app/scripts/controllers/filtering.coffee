@@ -6,18 +6,13 @@ angular.module('modulesApp')
 
     ## EXTRACT common module functionality
 
-    ## webbuddy global property
-    # set up a stub hosting environment if it hasn't beeen set up already. EXTRACT
-    $window.webbuddy ||=
-      env: {}
-      module: {}
-
-    $window.webbuddy.env.name ||= 'stub'
-
+    if $window.chrome
+      $window.webbuddy.env.name = 'stub'
 
     # expose the scope so the hosting environment can interact with the view.
-    $window.webbuddy.module.scope = $scope
-
+    # use flat keys to avoid timing dependencies.
+    $window.webbuddy_data_updated = ->
+      $scope.refresh_data()
 
     # view consts. UNUSED
     $scope.partials =
@@ -51,9 +46,9 @@ angular.module('modulesApp')
     $scope.refresh_data = ->
       $timeout ->
         console.log "refreshing data."
-        $scope.data = $window.webbuddy.module.data
-        # $scope.filter()
-        # $scope.$apply()
+        $scope.data = $window.webbuddy_data
+        $scope.filter()
+        $scope.$apply()
 
 
     ## ui ops.
@@ -70,7 +65,7 @@ angular.module('modulesApp')
     $scope.hide_preview = (item) ->
       $scope.view_model.details = null
 
-    $scope.$root.filter = (input = $scope.data.input)->
+    $scope.$root.filter = (input = $scope.data?.input)->
       # simulate an error to ensure hosting environment can report it.
       # throw "DING"
 
@@ -131,8 +126,8 @@ angular.module('modulesApp')
         Restangular.one('filtering.json').get().then (data)->
 
           # guard against a race from the attach op.
-          unless $window.webbuddy.module.data
-            $window.webbuddy.module.data = data
+          unless $window.webbuddy_data
+            $window.webbuddy_data = data
 
             $scope.refresh_data()
 
