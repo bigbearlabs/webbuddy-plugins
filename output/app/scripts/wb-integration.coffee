@@ -2,7 +2,11 @@
 
 @webbuddy =
   env:
-    name: 'webbuddy'
+    name:
+      if @WebKitJavascriptBridge
+        'webbuddy'
+      else
+        'stub'
 
 
 ## set up some useful stuff.

@@ -4,11 +4,6 @@ angular.module('modulesApp')
   .controller 'FilteringCtrl', ($scope, $window, $timeout, $q,
     Restangular) ->
 
-    ## EXTRACT common module functionality
-
-    if $window.chrome
-      $window.webbuddy.env.name = 'stub'
-
     # expose the scope so the hosting environment can interact with the view.
     # use flat keys to avoid timing dependencies.
     $window.webbuddy_data_updated = ->
@@ -110,6 +105,17 @@ angular.module('modulesApp')
       else
         ''
 
+    # dev-only
+    $scope.fetch_stub_data = ->
+      Restangular.setBaseUrl("data");
+      Restangular.one('filtering.json').get().then (data)->
+
+        # guard against a race from the attach op.
+        unless $window.webbuddy_data
+          $window.webbuddy_data = data
+
+          $scope.refresh_data()
+
 
     ## statics
     $scope.view_model ||=
@@ -122,15 +128,7 @@ angular.module('modulesApp')
     # FIXME make polymorphic.
     switch webbuddy.env.name
       when 'stub'
-        Restangular.setBaseUrl("data");
-        Restangular.one('filtering.json').get().then (data)->
-
-          # guard against a race from the attach op.
-          unless $window.webbuddy_data
-            $window.webbuddy_data = data
-
-            $scope.refresh_data()
-
+        $scope.fetch_stub_data()
       else
         $scope.refresh_data()
 
