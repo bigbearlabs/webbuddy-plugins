@@ -34,9 +34,10 @@
     %script{src: "bower_components/isotope/jquery.isotope.min.js"}
     %script{src: "bower_components/angular-isotope/dist/angular-isotope.min.js"}
     %script{src: "bower_components/json2/cycle.js"}
-    %script{src: "scripts/WebKitJavascriptBridge.js"}
 
     / build:js({.tmp,app}) scripts/scripts.js
+    -# TODO make this conditional
+    %script{src: "scripts/WebKitJavascriptBridge.js"}
     -# %script{src: "scripts/wb-integration.js"}
     %script{src: "scripts/app.js"}
     %script{src: "scripts/controllers/output.js"}

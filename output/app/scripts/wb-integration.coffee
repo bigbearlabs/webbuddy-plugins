@@ -1,25 +1,28 @@
-window.webbuddy =
+# for use only by webbuddy.
+
+@webbuddy =
   env:
     name: 'webbuddy'
-  
-  log: ->
-    # TODO
-
 
   module:
     update_data: (data)->
-      setTimeout ->
-        webbuddy.module.data = data
-        webbuddy.module.data_updated data
-      , 0
-    
+      webbuddy.module.data = data
+      webbuddy.module.scope.refresh_data()
+      webbuddy.module.scope.$apply()
+
     update_property: (prop, val)->
       unless webbuddy.module.data
         throw "data hasn't been set."
 
       webbuddy.module.data[prop] = val
-      webbuddy.module.data_updated val
 
-    # modules to redefine this.
-    data_updated: (data)->
-      throw "module should set webbuddy.module.data_updated";
+      webbuddy.module.scope.refresh_data()
+      webbuddy.module.scope.$apply()
+
+
+
+## set up some useful stuff.
+@console.log = (msg...)=>
+  # log using bridge. TODO replace with a function attached from hosting env.
+  WebViewJavascriptBridge.send "console.log: #{msg}"
+
