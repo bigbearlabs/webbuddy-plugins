@@ -3,11 +3,14 @@
 angular.module('modulesApp',  ['restangular', 'iso.directives'])
   .config ($routeProvider) ->
     $routeProvider
-      .when '/',
-        templateUrl: 'views/output.html',
-        controller: 'OutputCtrl'
+
       .when '/filtering',
         templateUrl: 'views/filtering.html',
         controller: 'FilteringCtrl'
+
+      .when '/eval',
+        templateUrl: 'views/eval.html',
+        controller: 'EvalCtrl'
+
       .otherwise
         redirectTo: '/'

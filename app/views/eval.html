@@ -1,0 +1,16 @@
+<section class='dev'>
+  <h3>input:</h3>
+  <input ng-change='eval(data.input)' ng-init='data = {}' ng-model='data.input' type='text'>
+</section>
+<section class='results'>
+  <h3>{{data.input}}</h3>
+  <p>{{data.output}}  # should include js_obj view</p>
+</section>
+<!-- if expression.error TODO -->
+<h3>Error:</h3>
+<p>{{expression.error}}</p>
+<!--
+  the key thing to figure out in order to finish this piece is the interfacing between data and hosting environment.
+  on the client we should accept nothing other than stuff that can be json'ed.
+  exposing it as a temporarily saved json file should be a quick way to get it out of sketch status and hosted.
+-->

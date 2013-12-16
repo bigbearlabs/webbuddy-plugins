@@ -1,4 +1,8 @@
 dist
+.sass-cache
+.tmp
+app/bower_components
+node_modules
 filtering.html
 output.html
 js_obj.html
