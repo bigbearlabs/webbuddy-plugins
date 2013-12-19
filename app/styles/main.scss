@@ -39,7 +39,7 @@ section {
   overflow: scroll;
 }
 
-section.results {
+section.master {
   @include vertical-panel;
 
   width: 20%;

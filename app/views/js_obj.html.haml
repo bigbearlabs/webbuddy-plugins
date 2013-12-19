@@ -1,3 +1,10 @@
+-# e.g.
+-#   .results( ng-include="'views/js_obj.html'" )
+
+
+-# a recursive view template.
+-# use by including e.g.
+-#   %ng-include( src="'obj-node.html'" )
 %script( type="text/ng-template" id="obj-node.html" )
 
   -# my properties.
@@ -11,8 +18,6 @@
 
 
 .tree-view( ng-controller="ObjTreeCtrl")
-  %input( ng-model="expression" ng-change="evaluate(expression)")
-
   %ng-include( src="'obj-node.html'" )
 
 
