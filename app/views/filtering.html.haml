@@ -1,4 +1,4 @@
-%section.dev( ng-show="view_model.show_dev" )
+%section.dev( ng-show="true" )
   %h3 Filter
   %input( ng-model="data.input" ng-change="")
 
@@ -64,8 +64,7 @@
       %p {{item}}
 
 
-%section.evaluator
-  %h3 Evaluator
+%section.evaluator.dev
   .evaluator( ng-include="'views/js_obj.html'" )
 
 
