@@ -1,8 +1,13 @@
 @import "../bower_components/foundation/scss/foundation";
 
+.dev {
+  display: none;
+}
+
 body {
   background: #fafafa;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 15px;
   color: #333;
   /*display: none;*/
 
@@ -26,6 +31,20 @@ li {
 }
 
 
+.highlights {
+  // @include grid-row;
+  display: none;
+}
+
+
+// visual roles
+
+.selected {
+  background-color: pink;
+}
+
+
+
 section {
   @include grid-row;  // horizontal sections
 
@@ -39,7 +58,7 @@ section {
   overflow: scroll;
 }
 
-section.results {
+section.master {
   @include vertical-panel;
 
   width: 20%;
@@ -50,14 +69,42 @@ section.details {
   width: 80%;
 }
 
+
+.item {
+  // @include grid-column(4);  // 3-column layout
+
+  background-color: lightyellow;
+
+  a {
+    display: inline-block;
+    width: 50px;
+    text-align: center;
+
+    > img, p {
+      width: 100%;
+    }
+  }
+
+  img {
+    display: inline-block;
+
+    height: 50px;  // should be same as width
+
+    @include clearfix;
+  }
+
+  p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+
 .hit-list {
-  .item {
+  .item a {
     // display: inline-block;
     min-width: 50px;  // constrain min item size
-  }
-  .item img {
-    width: 50px;
-    height: 50px;
+    min-height: 50px;
   }
 }
 
@@ -74,81 +121,21 @@ section.details {
     // constrain minimum size.
     min-width: 10%;
 
-    img {
-      min-width: 100px;
-      min-height: 100px;
+    > a {
+      width: 150px;
 
-      // width: 250px;
-      // height: 250px;
-      width: 10em;
-      height: 10em;
+      img {
+        min-width: 100px;
+        min-height: 100px;
+
+        // width: 250px;
+        // height: 250px;
+        // width: 15em;
+        // height: 15em;
+      }
     }
   }
 }
-
-.highlights {
-  // @include grid-row;
-  display: none;
-}
-
-
-
-.item {
-  // @include grid-column(4);  // 3-column layout
-
-  background-color: lightyellow;
-
-  img {
-    // display: inline-block;
-    display: block;
-
-    // width: 50px;
-    // height: 50px;
-
-    // size according to parent elem
-    width: 100%;
-  }
-
-  p {
-    // display: inline-block;
-
-    width: 50px; // limit spillover
-
-    overflow: hidden;
-  }
-
-  .thumbnails {
-    overflow: scroll;
-    white-space: nowrap;
-
-    // thumbnails now handled by another model prop - ignore .thumbnails
-    display: none;
-  }
-}
-
-.thumbnail {
-  // horizontal layout
-  // display: inline-block;
-
-  img {
-  }
-  p {
-    display: block;
-    // display: none;
-
-    // align width to elem cell
-    width: 100px;
-    overflow: hidden;
-  }
-}
-
-
-// visual roles
-
-.selected {
-  background-color: pink;
-}
-
 
 .hero-unit {
     margin: 50px auto 0 auto;

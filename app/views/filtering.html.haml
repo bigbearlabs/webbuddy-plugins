@@ -1,9 +1,9 @@
-%section.dev( ng-show="view_model.show_dev" )
+%section.dev( ng-show="true" )
   %h3 Filter
   %input( ng-model="data.input" ng-change="")
 
 
-%section.results
+%section.master
   %h2( ng-show="false" ) Hits
 
   %ul.hit-list( ng-show="view_model.hits.length > 0" )
@@ -14,10 +14,11 @@
     )
       -# ng-mouseleave="hide_preview(item)"
 
-      -# result list item
+      -# render a stack
       %a( href="{{item.url}}")
         %img.hit-icon( ng-src="{{item.thumbnail_url}}")
         %p {{item.name}}
+        %p {{item.last_accessed_timestamp}}
 
     -# %li.item( ng-show="view_model.hits.length > view_model.limit" )
     -#   %p More...
@@ -63,8 +64,7 @@
       %p {{item}}
 
 
-%section.evaluator
-  %h3 Evaluator
+%section.evaluator.dev
   .evaluator( ng-include="'views/js_obj.html'" )
 
 
