@@ -7,7 +7,7 @@ end
 
 desc "assemble"
 task :assemble do
-  sh 'rsync -av static/* dist/'
+  sh 'rsync -av static/* data dist/'
 end
 
 desc "deploy to dropbox"
