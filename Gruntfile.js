@@ -327,6 +327,7 @@ module.exports = function (grunt) {
     },
     concurrent: {
       server: [
+        'compass:server',
         'coffee:dist',
         'copy:styles'
       ],
@@ -335,7 +336,8 @@ module.exports = function (grunt) {
         'copy:styles'
       ],
       dist: [
-        'coffee',
+        'compass:dist',
+        'coffee:dist',
         'copy:styles',
         'imagemin',
         'svgmin',
@@ -402,7 +404,6 @@ module.exports = function (grunt) {
   grunt.registerTask('build', [
     'clean:dist',
     'useminPrepare',
-    'compass:dist',
     'concurrent:dist',
     'autoprefixer',
     'concat',
