@@ -41,11 +41,6 @@ li {
   background-color: pink;
 }
 
-section {
-  @include grid-row;  // horizontal sections
-
-  text-align: center;
-}
 
 @mixin vertical-panel {
   float: left;
@@ -54,13 +49,22 @@ section {
   overflow: scroll;
 }
 
+
+section {
+  @include grid-row;  // horizontal sections
+}
+
 section.master {
   @include vertical-panel;
 
+  text-align: center;
   width: 20%;
 }
 section.details {
   @include vertical-panel;
+
+  text-align: center;
+  // text-align-last: left;  // doesn't work due to webkit bug
 
   width: 80%;
 }
