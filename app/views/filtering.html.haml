@@ -6,8 +6,9 @@
 %section.master
   %h2( ng-show="false" ) Hits
 
-  %ul.hit-list( ng-show="view_model.hits.length > 0" )
+  %ul.hit-list( ng-show_="view_model.hits.length > 0" )
 
+    -# real stacks
     %li.item( data-ng-repeat="item in view_model.hits"
       ng-mouseover="preview(item)"
       ng-class="classname(item)"
@@ -20,6 +21,7 @@
         %p {{item.name}}
         %p {{item.last_accessed_timestamp}}
 
+    -### enable this to show a 'more...' button.
     -# %li.item( ng-show="view_model.hits.length > view_model.limit" )
     -#   %p More...
 
@@ -28,9 +30,15 @@
     -# %li.item( ng-show="view_model.pages.length > view_model.limit" )
     -#   %p More...
 
-  %section.no-results( ng-show="view_model.hits.length == 0")
-    %h3 Oh Noes!?!!
-    %p No results found for '{{data.input}}'
+
+    -# smart stacks
+    %li.item.highlights( ng-show_="view_model.hits.length == 0")
+      %h3 Placeholder
+      %p TODO Matching snippets to show here.
+
+    %li.item.search-suggestions( ng-show_="view_model.hits.length == 0")
+      %h3 Placeholder
+      %p TODO Suggested searches stack to show here.
 
 -# display details for the highlighted item in results
 %section.details
@@ -50,16 +58,6 @@
 
     %li.item( data-ng-repeat="item in data.suggestions"
 
-      )
-      %p {{item}}
-
-
-%section.highlights( )
-  %h2 Highlighted content for '{{data.input}}'
-
-  %ul.highlight-list(  )
-
-    %li.item( data-ng-repeat="item in data.highlights"
       )
       %p {{item}}
 

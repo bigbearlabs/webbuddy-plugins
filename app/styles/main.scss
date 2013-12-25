@@ -1,27 +1,31 @@
 @import "../bower_components/foundation/scss/foundation";
 
+//## DEV
+.item {
+  background-color: lightyellow;
+  // background-color: none;
+}
 .dev {
+  display: block;
   display: none;
 }
+
 
 body {
   background: #fafafa;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 15px;
   color: #333;
-  /*display: none;*/
 
   margin-top: 30px;
-  margin-left: 10%;
-  margin-right: 10%;
+  margin-left: 5%;
+  margin-rigth: 5%;
 }
 
 ul {
-  // text-align: center;
-
-  // horizontally scrollable.
   overflow: scroll;
 }
+
 li {
   list-style: none;
 
@@ -31,19 +35,11 @@ li {
 }
 
 
-.highlights {
-  // @include grid-row;
-  display: none;
-}
-
-
-// visual roles
+//## visual roles.
 
 .selected {
   background-color: pink;
 }
-
-
 
 section {
   @include grid-row;  // horizontal sections
@@ -70,10 +66,10 @@ section.details {
 }
 
 
+//## specific elements.
+
 .item {
   // @include grid-column(4);  // 3-column layout
-
-  background-color: lightyellow;
 
   a {
     display: inline-block;
@@ -136,6 +132,9 @@ section.details {
     }
   }
 }
+
+
+//## end webbuddy-specific styles.
 
 .hero-unit {
     margin: 50px auto 0 auto;
