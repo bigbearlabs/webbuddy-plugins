@@ -1,4 +1,4 @@
-task :default => [ :build, :assemble ]
+task :default => [ :build, :assemble, :stage ]
 
 desc "build"
 task :build do
@@ -10,7 +10,7 @@ task :assemble do
   sh 'rsync -av static/* data dist/'
 end
 
-desc "deploy to dropbox"
-task :dropbox do
-  sh 'rsync -av --delete dist/* ~/Dropbox/bigbearlabs/builds/webbuddy-modules/'
+desc "deploy to Google Drive"
+task :stage do
+  sh %(rsync -av --delete dist/* "#{ENV['HOME']}/Google Drive/bigbearlabs/webbuddy-preview/modules/")
 end
