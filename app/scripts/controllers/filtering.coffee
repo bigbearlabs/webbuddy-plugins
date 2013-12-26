@@ -9,6 +9,7 @@ angular.module('modulesApp')
     $window.webbuddy_data_updated = ->
       $scope.refresh_data()
 
+
     # view consts. UNUSED
     $scope.partials =
       collection: 'views/collection.html'
@@ -107,9 +108,9 @@ angular.module('modulesApp')
 
     # dev-only
     $scope.fetch_stub_data = ->
-      Restangular.setBaseUrl("data");
-      Restangular.one('filtering.json').get().then (data)->
-
+      Restangular.setBaseUrl "data"
+      Restangular.one('filtering.json').get()
+      .then (data)->
         # guard against a race from the attach op.
         unless $window.webbuddy_data
           $window.webbuddy_data = data

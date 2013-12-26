@@ -6,8 +6,8 @@
 
 %section.print
   %h3 results:
-  .results( ng-include="'views/js_obj.html'" )
+  .results( ng-include="'views/obj_tree.html'" )
 
   / if expression.error TODO
   %h3 error:
-  %p {{expression.error}}
+  %p {{data.error}}
