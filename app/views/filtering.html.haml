@@ -16,7 +16,7 @@
       -# ng-mouseleave="hide_preview(item)"
 
       -# render a stack
-      %a( href="{{item.url}}")
+      %a( href="{{item.url}}" title="{{item.name}}")
         %img.hit-icon( ng-src="{{item.thumbnail_url}}")
         %p {{item.name}}
         %p {{item.last_accessed_timestamp}}
@@ -46,7 +46,7 @@
 
   %ul.detail-list
     %li.item.thumbnail( ng-repeat="detail_item in view_model.details.items" )
-      %a( href="{{detail_item.url}}")
+      %a( href="{{detail_item.url}}" title="{{detail_item.name}}")
         %img( ng-src="{{detail_item.thumbnail_url}}" )
         %p {{detail_item.name}}
 
