@@ -1,0 +1,104 @@
+@import "./main";
+
+//## visual roles.
+
+.selected {
+  background-color: pink;
+}
+
+
+@mixin vertical-panel {
+  float: left;
+
+  height: 80vh;
+  overflow: scroll;
+}
+
+
+section {
+  @include grid-row;  // horizontal sections
+}
+
+section.master {
+  @include vertical-panel;
+
+  text-align: center;
+  width: 20%;
+}
+section.details {
+  @include vertical-panel;
+
+  text-align: center;
+  // text-align-last: left;  // doesn't work due to webkit bug
+
+  width: 80%;
+}
+
+
+//## specific elements.
+
+.item {
+  // @include grid-column(4);  // 3-column layout
+
+  a {
+    display: inline-block;
+    width: 50px;
+    text-align: center;
+
+    > img, p {
+      width: 100%;
+    }
+  }
+
+  img {
+    display: inline-block;
+
+    height: 50px;  // should be same as width
+
+    @include clearfix;
+  }
+
+  p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+
+.hit-list {
+  .item a {
+    // display: inline-block;
+    min-width: 50px;  // constrain min item size
+    min-height: 50px;
+  }
+}
+
+.detail-list {
+
+  justify-content: center;
+
+  .item {
+    margin-right: 10px;
+
+    // flex: 0 1 auto;
+    display: inline-block;
+
+    // constrain minimum size.
+    min-width: 10%;
+
+    > a {
+      width: 150px;
+
+      img {
+        min-width: 100px;
+        min-height: 100px;
+
+        // width: 250px;
+        // height: 250px;
+        // width: 15em;
+        // height: 15em;
+      }
+    }
+  }
+}
+
