@@ -1,9 +1,19 @@
 @import "./main";
 
+
+//## typography.
+
+p {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 80%;
+}
+
+
 //## visual roles.
 
 .selected {
-  background-color: pink;
+  background-color: #999999;
 }
 
 
@@ -14,10 +24,16 @@
   overflow: scroll;
 }
 
+@mixin vertically-centered {
+  // TODO bring in recipes https://github.com/MoOx/compass-recipes (make this redundant as necessary, then add to detail list item.)
+}
+
+
 
 section {
   @include grid-row;  // horizontal sections
 }
+
 
 section.master {
   @include vertical-panel;
@@ -25,6 +41,7 @@ section.master {
   text-align: center;
   width: 20%;
 }
+
 section.details {
   @include vertical-panel;
 
@@ -42,26 +59,24 @@ section.details {
 
   a {
     display: inline-block;
-    width: 50px;
+    width: 100px;
     text-align: center;
 
+    // make immediate children fit.
     > img, p {
       width: 100%;
     }
   }
 
   img {
-    display: inline-block;
+    display: inline-block;  // horizontally centre
 
-    height: 50px;  // should be same as width
+    height: auto;  // should be scaled to width
+    min-height: 80px;
 
     @include clearfix;
   }
 
-  p {
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
 }
 
 
@@ -74,14 +89,14 @@ section.details {
 }
 
 .detail-list {
-
-  justify-content: center;
+  text-align: justify;
 
   .item {
-    margin-right: 10px;
-
-    // flex: 0 1 auto;
     display: inline-block;
+
+    margin-left: 10px;
+
+    // flex: 0 1 auto;  // we can't use flex due to old webkit not supporting it. if we can shim it it would be great as we can get rid of all the layout depending on inline-block.
 
     // constrain minimum size.
     min-width: 10%;
@@ -97,6 +112,10 @@ section.details {
         // height: 250px;
         // width: 15em;
         // height: 15em;
+      }
+
+      p {
+        min-height: 30px;
       }
     }
   }
