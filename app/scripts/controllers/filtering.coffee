@@ -9,6 +9,7 @@ angular.module('modulesApp')
     $window.webbuddy_data_updated = ->
       $scope.refresh_data()
 
+
     # view consts. UNUSED
     $scope.partials =
       collection: 'views/collection.html'
@@ -107,9 +108,9 @@ angular.module('modulesApp')
 
     # dev-only
     $scope.fetch_stub_data = ->
-      Restangular.setBaseUrl("data");
-      Restangular.one('filtering.json').get().then (data)->
-
+      Restangular.setBaseUrl "data"
+      Restangular.one('filtering.json').get()
+      .then (data)->
         # guard against a race from the attach op.
         unless $window.webbuddy_data
           $window.webbuddy_data = data
@@ -148,41 +149,3 @@ angular.module('modulesApp')
     # , 0
 
 
-# EXTRACT
-angular.module('modulesApp')
-  .controller 'ObjTreeCtrl', ($scope) ->
-
-    # dev features.
-    $scope.evaluate = (expr) ->
-      try
-        eval_result = eval(expr)
-
-        # work around cyclic refs tripping up JSON.stringify
-        eval_result = JSON.decycle eval_result
-
-        $scope.obj = {}
-        $scope.obj[expr] = eval_result
-      catch e
-        e
-
-    $scope.obj_keys = (val)->
-      return [] if val is null
-
-      if typeof val is 'object'
-        # console.log "val: #{val}, type: #{typeof val}"
-        Object.keys val
-      else
-        []
-
-    # quick-hack terminal transformation to ensure recursive rendering succeeds.
-    $scope.to_displayable = (val)->
-      return '<null>' if val is null
-
-      switch typeof(val)
-        when 'object'
-          ''
-        when 'function'
-          String(val)
-        # TODO arrays, other types falling under js quirks
-        else
-          val

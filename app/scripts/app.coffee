@@ -13,4 +13,4 @@ angular.module('modulesApp',  ['restangular', 'iso.directives'])
         controller: 'EvalCtrl'
 
       .otherwise
-        redirectTo: '/'
+        redirectTo: '/filtering'

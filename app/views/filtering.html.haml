@@ -1,24 +1,33 @@
-%section.dev( ng-show="view_model.show_dev" )
+-# ### The filtering UI markup.
+-# all styling implemented in stylesheet. TODO refactor
+-#
+
+%link{href: "styles/filtering.css", rel: "stylesheet"}
+
+%section.dev( ng-show="true" )
   %h3 Filter
   %input( ng-model="data.input" ng-change="")
 
 
-%section.results
+%section.master
   %h2( ng-show="false" ) Hits
 
-  %ul.hit-list( ng-show="view_model.hits.length > 0" )
+  %ul.hit-list( ng-show_="view_model.hits.length > 0" )
 
+    -# real stacks
     %li.item( data-ng-repeat="item in view_model.hits"
       ng-mouseover="preview(item)"
       ng-class="classname(item)"
     )
       -# ng-mouseleave="hide_preview(item)"
 
-      -# result list item
-      %a( href="{{item.url}}")
+      -# render a stack
+      %a( href="{{item.url}}" title="{{item.name}}")
         %img.hit-icon( ng-src="{{item.thumbnail_url}}")
         %p {{item.name}}
+        %p {{item.last_accessed_timestamp}}
 
+    -### enable this to show a 'more...' button.
     -# %li.item( ng-show="view_model.hits.length > view_model.limit" )
     -#   %p More...
 
@@ -27,9 +36,16 @@
     -# %li.item( ng-show="view_model.pages.length > view_model.limit" )
     -#   %p More...
 
-  %section.no-results( ng-show="view_model.hits.length == 0")
-    %h3 Oh Noes!?!!
-    %p No results found for '{{data.input}}'
+
+    -# smart stacks
+    %li.item.highlights( ng-show_="view_model.hits.length == 0")
+      %h3 Placeholder
+      %p TODO Matching snippets to show here.
+
+    %li.item.search-suggestions( ng-show_="view_model.hits.length == 0")
+      %h3 Placeholder
+      %p TODO Suggested searches stack to show here.
+
 
 -# display details for the highlighted item in results
 %section.details
@@ -37,11 +53,12 @@
 
   %ul.detail-list
     %li.item.thumbnail( ng-repeat="detail_item in view_model.details.items" )
-      %a( href="{{detail_item.url}}")
+      %a( href="{{detail_item.url}}" title="{{detail_item.name}}")
         %img( ng-src="{{detail_item.thumbnail_url}}" )
         %p {{detail_item.name}}
 
 
+-# WIP SECTIONS
 %section.suggestions( ng-show="false" )
   %h2 Suggestions
 
@@ -53,19 +70,8 @@
       %p {{item}}
 
 
-%section.highlights( )
-  %h2 Highlighted content for '{{data.input}}'
-
-  %ul.highlight-list(  )
-
-    %li.item( data-ng-repeat="item in data.highlights"
-      )
-      %p {{item}}
-
-
 %section.evaluator
-  %h3 Evaluator
-  .evaluator( ng-include="'views/js_obj.html'" )
+  .evaluator( ng-include="'views/eval.html'" ng-controller="EvalCtrl" )
 
 
 -# SCRIBBLE design candidate: list with category pane at left or top
