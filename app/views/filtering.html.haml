@@ -1,3 +1,7 @@
+-# ### The filtering UI markup.
+-# all styling implemented in stylesheet. TODO refactor
+-#
+
 %link{href: "styles/filtering.css", rel: "stylesheet"}
 
 %section.dev( ng-show="true" )
@@ -42,6 +46,7 @@
       %h3 Placeholder
       %p TODO Suggested searches stack to show here.
 
+
 -# display details for the highlighted item in results
 %section.details
   %h2 {{view_model.details.name}}
@@ -53,6 +58,7 @@
         %p {{detail_item.name}}
 
 
+-# WIP SECTIONS
 %section.suggestions( ng-show="false" )
   %h2 Suggestions
 
