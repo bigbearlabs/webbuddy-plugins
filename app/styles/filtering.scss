@@ -1,4 +1,15 @@
-@import "./main";
+@import "../bower_components/foundation/scss/foundation";
+
+//## DEV
+.item {
+  background-color: lightyellow;
+  // background-color: none;
+}
+.dev {
+  display: block;
+  // display: none;
+}
+
 
 
 //## typography.
