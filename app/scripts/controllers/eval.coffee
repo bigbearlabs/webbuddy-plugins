@@ -5,12 +5,13 @@ angular.module('modulesApp')
   .controller 'EvalCtrl', ($scope, $route, $window, Restangular) ->
 
     # FIXME this shows all the interop warts.
-    $window.webbuddy_data_updated = ->
-      $scope.data.input = $window.webbuddy_data.input
-      $scope.data.output = $window.webbuddy_data.output
+    # DISABLED clobbers the one in filtering. need to refactor into a bus
+    # $window.webbuddy_data_updated = ->
+    #   $scope.data.input = $window.webbuddy_data.input
+    #   $scope.data.output = $window.webbuddy_data.output
 
-      set_output $scope.data.input
-      $scope.$apply()
+    #   set_output $scope.data.input
+    #   $scope.$apply()
 
     # TODO switch for js or ruby.
     # evaluate js.
@@ -51,12 +52,12 @@ angular.module('modulesApp')
 angular.module('modulesApp')
   .controller 'ObjTreeCtrl', ($scope) ->
 
-    $scope.obj_keys = (val)->
-      return [] if val is null
+    $scope.obj_keys = (obj)->
+      return [] if obj is null
 
-      if typeof val is 'object'
-        # console.log "val: #{val}, type: #{typeof val}"
-        Object.keys val
+      if typeof obj is 'object'
+        # console.log "obj: #{obj}, type: #{typeof obj}"
+        Object.keys obj
       else
         []
 
