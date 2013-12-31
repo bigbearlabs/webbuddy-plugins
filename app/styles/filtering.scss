@@ -4,7 +4,21 @@
 .item {
   background-color: lightyellow;
   // background-color: none;
+
+  padding-top: 15px;
+  padding-bottom: 15px;
+  // TODO ensure fixed size.
 }
+
+// // vertically centre.
+// .item::before{
+//     content:'';
+//     display:inline-block;
+//     height:100%;
+//     vertical-align:middle;
+//     width:0px;
+// }
+
 .dev {
   display: block;
   // display: none;
@@ -18,6 +32,8 @@ p {
   overflow: hidden;
   text-overflow: ellipsis;
   font-size: 80%;
+
+  margin: 0;
 }
 
 
