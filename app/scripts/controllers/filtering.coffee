@@ -10,26 +10,22 @@ angular.module('modulesApp')
       $scope.refresh_data()
 
 
-    # view consts. UNUSED
-    $scope.partials =
-      collection: 'views/collection.html'
-
-
     # # isotope bits. UNUSED
-    # isotope_containers = [ '.search-list', '.page-list', '.suggestion-list' ]
-    # $scope.options =
-    #   itemSelector: '.item'
-    #   layoutMode: 'straightDown'
-    #   # layoutMode: 'straightAcross'
-    # # initialise isotope.
-    # $scope.isotope = (selector_for_container, options = $scope.options)->
-    #   # $timeout ->
-    #   #   # re-isotope
-    #   #   $(selector_for_container).isotope options
+    isotope_containers = [ '.search-list', '.page-list', '.suggestion-list' ]
 
-    #   #   # hide elems after limit
-    #   #   # $(selector_for_container).find('.item:gt(4)').
-    #   # , 0
+    $scope.isotope_options =
+      itemSelector: '.hit-list > .item'
+      layoutMode: 'straightDown'
+      # layoutMode: 'straightAcross'
+    # initialise isotope.
+
+    $scope.isotope = (selector_for_container)->
+      $timeout ->
+        # re-isotope
+        $(selector_for_container).isotope options, $scope.isotope_options
+
+        # hide elems after limit
+        # $(selector_for_container).find('.item:gt(4)').
 
 
     # watch model to trigger view behaviour.
@@ -92,19 +88,23 @@ angular.module('modulesApp')
         $scope.view_model.hits.push page_stack
 
 
-      # update the selected one.
+      # invoke preview on the selected one.
       $scope.preview $scope.view_model.hits[0]
       # $scope.$apply()
 
+      # re-isotope. check to see if it's really needed
       # isotope_containers.map (selector)->
       #   $scope.isotope $(selector)
       #   $(selector).isotope 'reloadItems'
 
+
     $scope.classname = (item) ->
-      if $scope.view_model.selected_item is item
-        'selected'
-      else
-        ''
+      classname =
+        if $scope.view_model.selected_item is item
+          'selected'
+        else
+          ''
+
 
     # dev-only
     $scope.fetch_stub_data = ->
