@@ -4,11 +4,15 @@ angular.module('modulesApp')
   .controller 'FilteringCtrl', ($scope, $window, $timeout, $q,
     Restangular) ->
 
-    # expose the scope so the hosting environment can interact with the view.
-    # use flat keys to avoid timing dependencies.
-    $window.webbuddy_data_updated = ->
-      $scope.refresh_data()
+    # attach data handler to the bridge
+    webbuddy.on_data = (delta)->
+      data = _.clone $scope.data
+      # apply delta on data.
+      # naive version
+      for k, v of delta
+        data[k] = v
 
+      $scope.refresh_data data
 
     # # isotope bits. UNUSED
     isotope_containers = [ '.search-list', '.page-list', '.suggestion-list' ]
@@ -35,10 +39,10 @@ angular.module('modulesApp')
 
     ## view ops.
 
-    $scope.refresh_data = ->
+    $scope.refresh_data = (data)->
       $timeout ->
         console.log "refreshing data."
-        $scope.data = $window.webbuddy_data
+        $scope.data = data
         $scope.filter()
         $scope.$apply()
 
@@ -108,14 +112,12 @@ angular.module('modulesApp')
 
     # dev-only
     $scope.fetch_stub_data = ->
+      stub_data_rsc = 'filtering.json'
+      console.log "fetch stub data from #{stub_data_rsc}"
       Restangular.setBaseUrl "data"
-      Restangular.one('filtering.json').get()
+      Restangular.one(stub_data_rsc).get()
       .then (data)->
-        # guard against a race from the attach op.
-        unless $window.webbuddy_data
-          $window.webbuddy_data = data
-
-          $scope.refresh_data()
+        $scope.refresh_data data
 
 
     ## statics
@@ -130,8 +132,6 @@ angular.module('modulesApp')
     switch webbuddy.env.name
       when 'stub'
         $scope.fetch_stub_data()
-      else
-        $scope.refresh_data()
 
 
     # isotope doit. UNUSED
