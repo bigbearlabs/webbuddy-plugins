@@ -21,8 +21,8 @@ angular.module('modulesApp')
       itemSelector: '.hit-list > .item'
       layoutMode: 'straightDown'
       # layoutMode: 'straightAcross'
-    # initialise isotope.
 
+    # initialise isotope.
     $scope.isotope = (selector_for_container)->
       $timeout ->
         # re-isotope
