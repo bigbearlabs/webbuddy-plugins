@@ -584,8 +584,9 @@
         "thumbnail_url": "data/thumbnails/5004480211102240794.png"
       }]
     }
-    },
-    "pages": [{
+  },
+  "pages": [
+    {
       "name": "October App Demo - Swiss Mobile Club (Zürich ) - Meetup",
       "url": "http://www.meetup.com/SwissMobileClub/events/142205552/?gj=wc1d.1_e&a=wc1d.1_gnl&rv=wc1d.1_e",
       "thumbnail_url": "data/thumbnails/1513284373008868932.png"
@@ -1063,8 +1064,13 @@
       "name": "Apple security updates",
       "url": "http://support.apple.com/kb/HT1222?viewlocale=en_US&locale=en_US",
       "thumbnail_url": "data/thumbnails/3458357870169264188.png"
-    }],
-"suggestions": [
-1, 2, 3],
-"highlights": ["... some template text here WITH HIGHLIGHT and other text...", "... other text WITH HIGHLIGHT and more related text..."]
+    }
+  ],
+  "suggestions": [
+    1, 2, 3
+  ],
+  "highlights": [
+    "... some template text here WITH HIGHLIGHT and other text...",
+    "... other text WITH HIGHLIGHT and more related text..."
+  ]
 }
