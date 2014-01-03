@@ -5,12 +5,22 @@ angular.module('modulesApp')
     Restangular) ->
 
     # attach data handler to the bridge
-    webbuddy.on_data = (delta)->
+    webbuddy.on_data = (new_data)->
       data = _.clone $scope.data
-      # apply delta on data.
-      # naive version
-      for k, v of delta
-        data[k] = v
+
+      for k, v of new_data
+        # for new_data keys, apply new_data to original val.
+        if k.indexOf('_delta') >= 0
+          k = k.replace '_delta', ''
+          delta_applied = _.clone data[k]
+          for delta_k, delta_v of v
+            console.log "setting #{k}.#{delta_k} to #{delta_v}"
+            delta_applied[delta_k] = delta_v
+
+          data[k] = delta_applied
+        else
+          console.log "setting #{k}"
+          data[k] = v
 
       $scope.refresh_data data
 
@@ -41,7 +51,7 @@ angular.module('modulesApp')
 
     $scope.refresh_data = (data)->
       $timeout ->
-        console.log "refreshing data."
+        # console.log "refreshing data: #{JSON.stringify data}"
         $scope.data = data
         $scope.filter()
         $scope.$apply()
@@ -66,6 +76,7 @@ angular.module('modulesApp')
       # throw "DING"
 
       console.log("filtering for #{input}")
+
       ## filter using isotope. UNUSED
       # options = {}
       # options.filter = ".item:contains(#{input})"
@@ -75,7 +86,7 @@ angular.module('modulesApp')
 
 
       ## filter the view model.
-      $scope.view_model.searches = $scope.data?.searches?.filter (search)->
+      $scope.view_model.searches = _.values($scope.data?.searches).filter (search)->
         search.name?.toLowerCase().match input.toLowerCase()
       $scope.view_model.searches ||= []
 
