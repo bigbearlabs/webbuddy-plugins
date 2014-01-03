@@ -86,7 +86,12 @@ angular.module('modulesApp')
 
 
       ## filter the view model.
-      $scope.view_model.searches = _.values($scope.data?.searches).filter (search)->
+      $scope.view_model.searches = _.chain($scope.data?.searches)
+      .values()
+      .sortBy( (e)-> e.last_accessed_timestamp )
+      .value()
+      .reverse()
+      .filter (search)->
         search.name?.toLowerCase().match input.toLowerCase()
       $scope.view_model.searches ||= []
 
