@@ -7,6 +7,7 @@ angular.module('modulesApp')
     # attach data handler to the bridge
     webbuddy.on_data = (new_data)->
       data = _.clone $scope.data
+      data ||= {}
 
       for k, v of new_data
         # for new_data keys, apply new_data to original val.
@@ -88,7 +89,7 @@ angular.module('modulesApp')
       ## filter the view model.
       $scope.view_model.searches = _.chain($scope.data?.searches)
       .values()
-      .sortBy( (e)-> e.last_accessed_timestamp )
+      .sortBy( (e)-> (e.last_accessed_timestamp or 0) )
       .value()
       .reverse()
       .filter (search)->
