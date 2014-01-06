@@ -109,7 +109,7 @@ angular.module('modulesApp')
       # isotope_containers.map (selector)->
       #   $scope.isotope $(selector)
       #   $(selector).isotope 'reloadItems'
-      $scope.isotope '.hit-list'
+      $scope.reisotope '.hit-list'
 
     $scope.classname = (item) ->
       classname =
@@ -132,11 +132,12 @@ angular.module('modulesApp')
     ## statics
     $scope.view_model ||=
       limit: 5
-      # show_dev: true
       show_dev: webbuddy.env.name is 'stub'
+      # show_dev: true
 
 
     ## isotope bits.
+
     # isotope_containers = [ '.search-list', '.page-list', '.suggestion-list' ]
     isotope_containers = [ '.hit-list' ]
 
@@ -152,10 +153,11 @@ angular.module('modulesApp')
     $scope.isotope = (selector_for_container)->
       $timeout ->
         # re-isotope
-        $(selector_for_container).isotope('reloadItems').isotope $scope.isotope_options
+        $(selector_for_container).isotope $scope.isotope_options
 
-        # hide elems after limit
-        # $(selector_for_container).find('.item:gt(4)').
+    $scope.reisotope = (selector_for_container)->
+      $timeout ->
+        $(selector_for_container).isotope 'reloadItems'
 
 
     ## doit.
@@ -169,12 +171,5 @@ angular.module('modulesApp')
     isotope_containers.map (selector)->
       $timeout ->
         $scope.isotope selector
-
-    # $window.webbuddy.module.update_data data
-
-
-    # $scope.isotope()
-
-    # , 0
 
 
