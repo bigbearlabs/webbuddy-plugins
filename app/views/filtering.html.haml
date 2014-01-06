@@ -14,14 +14,17 @@
 
 
   -### list of master items
-  %ul.hit-list( ng-show_="view_model.hits.length > 0" )
+  %ul.hit-list( ng-show_="view_model.hits.length > 0"
+    isotope-container
+    )
 
 
     %li.item( data-ng-repeat="item in view_model.hits"
       ng-mouseover="preview(item)"
       ng-class="classname(item)"
       ng-mouseleave_="hide_preview(item)"
-    )
+      isotope-item
+      )
 
       -# render a stack
       %a( href="{{item.url}}" title="{{item.name}}")
@@ -37,15 +40,15 @@
 
     -### WIP smart-stack placeholders.
 
-    -# pages smart-stack currently created in filtering.coffee
+    -# pages smart-stack currently created in filtering.coffee.
 
-    %li.item.highlights( ng-show_="view_model.hits.length == 0")
-      %h3 Placeholder
-      %p TODO Matching snippets to show here.
+    -# %li.item.highlights( ng-show_="view_model.hits.length == 0")
+    -#   %h3 Placeholder
+    -#   %p TODO Matching snippets to show here.
 
-    %li.item.search-suggestions( ng-show_="view_model.hits.length == 0")
-      %h3 Placeholder
-      %p TODO Suggested searches stack to show here.
+    -# %li.item.search-suggestions( ng-show_="view_model.hits.length == 0")
+    -#   %h3 Placeholder
+    -#   %p TODO Suggested searches stack to show here.
 
 
 -### display details for the highlighted item in master

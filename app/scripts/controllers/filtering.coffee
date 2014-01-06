@@ -87,16 +87,20 @@ angular.module('modulesApp')
       $scope.view_model.pages = $scope.data?.pages?.filter (page)->
         page.name?.toLowerCase().match input.toLowerCase()
 
-      # view_model.hits is the data for the master section.
-      $scope.view_model.hits = _.clone $scope.view_model.searches
+      # naive version overwrites view_model.hits
+      update_hits = ->
+        # view_model.hits is the data for the master section.
+        $scope.view_model.hits = _.clone $scope.view_model.searches
 
-      if $scope.view_model?.pages?.length > 0
-        page_stack =
-          name: 'Matching pages'
-          pages: $scope.view_model.pages
+        # create a smart-stack of matching pages.
+        if $scope.view_model?.pages?.length > 0
+          page_stack =
+            name: 'Matching pages'
+            pages: $scope.view_model.pages
 
-        $scope.view_model.hits.push page_stack
+          $scope.view_model.hits.push page_stack
 
+      update_hits()
 
       # invoke preview on the first hit.
       $scope.preview $scope.view_model.hits[0]
@@ -105,7 +109,7 @@ angular.module('modulesApp')
       # isotope_containers.map (selector)->
       #   $scope.isotope $(selector)
       #   $(selector).isotope 'reloadItems'
-
+      $scope.isotope '.hit-list'
 
     $scope.classname = (item) ->
       classname =
@@ -132,23 +136,26 @@ angular.module('modulesApp')
       show_dev: webbuddy.env.name is 'stub'
 
 
-    ## isotope bits. UNUSED
-    isotope_containers = [ '.search-list', '.page-list', '.suggestion-list' ]
+    ## isotope bits.
+    # isotope_containers = [ '.search-list', '.page-list', '.suggestion-list' ]
+    isotope_containers = [ '.hit-list' ]
 
     $scope.isotope_options =
-      itemSelector: '.hit-list > .item'
+      itemSelector: '.item'
       layoutMode: 'straightDown'
       # layoutMode: 'straightAcross'
+      # sortBy: 'name'  # TEMP
+      # getSortData:
+      #   name: ($elem)-> $elem.find('a').attr('title')
 
     # initialise isotope.
     $scope.isotope = (selector_for_container)->
       $timeout ->
         # re-isotope
-        $(selector_for_container).isotope options, $scope.isotope_options
+        $(selector_for_container).isotope('reloadItems').isotope $scope.isotope_options
 
         # hide elems after limit
         # $(selector_for_container).find('.item:gt(4)').
-
 
 
     ## doit.
@@ -159,11 +166,9 @@ angular.module('modulesApp')
 
 
     # isotope doit. UNUSED
-    # isotope_containers.map (selector)->
-    #  $scope.isotope selector
-    #  $timeout ->
-    #    $(selector).isotope()
-    #  , 0
+    isotope_containers.map (selector)->
+      $timeout ->
+        $scope.isotope selector
 
     # $window.webbuddy.module.update_data data
 
