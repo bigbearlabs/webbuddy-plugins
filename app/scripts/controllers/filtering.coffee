@@ -54,7 +54,7 @@ angular.module('modulesApp')
 
     $scope.preview = (item) ->
       $scope.view_model.selected_item = item
-      $scope.view_model.details =
+      $scope.view_model.detail =
         if item
           name: item.name
           items: if item.pages then item.pages else [ item ]
@@ -62,7 +62,7 @@ angular.module('modulesApp')
           null
 
     $scope.hide_preview = (item) ->
-      $scope.view_model.details = null
+      $scope.view_model.detail = null
 
     $scope.$root.filter = (input = $scope.data?.input)->
       console.log("filtering for #{input}")

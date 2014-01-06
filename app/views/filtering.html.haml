@@ -52,12 +52,12 @@
 
 
 -### display details for the highlighted item in master
-%section.details
+%section.detail
 
-  %h2 {{view_model.details.name}}
+  %h2 {{view_model.detail.name}}
 
   %ul.detail-list
-    %li.item.thumbnail( ng-repeat="detail_item in view_model.details.items" )
+    %li.item.thumbnail( ng-repeat="detail_item in view_model.detail.items" )
       %a( href="{{detail_item.url}}" title="{{detail_item.name}}")
         %img( ng-src="{{detail_item.thumbnail_url}}" )
         %p {{detail_item.name}}
