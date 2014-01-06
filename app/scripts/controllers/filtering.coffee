@@ -4,6 +4,8 @@ angular.module('modulesApp')
   .controller 'FilteringCtrl', ($scope, $window, $timeout, $q,
     Restangular) ->
 
+    ## interfacing with hosting env.
+
     # attach data handler to the bridge
     webbuddy.on_data = (new_data)->
       data = _.clone $scope.data
@@ -30,30 +32,15 @@ angular.module('modulesApp')
       $scope.refresh_data data
 
 
-    # # isotope bits. UNUSED
-    isotope_containers = [ '.search-list', '.page-list', '.suggestion-list' ]
-
-    $scope.isotope_options =
-      itemSelector: '.hit-list > .item'
-      layoutMode: 'straightDown'
-      # layoutMode: 'straightAcross'
-
-    # initialise isotope.
-    $scope.isotope = (selector_for_container)->
-      $timeout ->
-        # re-isotope
-        $(selector_for_container).isotope options, $scope.isotope_options
-
-        # hide elems after limit
-        # $(selector_for_container).find('.item:gt(4)').
-
+    ## view-model observations.
 
     # watch model to trigger view behaviour.
     $scope.$watch 'data.input', ->
       $scope.filter()
     # FIXME when this code path throws, it will be silent from webbuddy. not good
 
-    ## view ops.
+
+    ## view-model ops.
 
     $scope.refresh_data = (data)->
       $timeout ->
@@ -78,9 +65,6 @@ angular.module('modulesApp')
       $scope.view_model.details = null
 
     $scope.$root.filter = (input = $scope.data?.input)->
-      # simulate an error to ensure hosting environment can report it.
-      # throw "DING"
-
       console.log("filtering for #{input}")
 
       ## filter using isotope. UNUSED
@@ -90,8 +74,8 @@ angular.module('modulesApp')
       # isotope_containers.map (selector)->
       #   $scope.isotope $(selector), options
 
-
       ## filter the view model.
+
       $scope.view_model.searches = _.chain($scope.data?.searches)
       .values()
       .sortBy( (e)-> (e.last_accessed_timestamp or 0) )
@@ -99,12 +83,12 @@ angular.module('modulesApp')
       .reverse()
       .filter (search)->
         search.name?.toLowerCase().match input.toLowerCase()
-      $scope.view_model.searches ||= []
-
-      $scope.view_model.hits = _.clone $scope.view_model.searches
 
       $scope.view_model.pages = $scope.data?.pages?.filter (page)->
         page.name?.toLowerCase().match input.toLowerCase()
+
+      # view_model.hits is the data for the master section.
+      $scope.view_model.hits = _.clone $scope.view_model.searches
 
       if $scope.view_model?.pages?.length > 0
         page_stack =
@@ -114,9 +98,8 @@ angular.module('modulesApp')
         $scope.view_model.hits.push page_stack
 
 
-      # invoke preview on the selected one.
+      # invoke preview on the first hit.
       $scope.preview $scope.view_model.hits[0]
-      # $scope.$apply()
 
       # re-isotope. check to see if it's really needed
       # isotope_containers.map (selector)->
@@ -147,6 +130,25 @@ angular.module('modulesApp')
       limit: 5
       # show_dev: true
       show_dev: webbuddy.env.name is 'stub'
+
+
+    ## isotope bits. UNUSED
+    isotope_containers = [ '.search-list', '.page-list', '.suggestion-list' ]
+
+    $scope.isotope_options =
+      itemSelector: '.hit-list > .item'
+      layoutMode: 'straightDown'
+      # layoutMode: 'straightAcross'
+
+    # initialise isotope.
+    $scope.isotope = (selector_for_container)->
+      $timeout ->
+        # re-isotope
+        $(selector_for_container).isotope options, $scope.isotope_options
+
+        # hide elems after limit
+        # $(selector_for_container).find('.item:gt(4)').
+
 
 
     ## doit.
