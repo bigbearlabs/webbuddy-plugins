@@ -10,8 +10,10 @@ angular.module('modulesApp')
       data ||= {}
 
       for k, v of new_data
-        # for new_data keys, apply new_data to original val.
+
         if k.indexOf('_delta') >= 0
+          # for keys /.*_delta/, merge values with existing key.
+
           k = k.replace '_delta', ''
           delta_applied = _.clone data[k]
           for delta_k, delta_v of v
@@ -20,10 +22,13 @@ angular.module('modulesApp')
 
           data[k] = delta_applied
         else
+          # just add to the data.
+
           console.log "setting #{k}"
           data[k] = v
 
       $scope.refresh_data data
+
 
     # # isotope bits. UNUSED
     isotope_containers = [ '.search-list', '.page-list', '.suggestion-list' ]
