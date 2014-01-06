@@ -16,8 +16,8 @@
   -### list of master items
   %ul.hit-list( ng-show_="view_model.hits.length > 0"
     isotope-container
+    iso-mode="insert"
     )
-
 
     %li.item( data-ng-repeat="item in view_model.hits"
       ng-mouseover="preview(item)"

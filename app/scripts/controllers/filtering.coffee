@@ -105,10 +105,6 @@ angular.module('modulesApp')
       # invoke preview on the first hit.
       $scope.preview $scope.view_model.hits[0]
 
-      # re-isotope. check to see if it's really needed
-      # isotope_containers.map (selector)->
-      #   $scope.isotope $(selector)
-      #   $(selector).isotope 'reloadItems'
       $scope.reisotope '.hit-list'
 
     $scope.classname = (item) ->
@@ -157,7 +153,7 @@ angular.module('modulesApp')
 
     $scope.reisotope = (selector_for_container)->
       $timeout ->
-        $(selector_for_container).isotope 'reloadItems'
+        $(selector_for_container).isotope('reloadItems').isotope()
 
 
     ## doit.
