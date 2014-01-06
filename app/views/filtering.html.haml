@@ -1,6 +1,6 @@
 -# ### The filtering UI markup.
--# all styling implemented in stylesheet. TODO refactor
--#
+-# all styling implemented in stylesheet.
+-# ng-* attributes suffixed with _ are temporary disabled but not removed as they can be useful for future behavioural tweaks.
 
 
 %section.dev( ng-show="true" )
@@ -13,15 +13,15 @@
   %h2( ng-show="false" ) Hits
 
 
-  -# list of master items
+  -### list of master items
   %ul.hit-list( ng-show_="view_model.hits.length > 0" )
 
 
     %li.item( data-ng-repeat="item in view_model.hits"
       ng-mouseover="preview(item)"
       ng-class="classname(item)"
+      ng-mouseleave_="hide_preview(item)"
     )
-      -# ng-mouseleave="hide_preview(item)"
 
       -# render a stack
       %a( href="{{item.url}}" title="{{item.name}}")
@@ -29,17 +29,16 @@
         %p {{item.name}}
         %p {{item.last_accessed_timestamp}}
 
+
     -### enable this to show a 'more...' button.
     -# %li.item( ng-show="view_model.hits.length > view_model.limit" )
     -#   %p More...
 
-    -# separators between stack groups TODO
 
-    -# %li.item( ng-show="view_model.pages.length > view_model.limit" )
-    -#   %p More...
+    -### WIP smart-stack placeholders.
 
+    -# pages smart-stack currently created in filtering.coffee
 
-    -# smart stacks
     %li.item.highlights( ng-show_="view_model.hits.length == 0")
       %h3 Placeholder
       %p TODO Matching snippets to show here.
@@ -49,7 +48,7 @@
       %p TODO Suggested searches stack to show here.
 
 
--# display details for the highlighted item in results
+-### display details for the highlighted item in master
 %section.details
 
   %h2 {{view_model.details.name}}
@@ -61,20 +60,7 @@
         %p {{detail_item.name}}
 
 
--# WIP SECTIONS
-%section.suggestions( ng-show="false" )
-
-  %h2 Suggestions
-
-  %ul.suggestion-list(  )
-
-    %li.item( data-ng-repeat="item in data.suggestions"
-
-      )
-      %p {{item}}
-
-
-%section.evaluator
+%section.evaluator.dev
   .evaluator( ng-include="'views/eval.html'" ng-controller="EvalCtrl" )
 
 
