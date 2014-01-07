@@ -71,11 +71,11 @@ angular.module('modulesApp')
 
       $scope.view_model.searches = _.chain($scope.data?.searches)
       .values()
-      .sortBy( (e)-> (e.last_accessed_timestamp or 0) )
-      .value()
-      .reverse()
       .filter (search)->
         search.name?.toLowerCase().match input.toLowerCase()
+        .reverse()
+        .sortBy( (e)-> (e.last_accessed_timestamp or 0) )
+        .value()
 
       $scope.view_model.pages = $scope.data?.pages?.filter (page)->
         page.name?.toLowerCase().match input.toLowerCase()
