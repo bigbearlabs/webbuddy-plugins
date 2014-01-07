@@ -70,9 +70,9 @@ angular.module('modulesApp')
       ## filter the view model.
 
       $scope.view_model.searches = _.chain($scope.data?.searches)
-      .values()
-      .filter (search)->
-        search.name?.toLowerCase().match input.toLowerCase()
+        .values()
+        .filter (search)->
+          search.name?.toLowerCase().match input.toLowerCase()
         .reverse()
         .sortBy( (e)-> (e.last_accessed_timestamp or 0) )
         .value()
@@ -80,18 +80,38 @@ angular.module('modulesApp')
       $scope.view_model.pages = $scope.data?.pages?.filter (page)->
         page.name?.toLowerCase().match input.toLowerCase()
 
-      # naive version overwrites view_model.hits
+      # # naive version overwrites view_model.hits
+      # update_hits = ->
+      #   # view_model.hits is the data for the master section.
+      #   $scope.view_model.hits = _.clone $scope.view_model.searches
+
+      #   # create a smart-stack of matching pages.
+      #   if $scope.view_model?.pages?.length > 0
+      #     page_stack =
+      #       name: 'Matching pages'
+      #       pages: $scope.view_model.pages
+
+      #     $scope.view_model.hits.push page_stack
+
       update_hits = ->
-        # view_model.hits is the data for the master section.
-        $scope.view_model.hits = _.clone $scope.view_model.searches
+        sync_reference = $scope.view_model.searches
+        sync_target = $scope.view_model.hits
 
-        # create a smart-stack of matching pages.
-        if $scope.view_model?.pages?.length > 0
-          page_stack =
-            name: 'Matching pages'
-            pages: $scope.view_model.pages
+        unless sync_target
+          $scope.view_model.hits = _.clone sync_reference
+          return
 
-          $scope.view_model.hits.push page_stack
+        intersection = _.intersection sync_reference, sync_target
+        to_add = _.difference sync_reference, intersection
+        to_remove = _.difference sync_target, intersection
+
+        # remove all in to_remove.
+        for e, i in sync_target.reverse()
+          if _(to_remove).include e
+            sync_target.splice (sync_target.length - 1 - i), 1
+
+        # add all i to_add.
+        to_add.map (e)-> sync_target.push e
 
       update_hits()
 
