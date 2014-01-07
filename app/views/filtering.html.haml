@@ -1,6 +1,6 @@
 -# ### The filtering UI markup.
 -# all styling implemented in stylesheet.
--# ng-* attributes suffixed with _ are temporary disabled but not removed as they can be useful for future behavioural tweaks.
+-# attributes suffixed with _ are temporary disabled but not removed as they can be useful for future behavioural tweaks.
 
 
 %section.dev( ng-show="true" )
@@ -15,15 +15,15 @@
 
   -### list of master items
   %ul.hit-list( ng-show_="view_model.hits.length > 0"
-    isotope-container_
-    iso-mode_="insert"
+    isotope-container
+    iso-mode="insert"
     )
 
     %li.item( data-ng-repeat="item in view_model.hits"
       ng-mouseover="preview(item)"
       ng-class="classname(item)"
       ng-mouseleave_="hide_preview(item)"
-      isotope-item_
+      isotope-item
       )
 
       -# render a stack
