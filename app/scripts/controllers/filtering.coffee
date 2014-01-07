@@ -106,9 +106,10 @@ angular.module('modulesApp')
         to_remove = _.difference sync_target, intersection
 
         # remove all in to_remove.
-        for e, i in sync_target.reverse()
-          if _(to_remove).include e
-            sync_target.splice (sync_target.length - 1 - i), 1
+        for i in [(sync_target.length - 1)...-1]
+          e = sync_target[i]
+          if _.include to_remove, e
+            sync_target.splice i, 1
 
         # add all i to_add.
         to_add.map (e)-> sync_target.push e
