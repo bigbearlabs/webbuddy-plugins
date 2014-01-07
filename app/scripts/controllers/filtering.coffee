@@ -30,13 +30,14 @@ angular.module('modulesApp')
           data[k] = v
 
       $scope.refresh_data data
-
+      $scope.$apply()
 
     ## view-model observations.
 
     # watch model to trigger view behaviour.
     $scope.$watch 'data.input', ->
       $scope.filter()
+
     # FIXME when this code path throws, it will be silent from webbuddy. not good
 
 
@@ -48,6 +49,7 @@ angular.module('modulesApp')
         $scope.data = data
         $scope.filter()
         $scope.$apply()
+        # FIXME this will potentially trigger filtering twice after the watch on data.input
 
 
     ## ui ops.
@@ -80,19 +82,6 @@ angular.module('modulesApp')
       $scope.view_model.pages = $scope.data?.pages?.filter (page)->
         page.name?.toLowerCase().match input.toLowerCase()
 
-      # # naive version overwrites view_model.hits
-      # update_hits = ->
-      #   # view_model.hits is the data for the master section.
-      #   $scope.view_model.hits = _.clone $scope.view_model.searches
-
-      #   # create a smart-stack of matching pages.
-      #   if $scope.view_model?.pages?.length > 0
-      #     page_stack =
-      #       name: 'Matching pages'
-      #       pages: $scope.view_model.pages
-
-      #     $scope.view_model.hits.push page_stack
-
       update_hits = ->
         sync_reference = $scope.view_model.searches
         sync_target = $scope.view_model.hits
@@ -119,7 +108,8 @@ angular.module('modulesApp')
       # invoke preview on the first hit.
       $scope.preview $scope.view_model.hits[0]
 
-      # $scope.reisotope '.hit-list'
+      # we must re-isotope to avoid errors from isotope due to deviation between model and jquery objs.
+      $scope.reisotope '.hit-list'
 
 
     $scope.classname = (item) ->
@@ -163,7 +153,6 @@ angular.module('modulesApp')
     # initialise isotope.
     $scope.isotope = (selector_for_container)->
       $timeout ->
-        # re-isotope
         $(selector_for_container).isotope $scope.isotope_options
 
     $scope.reisotope = (selector_for_container)->
@@ -178,9 +167,9 @@ angular.module('modulesApp')
         $scope.fetch_stub_data()
 
 
-    # # isotope doit.
-    # isotope_containers.map (selector)->
-    #   $timeout ->
-    #     $scope.isotope selector
+    # isotope doit.
+    isotope_containers.map (selector)->
+      $timeout ->
+        $scope.isotope selector
 
 
