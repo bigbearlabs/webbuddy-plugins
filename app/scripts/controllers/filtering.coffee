@@ -67,13 +67,6 @@ angular.module('modulesApp')
     $scope.$root.filter = (input = $scope.data?.input)->
       console.log("filtering for #{input}")
 
-      ## filter using isotope. UNUSED
-      # options = {}
-      # options.filter = ".item:contains(#{input})"
-
-      # isotope_containers.map (selector)->
-      #   $scope.isotope $(selector), options
-
       ## filter the view model.
 
       $scope.view_model.searches = _.chain($scope.data?.searches)
@@ -105,7 +98,8 @@ angular.module('modulesApp')
       # invoke preview on the first hit.
       $scope.preview $scope.view_model.hits[0]
 
-      $scope.reisotope '.hit-list'
+      # $scope.reisotope '.hit-list'
+
 
     $scope.classname = (item) ->
       classname =
@@ -163,9 +157,9 @@ angular.module('modulesApp')
         $scope.fetch_stub_data()
 
 
-    # isotope doit. UNUSED
-    isotope_containers.map (selector)->
-      $timeout ->
-        $scope.isotope selector
+    # # isotope doit.
+    # isotope_containers.map (selector)->
+    #   $timeout ->
+    #     $scope.isotope selector
 
 

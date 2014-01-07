@@ -15,15 +15,15 @@
 
   -### list of master items
   %ul.hit-list( ng-show_="view_model.hits.length > 0"
-    isotope-container
-    iso-mode="insert"
+    isotope-container_
+    iso-mode_="insert"
     )
 
     %li.item( data-ng-repeat="item in view_model.hits"
       ng-mouseover="preview(item)"
       ng-class="classname(item)"
       ng-mouseleave_="hide_preview(item)"
-      isotope-item
+      isotope-item_
       )
 
       -# render a stack
