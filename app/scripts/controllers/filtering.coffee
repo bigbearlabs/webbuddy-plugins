@@ -103,8 +103,8 @@ angular.module('modulesApp')
               # any page matches.
               search.pages?.filter((e)-> name_match e).length > 0
 
-          .reverse()
           .sortBy( (e)-> (e.last_accessed_timestamp or 0) )
+          .reverse()
           .value()
 
       update_search_hits = ->
