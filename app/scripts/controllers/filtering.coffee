@@ -71,18 +71,26 @@ angular.module('modulesApp')
 
       ## filter the view model.
 
-      $scope.view_model.searches = _.chain($scope.data?.searches)
-        .values()
-        .filter (search)->
-          search.name?.toLowerCase().match input.toLowerCase()
-        .reverse()
-        .sortBy( (e)-> (e.last_accessed_timestamp or 0) )
-        .value()
+      # for serious development in coffeescript, we need a way to extract stuff like this into separate code modules really quickly. still looking for an agile enough solution.
+      filter_searches = ->
+        name_match = (e)->
+          e.name?.toLowerCase().match input.toLowerCase()
 
-      $scope.view_model.pages = $scope.data?.pages?.filter (page)->
-        page.name?.toLowerCase().match input.toLowerCase()
+        _.chain($scope.data?.searches)
+          .values()
+          .filter (search)->
+            # case-insensitive match of names.
+            name_match(search) or
+              # or
+              # regular expression match of names. TODO
+              # any page matches.
+              search.pages?.filter((e)-> name_match e).length > 0
 
-      update_hits = ->
+          .reverse()
+          .sortBy( (e)-> (e.last_accessed_timestamp or 0) )
+          .value()
+
+      update_search_hits = ->
         sync_reference = $scope.view_model.searches
         sync_target = $scope.view_model.hits
 
@@ -103,7 +111,17 @@ angular.module('modulesApp')
         # add all i to_add.
         to_add.map (e)-> sync_target.push e
 
-      update_hits()
+      update_smart_stacks = ->
+        console.log 'todo'
+
+
+      $scope.view_model.searches = filter_searches()
+
+      $scope.view_model.pages = $scope.data?.pages?.filter (page)->
+        page.name?.toLowerCase().match input.toLowerCase()
+
+      update_search_hits()
+      update_smart_stacks()
 
       # invoke preview on the first hit.
       $scope.preview $scope.view_model.hits[0]
