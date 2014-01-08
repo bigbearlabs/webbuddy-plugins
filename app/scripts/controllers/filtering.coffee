@@ -152,12 +152,12 @@ angular.module('modulesApp')
 
     # initialise isotope.
     $scope.isotope = (selector_for_container)->
-      $timeout ->
-        $(selector_for_container).isotope $scope.isotope_options
+      # $timeout ->
+      #   $(selector_for_container).isotope $scope.isotope_options
 
     $scope.reisotope = (selector_for_container)->
-      $timeout ->
-        $(selector_for_container).isotope('reloadItems').isotope()
+      # $timeout ->
+      #   $(selector_for_container).isotope('reloadItems').isotope()
 
 
     ## doit.
