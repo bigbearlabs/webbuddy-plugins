@@ -6,6 +6,12 @@ angular.module('modulesApp')
 
     ## interfacing with hosting env.
 
+    to_hash = (array, key_property)->
+      array.reduce (acc = {}, e)->
+        key = encodeURIComponent e[key_property]
+        acc[key] = e
+        acc
+
     # attach data handler to the bridge
     webbuddy.on_data = (new_data)->
       data = _.clone $scope.data
@@ -17,14 +23,19 @@ angular.module('modulesApp')
           # for keys /.*_delta/, merge values with existing key.
 
           k = k.replace '_delta', ''
+          v_hash = to_hash v, 'name'
+
           delta_applied = _.clone data[k]
-          for delta_k, delta_v of v
+          for delta_k, delta_v of v_hash
             console.log "setting #{k}.#{delta_k} to #{delta_v}"
             delta_applied[delta_k] = delta_v
 
           data[k] = delta_applied
         else
           # just add to the data.
+
+          if k == 'searches'
+            v = to_hash v, 'name'
 
           console.log "setting #{k}"
           data[k] = v
