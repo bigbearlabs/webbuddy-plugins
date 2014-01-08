@@ -43,6 +43,12 @@ angular.module('modulesApp')
       $scope.refresh_data data
       $scope.$apply()
 
+    # also expose the scope for data retrieval. WIP
+    webbuddy.scope = $scope
+
+    # FIXME refactor the above into a service that represents the host env.
+
+
     ## view-model observations.
 
     # watch model to trigger view behaviour.
