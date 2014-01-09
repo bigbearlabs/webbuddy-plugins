@@ -97,8 +97,12 @@ angular.module('modulesApp')
             # # any page matches.
             # search.pages?.filter((e)-> name_match e).length > 0
 
-    $scope.matching_searches_expr = $scope.matching_searches.toString()
+    # $scope.matching_searches_expr = $scope.matching_searches.toString()
 
+    # $scope.update_matching_searches = (expr = $scope.matching_searches_expr) ->
+    #   eval """
+    #     angular.element('.master').scope().matching_searches = #{expr};
+    #   """
 
     ## ui ops.
 

@@ -7,10 +7,11 @@
   %h3 Filter
   %input( ng-model="data.input" ng-change="")
 
-  %h3 Matching
-  %p( editable-textarea="matching_searches_expr"
-    ) {{ matching_searches_expr }}
-  -# TODO on commit, re-eval and store on $scope.matching_searches.
+  -# %h3 Matching
+  -# %p( editable-textarea="matching_searches_expr"
+  -#   onbeforesave="update_matching_searches()"
+  -#   ) {{ matching_searches_expr }}
+  -# -# TODO on commit, re-eval and store on $scope.matching_searches.
 
 %section.master
 
