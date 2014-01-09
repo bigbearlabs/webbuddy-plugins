@@ -98,6 +98,7 @@ angular.module('modulesApp')
             # any page matches.
             search.pages?.filter((e)-> name_match e).length > 0
 
+    $scope.matching_searches_expr = $scope.matching_searches.toString()
 
 
     ## ui ops.

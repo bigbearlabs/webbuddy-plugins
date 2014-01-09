@@ -12,9 +12,6 @@
     %meta{content: "", name: "description"}/
     %meta{content: "width=device-width", name: "viewport"}/
     / Place favicon.ico and apple-touch-icon.png in the root directory
-    / build:css(.tmp) styles/main.css
-    %link{href: "styles/main.css", rel: "stylesheet"}
-    / endbuild
 
   %body{"ng-app" => "modulesApp"}
     -# /[if lt IE 7]
@@ -36,6 +33,8 @@
     -# %script{src: "bower_components/angular-isotope/dist/angular-isotope.min.js"}
     %script{src: "bower_components/json2/cycle.js"}
     %script{src: 'bower_components/jquery-highlightRegex/highlightRegex.js'}
+    %link{href: "bower_components/angular-xeditable/dist/css/xeditable.css", rel: "stylesheet"}
+    %script{src: "bower_components/angular-xeditable/dist/js/xeditable.js"}
 
     / build:js({.tmp,app}) scripts/scripts.js
     %script{src: "scripts/wb-integration.js"}
@@ -44,6 +43,11 @@
     %script{src: "scripts/controllers/eval.js"}
     %script{src: "scripts/controllers/filtering.js"}
     / endbuild
+
+    / build:css(.tmp) styles/main.css
+    %link{href: "styles/main.css", rel: "stylesheet"}
+    / endbuild
+
 
     -# / Google Analytics: change UA-XXXXX-X to be your site's ID.
     :javascript

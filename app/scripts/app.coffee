@@ -3,7 +3,8 @@
 angular.module('modulesApp',  [
   'ngRoute',
   'restangular',
-  # 'iso.directives'
+  # 'iso.directives',
+  "xeditable"
 ])
   .config ($routeProvider) ->
     $routeProvider

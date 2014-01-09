@@ -24,7 +24,12 @@
   // display: none;
 }
 
-
+.editable-controls {
+  textarea {
+    width: 100% !important;
+    height: 200px;
+  }
+}
 
 //## typography.
 
