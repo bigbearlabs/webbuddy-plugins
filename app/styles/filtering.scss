@@ -43,6 +43,11 @@ p {
   background-color: #999999;
 }
 
+// text highlight
+span .highlight {
+  background-color: yellow;
+}
+
 
 @mixin vertical-panel {
   float: left;

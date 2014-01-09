@@ -8,7 +8,8 @@
     "isotope": "",
     "angular-isotope": "",
     "foundation": "~4.3.2",
-    "json2": ""
+    "json2": "",
+    "jquery-highlightRegex": ""
   },
   "devDependencies": {
     "angular-mocks": "~1.0.7",

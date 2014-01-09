@@ -58,7 +58,10 @@ angular.module('modulesApp')
 
     # watch model to trigger view behaviour.
     $scope.$watch 'data.input', ->
+      # filter data
       $scope.filter()
+
+      $scope.highlight()
 
     # FIXME when this code path throws, it will be silent from webbuddy. not good
 
@@ -98,6 +101,12 @@ angular.module('modulesApp')
 
 
     ## ui ops.
+
+    $scope.highlight = (input = $scope.data?.input) ->
+      $timeout ->
+        # apply highlights. BAD-DEP
+        $('body').highlightRegex()
+        $('body').highlightRegex new RegExp input, 'i'
 
     $scope.preview = (item) ->
       $scope.view_model.selected_item = item
