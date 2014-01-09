@@ -1,3 +1,7 @@
+# TODO move out integration with host env into a service or module.
+# TODO factor out the matching algo, PoC switching to list.js or another fuzzy text match lib.
+
+
 'use strict'
 
 angular.module('modulesApp')
@@ -95,12 +99,14 @@ angular.module('modulesApp')
       ## filter the view model.
 
       # for serious development in coffeescript, we need a way to extract stuff like this into separate code modules really quickly. still looking for an agile enough solution.
-      matching_searches = ->
+      matching_searches = (searches, input = '')->
+        if input.length is 0
+          return searches
+
         name_match = (e)->
           e.name?.toLowerCase().match input.toLowerCase()
 
-        _($scope.data?.searches)
-          .values()
+        searches
           .filter (search)->
             # case-insensitive match of names.
             name_match(search) or
@@ -108,7 +114,6 @@ angular.module('modulesApp')
               # regular expression match of names. TODO
               # any page matches.
               search.pages?.filter((e)-> name_match e).length > 0
-          .value()
 
       update_search_hits = ->
         sync_reference = $scope.view_model.searches
@@ -136,7 +141,7 @@ angular.module('modulesApp')
         console.log 'todo'
 
 
-      $scope.view_model.searches = matching_searches()
+      $scope.view_model.searches = matching_searches _.values($scope.data?.searches), $scope.data?.input
 
       $scope.view_model.pages = $scope.data?.pages?.filter (page)->
         page.name?.toLowerCase().match input.toLowerCase()
