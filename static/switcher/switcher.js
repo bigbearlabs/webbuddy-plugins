@@ -1,3 +1,4 @@
+// TODO reconcile with the angularjs plugin framework.
 
 // lay out using isotope.
 var layout = function() {
@@ -19,9 +20,9 @@ var setupNewAddressTool = function () {
     // the activate function is protocol in this script indicating a user has activated a highlighted item.
     return function() {
       var $newAddressTool = $('#content #new-address-tool')
-      
+
       // show all views necessary for activation TODO
-      
+
       // other view actions: focus on the right view.
       $newAddressTool.children().forEach(function(child) {
         console.log("hi i'm" + child); 
@@ -29,7 +30,7 @@ var setupNewAddressTool = function () {
 
       // set up the submission handler
       $newAddressTool.find('.submit').click(function() {
-        window.location = $newAddressTool.find('.address').get(0).value 
+        window.location = $newAddressTool.find('.address').get(0).value
         // FIXME this doesn't jive
         // how to best call into the app?
       });
@@ -67,7 +68,7 @@ var addToList = function(item) {
   // clone the template
   $itemDiv = $('#stub-tool-id').clone();
   $itemDiv.removeClass('template');
-  
+
   // fill in the attributes in the template
   $itemDiv.attr('id', item.id);
   $itemDiv.children('.name').text(item.name);
