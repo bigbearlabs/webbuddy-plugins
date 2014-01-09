@@ -7,10 +7,14 @@ angular.module('modulesApp')
     ## interfacing with hosting env.
 
     to_hash = (array, key_property)->
-      array.reduce (acc = {}, e)->
+      # do nothing if already a hash.
+      return array unless (array instanceof Array)
+
+      array.reduce (acc, e)->
         key = encodeURIComponent e[key_property]
         acc[key] = e
         acc
+      , {}
 
     # attach data handler to the bridge
     webbuddy.on_data = (new_data)->
@@ -33,9 +37,6 @@ angular.module('modulesApp')
           data[k] = delta_applied
         else
           # just add to the data.
-
-          if k == 'searches'
-            v = to_hash v, 'name'
 
           console.log "setting #{k}"
           data[k] = v
@@ -63,6 +64,11 @@ angular.module('modulesApp')
     $scope.refresh_data = (data)->
       $timeout ->
         # console.log "refreshing data: #{JSON.stringify data}"
+
+        # convert searches into hash.
+        if data.searches
+          data.searches = to_hash data.searches, 'name'
+
         $scope.data = data
         $scope.filter()
         $scope.$apply()
@@ -89,11 +95,11 @@ angular.module('modulesApp')
       ## filter the view model.
 
       # for serious development in coffeescript, we need a way to extract stuff like this into separate code modules really quickly. still looking for an agile enough solution.
-      filter_searches = ->
+      matching_searches = ->
         name_match = (e)->
           e.name?.toLowerCase().match input.toLowerCase()
 
-        _.chain($scope.data?.searches)
+        _($scope.data?.searches)
           .values()
           .filter (search)->
             # case-insensitive match of names.
@@ -102,9 +108,6 @@ angular.module('modulesApp')
               # regular expression match of names. TODO
               # any page matches.
               search.pages?.filter((e)-> name_match e).length > 0
-
-          .sortBy( (e)-> (e.last_accessed_timestamp or 0) )
-          .reverse()
           .value()
 
       update_search_hits = ->
@@ -128,11 +131,12 @@ angular.module('modulesApp')
         # add all i to_add.
         to_add.map (e)-> sync_target.push e
 
+
       update_smart_stacks = ->
         console.log 'todo'
 
 
-      $scope.view_model.searches = filter_searches()
+      $scope.view_model.searches = matching_searches()
 
       $scope.view_model.pages = $scope.data?.pages?.filter (page)->
         page.name?.toLowerCase().match input.toLowerCase()
