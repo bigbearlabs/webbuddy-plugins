@@ -87,16 +87,15 @@ angular.module('modulesApp')
         return searches
 
       name_match = (e)->
+        # case-insensitive match of names.
         e.name?.toLowerCase().match input.toLowerCase()
 
       searches
         .filter (search)->
-          # case-insensitive match of names.
-          name_match(search) or
+          name_match(search)
             # or
-            # regular expression match of names. TODO
-            # any page matches.
-            search.pages?.filter((e)-> name_match e).length > 0
+            # # any page matches.
+            # search.pages?.filter((e)-> name_match e).length > 0
 
     $scope.matching_searches_expr = $scope.matching_searches.toString()
 
