@@ -1,6 +1,9 @@
 'use strict'
 
-angular.module('modulesApp',  ['restangular', 'iso.directives'])
+angular.module('modulesApp',  [
+  'restangular',
+  # 'iso.directives'
+])
   .config ($routeProvider) ->
     $routeProvider
 
