@@ -1,6 +1,7 @@
 'use strict'
 
 angular.module('modulesApp',  [
+  'ngRoute',
   'restangular',
   # 'iso.directives'
 ])
