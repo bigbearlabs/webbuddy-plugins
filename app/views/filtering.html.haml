@@ -3,7 +3,7 @@
 -# attributes suffixed with _ are temporary disabled but not removed as they can be useful for future behavioural tweaks.
 
 
-%section.dev( ng-show="true" )
+%section.dev( ng-show="webbuddy.env != 'webbuddy'" )
   %h3 Filter
   %input( ng-model="data.input" ng-change="")
 
