@@ -1,3 +1,5 @@
+# TODO reconcile with the angularjs plugin framework.
+
 # adapted from https://github.com/marshill/jquery-page-search/blob/master/jquery.search.js
 
 jQuery = window.jQuery || throw "jQuery required."
