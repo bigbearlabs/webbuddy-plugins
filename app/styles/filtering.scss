@@ -4,7 +4,21 @@
 .item {
   background-color: lightyellow;
   // background-color: none;
+
+  padding-top: 15px;
+  padding-bottom: 15px;
+  // TODO ensure fixed size.
 }
+
+// // vertically centre.
+// .item::before{
+//     content:'';
+//     display:inline-block;
+//     height:100%;
+//     vertical-align:middle;
+//     width:0px;
+// }
+
 .dev {
   display: block;
   // display: none;
@@ -18,6 +32,8 @@ p {
   overflow: hidden;
   text-overflow: ellipsis;
   font-size: 80%;
+
+  margin: 0;
 }
 
 
@@ -53,7 +69,7 @@ section.master {
   width: 20%;
 }
 
-section.details {
+section.detail {
   @include vertical-panel;
 
   text-align: center;
@@ -131,4 +147,59 @@ section.details {
     }
   }
 }
+
+
+/* Start: Recommended Isotope styles */
+
+/**** Isotope Filtering ****/
+
+.isotope-item {
+  z-index: 2;
+}
+
+.isotope-hidden.isotope-item {
+  pointer-events: none;
+  z-index: 1;
+}
+
+/**** Isotope CSS3 transitions ****/
+
+.isotope,
+.isotope .isotope-item {
+  -webkit-transition-duration: 0.3s;
+     -moz-transition-duration: 0.3s;
+      -ms-transition-duration: 0.3s;
+       -o-transition-duration: 0.3s;
+          transition-duration: 0.3s;
+}
+
+.isotope {
+  -webkit-transition-property: height, width;
+     -moz-transition-property: height, width;
+      -ms-transition-property: height, width;
+       -o-transition-property: height, width;
+          transition-property: height, width;
+}
+
+.isotope .isotope-item {
+  -webkit-transition-property: -webkit-transform, opacity;
+     -moz-transition-property:    -moz-transform, opacity;
+      -ms-transition-property:     -ms-transform, opacity;
+       -o-transition-property:      -o-transform, opacity;
+          transition-property:         transform, opacity;
+}
+
+/**** disabling Isotope CSS3 transitions ****/
+
+.isotope.no-transition,
+.isotope.no-transition .isotope-item,
+.isotope .isotope-item.no-transition {
+  -webkit-transition-duration: 0s;
+     -moz-transition-duration: 0s;
+      -ms-transition-duration: 0s;
+       -o-transition-duration: 0s;
+          transition-duration: 0s;
+}
+
+/* End: Recommended Isotope styles */
 

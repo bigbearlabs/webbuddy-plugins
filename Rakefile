@@ -12,5 +12,5 @@ end
 
 desc "deploy to Google Drive"
 task :stage do
-  sh %(rsync -av --delete dist/* "#{ENV['HOME']}/Google Drive/bigbearlabs/webbuddy-preview/plugins/")
+  sh %(rsync -av --delete . "#{ENV['HOME']}/Google Drive/bigbearlabs/webbuddy-preview/webbuddy-plugins")
 end

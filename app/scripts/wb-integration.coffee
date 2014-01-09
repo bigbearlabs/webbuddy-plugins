@@ -1,21 +1,35 @@
 # for use only by webbuddy.
 
+# represents the environment from the POV of plugins / other webkit-side artifacts.
 @webbuddy =
+
   env:
-    name:
-      if @WebKitJavascriptBridge
-        'webbuddy'
-      else
-        'stub'
+    name: 'stub'
 
-document.addEventListener "WebViewJavascriptBridgeReady", (=>
+  log: (msg...)=>
+    @WebViewJavascriptBridge.send "console.log: #{msg}"
+
+  on_event: (name, data = {}) =>
+    event = { name, data }
+    @WebViewJavascriptBridge.send "webbuddy_event: #{JSON.stringify(event)}"
+
+  data: {}
+
+post_bridge_attach = =>
   @webbuddy.env.name = 'webbuddy'
-  ), false
 
-## set up some useful stuff.
-@console.log ||= (msg...)=>
-  # log using bridge. TODO replace with a function attached from hosting env.
-  WebViewJavascriptBridge.send "console.log: #{msg}"
+  ## set up some useful stuff.
+  @console.log = @webbuddy.log
+
+  # PROTOCOL send ready event to hosting env.
+  @webbuddy.on_event 'bridge_attached'
+
+
+if @WebViewJavascriptBridge
+  post_bridge_attach()
+else
+  document.addEventListener "WebViewJavascriptBridgeReady", post_bridge_attach, false
+
 
 
 # interface elements:

@@ -4,54 +4,82 @@ angular.module('modulesApp')
   .controller 'FilteringCtrl', ($scope, $window, $timeout, $q,
     Restangular) ->
 
-    # expose the scope so the hosting environment can interact with the view.
-    # use flat keys to avoid timing dependencies.
-    $window.webbuddy_data_updated = ->
-      $scope.refresh_data()
+    ## interfacing with hosting env.
+
+    to_hash = (array, key_property)->
+      # do nothing if already a hash.
+      return array unless (array instanceof Array)
+
+      array.reduce (acc, e)->
+        key = encodeURIComponent e[key_property]
+        acc[key] = e
+        acc
+      , {}
+
+    # attach data handler to the bridge
+    webbuddy.on_data = (new_data)->
+      data = _.clone $scope.data
+      data ||= {}
+
+      for k, v of new_data
+
+        if k.indexOf('_delta') >= 0
+          # for keys /.*_delta/, merge values with existing key.
+
+          k = k.replace '_delta', ''
+          v_hash = to_hash v, 'name'
+
+          delta_applied = _.clone data[k]
+          for delta_k, delta_v of v_hash
+            console.log "setting #{k}.#{delta_k} to #{delta_v}"
+            delta_applied[delta_k] = delta_v
+
+          data[k] = delta_applied
+        else
+          # just add to the data.
+
+          console.log "setting #{k}"
+          data[k] = v
+
+      $scope.refresh_data data
+      $scope.$apply()
+
+    # also expose the scope for data retrieval. WIP
+    webbuddy.scope = $scope
+
+    # FIXME refactor the above into a service that represents the host env.
 
 
-    # view consts. UNUSED
-    $scope.partials =
-      collection: 'views/collection.html'
-
-
-    # # isotope bits. UNUSED
-    # isotope_containers = [ '.search-list', '.page-list', '.suggestion-list' ]
-    # $scope.options =
-    #   itemSelector: '.item'
-    #   layoutMode: 'straightDown'
-    #   # layoutMode: 'straightAcross'
-    # # initialise isotope.
-    # $scope.isotope = (selector_for_container, options = $scope.options)->
-    #   # $timeout ->
-    #   #   # re-isotope
-    #   #   $(selector_for_container).isotope options
-
-    #   #   # hide elems after limit
-    #   #   # $(selector_for_container).find('.item:gt(4)').
-    #   # , 0
-
+    ## view-model observations.
 
     # watch model to trigger view behaviour.
     $scope.$watch 'data.input', ->
       $scope.filter()
+
     # FIXME when this code path throws, it will be silent from webbuddy. not good
 
-    ## view ops.
 
-    $scope.refresh_data = ->
+    ## view-model ops.
+
+    $scope.refresh_data = (data)->
       $timeout ->
-        console.log "refreshing data."
-        $scope.data = $window.webbuddy_data
+        # console.log "refreshing data: #{JSON.stringify data}"
+
+        # convert searches into hash.
+        if data.searches
+          data.searches = to_hash data.searches, 'name'
+
+        $scope.data = data
         $scope.filter()
         $scope.$apply()
+        # FIXME this will potentially trigger filtering twice after the watch on data.input
 
 
     ## ui ops.
 
     $scope.preview = (item) ->
       $scope.view_model.selected_item = item
-      $scope.view_model.details =
+      $scope.view_model.detail =
         if item
           name: item.name
           items: if item.pages then item.pages else [ item ]
@@ -59,70 +87,116 @@ angular.module('modulesApp')
           null
 
     $scope.hide_preview = (item) ->
-      $scope.view_model.details = null
+      $scope.view_model.detail = null
 
     $scope.$root.filter = (input = $scope.data?.input)->
-      # simulate an error to ensure hosting environment can report it.
-      # throw "DING"
-
       console.log("filtering for #{input}")
-      ## filter using isotope. UNUSED
-      # options = {}
-      # options.filter = ".item:contains(#{input})"
-
-      # isotope_containers.map (selector)->
-      #   $scope.isotope $(selector), options
-
 
       ## filter the view model.
-      $scope.view_model.searches = $scope.data?.searches?.filter (search)->
-        search.name?.toLowerCase().match input.toLowerCase()
-      $scope.view_model.searches ||= []
 
-      $scope.view_model.hits = _.clone $scope.view_model.searches
+      # for serious development in coffeescript, we need a way to extract stuff like this into separate code modules really quickly. still looking for an agile enough solution.
+      matching_searches = ->
+        name_match = (e)->
+          e.name?.toLowerCase().match input.toLowerCase()
+
+        _($scope.data?.searches)
+          .values()
+          .filter (search)->
+            # case-insensitive match of names.
+            name_match(search) or
+              # or
+              # regular expression match of names. TODO
+              # any page matches.
+              search.pages?.filter((e)-> name_match e).length > 0
+          .value()
+
+      update_search_hits = ->
+        sync_reference = $scope.view_model.searches
+        sync_target = $scope.view_model.hits
+
+        unless sync_target
+          $scope.view_model.hits = _.clone sync_reference
+          return
+
+        intersection = _.intersection sync_reference, sync_target
+        to_add = _.difference sync_reference, intersection
+        to_remove = _.difference sync_target, intersection
+
+        # remove all in to_remove.
+        for i in [(sync_target.length - 1)...-1]
+          e = sync_target[i]
+          if _.include to_remove, e
+            sync_target.splice i, 1
+
+        # add all i to_add.
+        to_add.map (e)-> sync_target.push e
+
+
+      update_smart_stacks = ->
+        console.log 'todo'
+
+
+      $scope.view_model.searches = matching_searches()
 
       $scope.view_model.pages = $scope.data?.pages?.filter (page)->
         page.name?.toLowerCase().match input.toLowerCase()
 
-      if $scope.view_model?.pages?.length > 0
-        page_stack =
-          name: 'Matching pages'
-          pages: $scope.view_model.pages
+      update_search_hits()
+      update_smart_stacks()
 
-        $scope.view_model.hits.push page_stack
-
-
-      # update the selected one.
+      # invoke preview on the first hit.
       $scope.preview $scope.view_model.hits[0]
-      # $scope.$apply()
 
-      # isotope_containers.map (selector)->
-      #   $scope.isotope $(selector)
-      #   $(selector).isotope 'reloadItems'
+      # we must re-isotope to avoid errors from isotope due to deviation between model and jquery objs.
+      $scope.reisotope '.hit-list'
+
 
     $scope.classname = (item) ->
-      if $scope.view_model.selected_item is item
-        'selected'
-      else
-        ''
+      classname =
+        if $scope.view_model.selected_item is item
+          'selected'
+        else
+          ''
+
 
     # dev-only
     $scope.fetch_stub_data = ->
+      stub_data_rsc = 'filtering.json'
+      console.log "fetch stub data from #{stub_data_rsc}"
       Restangular.setBaseUrl "data"
-      Restangular.one('filtering.json').get()
+      Restangular.one(stub_data_rsc).get()
       .then (data)->
-        # guard against a race from the attach op.
-        unless $window.webbuddy_data
-          $window.webbuddy_data = data
-
-          $scope.refresh_data()
+        $scope.refresh_data data
 
 
     ## statics
     $scope.view_model ||=
       limit: 5
-      # show_dev: true
       show_dev: webbuddy.env.name is 'stub'
+      # show_dev: true
+
+
+    ## isotope bits.
+
+    # isotope_containers = [ '.search-list', '.page-list', '.suggestion-list' ]
+    isotope_containers = [ '.hit-list' ]
+
+    $scope.isotope_options =
+      itemSelector: '.item'
+      layoutMode: 'straightDown'
+      # layoutMode: 'straightAcross'
+      # sortBy: 'name'  # TEMP
+      # getSortData:
+      #   name: ($elem)-> $elem.find('a').attr('title')
+
+    # initialise isotope.
+    $scope.isotope = (selector_for_container)->
+      # $timeout ->
+      #   $(selector_for_container).isotope $scope.isotope_options
+
+    $scope.reisotope = (selector_for_container)->
+      # $timeout ->
+      #   $(selector_for_container).isotope('reloadItems').isotope()
 
 
     ## doit.
@@ -130,22 +204,11 @@ angular.module('modulesApp')
     switch webbuddy.env.name
       when 'stub'
         $scope.fetch_stub_data()
-      else
-        $scope.refresh_data()
 
 
-    # isotope doit. UNUSED
-    # isotope_containers.map (selector)->
-    #  $scope.isotope selector
-    #  $timeout ->
-    #    $(selector).isotope()
-    #  , 0
-
-    # $window.webbuddy.module.update_data data
-
-
-    # $scope.isotope()
-
-    # , 0
+    # isotope doit.
+    isotope_containers.map (selector)->
+      $timeout ->
+        $scope.isotope selector
 
 

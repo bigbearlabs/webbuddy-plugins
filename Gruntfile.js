@@ -50,13 +50,16 @@ module.exports = function (grunt) {
       },
       haml: {
         files: [
-          'app/*.haml',
-          'app/views/*.haml',
+          '<%= yeoman.app %>/*.haml',
+          '<%= yeoman.app %>/views/*.haml',
         ],
         tasks: ['haml']
       },
       coffee: {
-        files: ['<%= yeoman.app %>/scripts/{,*/}*.coffee'],
+        files: [
+          '<%= yeoman.app %>/scripts/{,*/}*.coffee',
+          'static/{,*/}*.coffee'
+        ],
         tasks: ['coffee:dist']
       },
       coffeeTest: {

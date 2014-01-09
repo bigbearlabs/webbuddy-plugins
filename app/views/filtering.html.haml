@@ -1,8 +1,7 @@
 -# ### The filtering UI markup.
--# all styling implemented in stylesheet. TODO refactor
--#
+-# all styling implemented in stylesheet.
+-# attributes suffixed with _ are temporary disabled but not removed as they can be useful for future behavioural tweaks.
 
-%link{href: "styles/filtering.css", rel: "stylesheet"}
 
 %section.dev( ng-show="true" )
   %h3 Filter
@@ -10,16 +9,22 @@
 
 
 %section.master
+
   %h2( ng-show="false" ) Hits
 
-  %ul.hit-list( ng-show_="view_model.hits.length > 0" )
 
-    -# real stacks
-    %li.item( data-ng-repeat="item in view_model.hits"
+  -### list of master items
+  %ul.hit-list( ng-show_="view_model.hits.length > 0"
+    isotope-container_
+    iso-mode_="insert"
+    )
+
+    %li.item( data-ng-repeat="item in view_model.hits | orderBy:'-last_accessed_timestamp'"
       ng-mouseover="preview(item)"
       ng-class="classname(item)"
-    )
-      -# ng-mouseleave="hide_preview(item)"
+      ng-mouseleave_="hide_preview(item)"
+      isotope-item_
+      )
 
       -# render a stack
       %a( href="{{item.url}}" title="{{item.name}}")
@@ -27,50 +32,38 @@
         %p {{item.name}}
         %p {{item.last_accessed_timestamp}}
 
+
     -### enable this to show a 'more...' button.
     -# %li.item( ng-show="view_model.hits.length > view_model.limit" )
     -#   %p More...
 
-    -# separators between stack groups TODO
 
-    -# %li.item( ng-show="view_model.pages.length > view_model.limit" )
-    -#   %p More...
+    -### WIP smart-stack placeholders.
 
+    -# pages smart-stack currently created in filtering.coffee.
 
-    -# smart stacks
-    %li.item.highlights( ng-show_="view_model.hits.length == 0")
-      %h3 Placeholder
-      %p TODO Matching snippets to show here.
+    -# %li.item.highlights( ng-show_="view_model.hits.length == 0")
+    -#   %h3 Placeholder
+    -#   %p TODO Matching snippets to show here.
 
-    %li.item.search-suggestions( ng-show_="view_model.hits.length == 0")
-      %h3 Placeholder
-      %p TODO Suggested searches stack to show here.
+    -# %li.item.search-suggestions( ng-show_="view_model.hits.length == 0")
+    -#   %h3 Placeholder
+    -#   %p TODO Suggested searches stack to show here.
 
 
--# display details for the highlighted item in results
-%section.details
-  %h2 {{view_model.details.name}}
+-### display details for the highlighted item in master
+%section.detail
+
+  %h2 {{view_model.detail.name}}
 
   %ul.detail-list
-    %li.item.thumbnail( ng-repeat="detail_item in view_model.details.items" )
+    %li.item.thumbnail( ng-repeat="detail_item in view_model.detail.items" )
       %a( href="{{detail_item.url}}" title="{{detail_item.name}}")
         %img( ng-src="{{detail_item.thumbnail_url}}" )
         %p {{detail_item.name}}
 
 
--# WIP SECTIONS
-%section.suggestions( ng-show="false" )
-  %h2 Suggestions
-
-  %ul.suggestion-list(  )
-
-    %li.item( data-ng-repeat="item in data.suggestions"
-
-      )
-      %p {{item}}
-
-
-%section.evaluator
+%section.evaluator.dev
   .evaluator( ng-include="'views/eval.html'" ng-controller="EvalCtrl" )
 
 
