@@ -54,7 +54,7 @@
 -### display details for the highlighted item in master
 %section.detail
 
-  %h2 {{view_model.detail.name}}
+  %h2( ng-bind="view_model.detail.name" )
 
   %ul.detail-list
     %li.item.thumbnail( ng-repeat="detail_item in view_model.detail.items" )
