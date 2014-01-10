@@ -1,8 +1,10 @@
-# TODO reconcile with the angularjs plugin framework.
-
 # adapted from https://github.com/marshill/jquery-page-search/blob/master/jquery.search.js
 
-jQuery = window.jQuery || throw "jQuery required."
+# NOTE after evaluating browserify, grunt-browerify, coffeeify, ender, debowerify, resorting to quick hack to define a prop. syntax for requiring, to be consumed by the host env, due to time constraints integrating any off-the-shelf(haha) solution.
+
+'@require bower_components/jquery/jquery.min.js'
+'@require bower_components/jquery-highlightRegex/highlightRegex.min.js'
+
 
 settings = undefined # scope these as shared
 searchables = undefined
