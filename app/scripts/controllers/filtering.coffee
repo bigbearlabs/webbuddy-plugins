@@ -21,8 +21,8 @@ angular.module('modulesApp')
       , {}
 
     # attach data handler to the bridge
-    webbuddy.on_data = (new_data)->
-      data = _.clone $scope.data
+    webbuddy.on_data = (new_data, scope = $scope)->
+      data = _.clone scope.data
       data ||= {}
 
       for k, v of new_data
@@ -45,11 +45,8 @@ angular.module('modulesApp')
           console.log "setting #{k}"
           data[k] = v
 
-      $scope.refresh_data data
-      $scope.$apply()
-
-    # also expose the scope for data retrieval. WIP
-    webbuddy.scope = $scope
+      scope.refresh_data data
+      scope.$apply()
 
     # FIXME refactor the above into a service that represents the host env.
 
