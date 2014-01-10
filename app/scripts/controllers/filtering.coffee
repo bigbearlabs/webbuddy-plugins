@@ -178,16 +178,6 @@ angular.module('modulesApp')
           ''
 
 
-    # dev-only
-    $scope.fetch_stub_data = ->
-      stub_data_rsc = 'filtering.json'
-      console.log "fetch stub data from #{stub_data_rsc}"
-      Restangular.setBaseUrl "data"
-      Restangular.one(stub_data_rsc).get()
-      .then (data)->
-        $scope.refresh_data data
-
-
     ## statics
     $scope.view_model ||=
       limit: 5
@@ -219,11 +209,19 @@ angular.module('modulesApp')
 
 
     ## doit.
-    # FIXME make polymorphic.
-    switch webbuddy.env.name
-      when 'stub'
-        $scope.fetch_stub_data()
+    $scope.fetch_data = ->
+      data_url = webbuddy.env.data_pattern.replace '#{name}', 'filtering'
+      console.log "fetch data from #{data_url} (env #{webbuddy.env.name})"
+      [ base_segs..., last_seg ] = data_url.split '/'
+      Restangular.setBaseUrl base_segs.join '/'
+      Restangular.one(last_seg).get()
+      .then (data)->
+        $scope.refresh_data data
 
+    # queue op to allow the bridge to attach first.
+    $timeout ->
+      $scope.fetch_data()
+    , 100
 
     # isotope doit.
     isotope_containers.map (selector)->
