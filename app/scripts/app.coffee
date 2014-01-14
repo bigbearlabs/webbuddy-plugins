@@ -4,6 +4,7 @@ angular.module('modulesApp',  [
   'ngRoute',
   'restangular',
   'pasvaz.bindonce',
+  'ngAnimate',
   "xeditable"
 ])
   .config ($routeProvider) ->
