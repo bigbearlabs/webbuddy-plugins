@@ -121,7 +121,7 @@ angular.module('modulesApp')
     $scope.hide_preview = (item) ->
       $scope.view_model.detail = null
 
-    $scope.$root.filter = (input = $scope.data?.input)->
+    $scope.filter = (input = $scope.data?.input)->
       console.log("filtering for #{input}")
 
       ## filter the view model and update views.
