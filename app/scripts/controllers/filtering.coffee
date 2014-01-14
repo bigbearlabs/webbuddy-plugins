@@ -162,7 +162,7 @@ angular.module('modulesApp')
       $scope.preview $scope.view_model.hits[0]
 
       # # we must re-isotope to avoid errors from isotope due to deviation between model and jquery objs.
-      # $scope.reisotope '.hit-list'
+      $scope.refresh_collection '.hit-list'
 
 
     $scope.classname = (item) ->
@@ -189,10 +189,10 @@ angular.module('modulesApp')
 
     ## isotope bits.
 
-    # isotope_containers = [ '.search-list', '.page-list', '.suggestion-list' ]
-    isotope_containers = [ '.hit-list' ]
+    # collection_containers = [ '.search-list', '.page-list', '.suggestion-list' ]
+    collection_containers = [ '.hit-list' ]
 
-    $scope.isotope_options =
+    $scope.collection_options =
       itemSelector: '.item'
       layoutMode: 'straightDown'
       # layoutMode: 'straightAcross'
@@ -201,13 +201,15 @@ angular.module('modulesApp')
       #   name: ($elem)-> $elem.find('a').attr('title')
 
     # initialise isotope.
-    $scope.isotope = (selector_for_container)->
-      # $timeout ->
-      #   $(selector_for_container).isotope $scope.isotope_options
+    $scope.init_collection = (selector_for_container)->
+      $timeout ->
+        $(selector_for_container).isotope $scope.collection_options
 
-    $scope.reisotope = (selector_for_container)->
-      # $timeout ->
-      #   $(selector_for_container).isotope('reloadItems').isotope()
+    $scope.refresh_collection = (selector_for_container)->
+      $timeout ->
+        # $(selector_for_container).isotope('reloadItems').isotope()
+        #   $(selector_for_container).isotope
+        #     filter: '.hit'
 
 
     ## doit.
@@ -225,9 +227,9 @@ angular.module('modulesApp')
       $scope.fetch_data()
     , 100
 
-    # isotope doit.
-    isotope_containers.map (selector)->
-      $timeout ->
-        $scope.isotope selector
+    # # isotope doit.
+    collection_containers.map (selector)->
+      $scope.init_collection selector
+      # $timeout ->
 
 
