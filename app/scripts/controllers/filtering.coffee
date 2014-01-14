@@ -58,7 +58,7 @@ angular.module('modulesApp')
       # filter data
       $scope.filter()
 
-      $scope.highlight()
+      # $scope.highlight()  # PERF
 
     # FIXME when this code path throws, it will be silent from webbuddy. not good
 
