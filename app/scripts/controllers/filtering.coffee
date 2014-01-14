@@ -126,6 +126,11 @@ angular.module('modulesApp')
 
       ## filter the view model and update views.
 
+      $scope.view_model.searches = $scope.matching_searches _.values($scope.data?.searches), $scope.data?.input
+
+      $scope.view_model.pages = $scope.data?.pages?.filter (page)->
+        page.name?.toLowerCase().match input.toLowerCase()
+
       update_search_hits = ->
         sync_reference = $scope.view_model.searches
         sync_target = $scope.view_model.hits
@@ -147,15 +152,8 @@ angular.module('modulesApp')
         # add all i to_add.
         to_add.map (e)-> sync_target.push e
 
-
       update_smart_stacks = ->
         console.log 'todo'
-
-
-      $scope.view_model.searches = $scope.matching_searches _.values($scope.data?.searches), $scope.data?.input
-
-      $scope.view_model.pages = $scope.data?.pages?.filter (page)->
-        page.name?.toLowerCase().match input.toLowerCase()
 
       update_search_hits()
       update_smart_stacks()
@@ -163,16 +161,23 @@ angular.module('modulesApp')
       # invoke preview on the first hit.
       $scope.preview $scope.view_model.hits[0]
 
-      # we must re-isotope to avoid errors from isotope due to deviation between model and jquery objs.
-      $scope.reisotope '.hit-list'
+      # # we must re-isotope to avoid errors from isotope due to deviation between model and jquery objs.
+      # $scope.reisotope '.hit-list'
 
 
     $scope.classname = (item) ->
-      classname =
+      selected =
         if $scope.view_model.selected_item is item
           'selected'
         else
           ''
+      hit =
+        if _.include $scope.view_model.hits, item
+          'hit'
+        else
+          ''
+
+      selected + ' ' + hit
 
 
     ## statics

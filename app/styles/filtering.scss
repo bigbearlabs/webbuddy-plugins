@@ -123,6 +123,14 @@ section.detail {
     min-width: 50px;  // constrain min item size
     min-height: 50px;
   }
+
+  // presenting filter results.
+  .item {
+    display: none;
+  }
+  .item.hit {
+    display: block;
+  }
 }
 
 .detail-list {
