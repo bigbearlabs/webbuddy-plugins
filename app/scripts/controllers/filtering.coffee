@@ -78,21 +78,22 @@ angular.module('modulesApp')
         $scope.$apply()
         # FIXME this will potentially trigger filtering twice after the watch on data.input
 
+
     # for serious development in coffeescript, we need a way to extract stuff like this into separate code modules really quickly. still looking for an agile enough solution.
+
+    name_match = (e, input)->
+      # case-insensitive match of names.
+      e.name?.toLowerCase().match input.toLowerCase()
+
     $scope.matching_searches = (searches, input = '')->
       if input.length is 0
         return searches
 
-      name_match = (e)->
-        # case-insensitive match of names.
-        e.name?.toLowerCase().match input.toLowerCase()
-
-      searches
-        .filter (search)->
-          name_match(search)
-            # or
-            # # any page matches.
-            # search.pages?.filter((e)-> name_match e).length > 0
+      searches.filter (search)->
+        name_match search, input
+        # or
+        # # any page matches.
+        # search.pages?.filter((e)-> name_match e).length > 0
 
     # $scope.matching_searches_expr = $scope.matching_searches.toString()
 
@@ -121,6 +122,28 @@ angular.module('modulesApp')
     $scope.hide_preview = (item) ->
       $scope.view_model.detail = null
 
+
+    update_search_hits = (sync_reference, sync_target)->
+      unless sync_target
+        $scope.view_model.hits = _.clone sync_reference
+        return
+
+      intersection = _.intersection sync_reference, sync_target
+      to_add = _.difference sync_reference, intersection
+      to_remove = _.difference sync_target, intersection
+
+      # remove all in to_remove.
+      for i in [(sync_target.length - 1)...-1]
+        e = sync_target[i]
+        if _.include to_remove, e
+          sync_target.splice i, 1
+
+      # add all i to_add.
+      to_add.map (e)-> sync_target.push e
+
+    update_smart_stacks = ->
+      console.log 'todo'
+
     $scope.filter = (input = $scope.data?.input)->
       console.log("filtering for #{input}")
 
@@ -128,34 +151,13 @@ angular.module('modulesApp')
 
       $scope.view_model.searches = $scope.matching_searches _.values($scope.data?.searches), $scope.data?.input
 
-      $scope.view_model.pages = $scope.data?.pages?.filter (page)->
-        page.name?.toLowerCase().match input.toLowerCase()
+      # disable pages for now.
+      # $scope.view_model.pages = $scope.data?.pages?.filter (page)->
+      #   page.name?.toLowerCase().match input.toLowerCase()
 
-      update_search_hits = ->
-        sync_reference = $scope.view_model.searches
-        sync_target = $scope.view_model.hits
+      # update_search_hits $scope.view_model.searches, $scope.view_model.hits
+      $scope.view_model.hits = _.clone $scope.view_model.searches
 
-        unless sync_target
-          $scope.view_model.hits = _.clone sync_reference
-          return
-
-        intersection = _.intersection sync_reference, sync_target
-        to_add = _.difference sync_reference, intersection
-        to_remove = _.difference sync_target, intersection
-
-        # remove all in to_remove.
-        for i in [(sync_target.length - 1)...-1]
-          e = sync_target[i]
-          if _.include to_remove, e
-            sync_target.splice i, 1
-
-        # add all i to_add.
-        to_add.map (e)-> sync_target.push e
-
-      update_smart_stacks = ->
-        console.log 'todo'
-
-      update_search_hits()
       update_smart_stacks()
 
       # invoke preview on the first hit.
