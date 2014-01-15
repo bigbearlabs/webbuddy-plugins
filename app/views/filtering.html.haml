@@ -26,7 +26,7 @@
 
     %li.item( data-ng-repeat="item in data.searches | orderBy:'-last_accessed_timestamp'"
       ng-mouseover="preview(item)"
-      ng-class="classname(item)"
+      class="{{item.hit_class}} {{item.selected_class}}"
       ng-mouseleave_="hide_preview(item)"
       isotope-item_
       )

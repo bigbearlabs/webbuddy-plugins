@@ -58,6 +58,7 @@ angular.module('modulesApp')
       # filter data
       $scope.filter()
 
+
       # $scope.highlight()  # PERF
 
     # FIXME when this code path throws, it will be silent from webbuddy. not good
@@ -82,18 +83,26 @@ angular.module('modulesApp')
     # for serious development in coffeescript, we need a way to extract stuff like this into separate code modules really quickly. still looking for an agile enough solution.
 
     name_match = (e, input)->
+      if input.length is 0
+        return true
+
       # case-insensitive match of names.
       e.name?.toLowerCase().match input.toLowerCase()
 
     $scope.matching_searches = (searches, input = '')->
-      if input.length is 0
-        return searches
-
       searches.filter (search)->
-        name_match search, input
+        matched = name_match search, input
         # or
         # # any page matches.
         # search.pages?.filter((e)-> name_match e).length > 0
+
+        if matched
+          # update the classnames here to minimise redundant loops.
+          search.hit_class = 'hit'
+        else
+          search.hit_class = ''
+
+        matched
 
     # $scope.matching_searches_expr = $scope.matching_searches.toString()
 
@@ -111,6 +120,10 @@ angular.module('modulesApp')
         $('body').highlightRegex new RegExp input, 'i'
 
     $scope.preview = (item) ->
+      # update classes.
+      $scope.view_model?.selected_item?.selected_class = ''
+      item?.selected_class = 'selected'
+
       $scope.view_model.selected_item = item
       $scope.view_model.detail =
         if item
@@ -167,21 +180,6 @@ angular.module('modulesApp')
       $scope.refresh_collection '.hit-list'
 
 
-    $scope.classname = (item) ->
-      selected =
-        if $scope.view_model.selected_item is item
-          'selected'
-        else
-          ''
-      hit =
-        if _.include $scope.view_model.hits, item
-          'hit'
-        else
-          ''
-
-      selected + ' ' + hit
-
-
     ## statics
     $scope.view_model ||=
       limit: 5
@@ -224,14 +222,16 @@ angular.module('modulesApp')
       .then (data)->
         $scope.refresh_data data
 
+        # # isotope doit.
+        collection_containers.map (selector)->
+          $scope.init_collection selector
+          # $timeout ->
+
+
     # queue op to allow the bridge to attach first.
     $timeout ->
       $scope.fetch_data()
     , 100
 
-    # # isotope doit.
-    collection_containers.map (selector)->
-      $scope.init_collection selector
-      # $timeout ->
 
 
