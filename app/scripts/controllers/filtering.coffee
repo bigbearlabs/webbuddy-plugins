@@ -136,6 +136,8 @@ angular.module('modulesApp')
 
 
     update_search_hits = (sync_reference, sync_target)->
+      ## complicated logic to sync arrays.
+
       unless sync_target
         $scope.view_model.hits = _.clone sync_reference
         return
@@ -154,7 +156,7 @@ angular.module('modulesApp')
       to_add.map (e)-> sync_target.push e
 
     update_smart_stacks = ->
-      console.log 'todo'
+      console.log 'IMPL update smart stacks'
 
     $scope.filter = (input = $scope.data?.input)->
       console.log("filtering for #{input}")
@@ -208,13 +210,27 @@ angular.module('modulesApp')
     # initialise isotope.
     $scope.init_collection = (selector_for_container)->
       $timeout ->
+        # remove all comments in ng-repeat sections for better isotope behaviour.
+        # comments = $('.hit-list').contents().filter ->
+        #   this.nodeType == 8
+        # comments.remove()
+
+        # add the isotope-container attr to the containers to avoid clash with ng-repeat.
+        $('.hit-list').attr 'isotope-container', ''
+        $('.hit-list > .item').attr 'isotope-item', ''
+
         $(selector_for_container).isotope $scope.collection_options
 
+      $scope.isotope_inited = true
+
     $scope.refresh_collection = (selector_for_container)->
+      if ! $scope.isotope_inited
+        $scope.init_collection selector_for_container
+
       $timeout ->
         # $(selector_for_container).isotope('reloadItems').isotope()
-        #   $(selector_for_container).isotope
-        #     filter: '.hit'
+        $(selector_for_container).isotope
+          filter: '.hit'
 
 
     ## doit.
@@ -231,7 +247,7 @@ angular.module('modulesApp')
 
         # # isotope doit.
         collection_containers.map (selector)->
-          $scope.init_collection selector
+          # $scope.init_collection selector
           # $timeout ->
 
 
