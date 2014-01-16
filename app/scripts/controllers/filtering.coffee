@@ -203,7 +203,7 @@ angular.module('modulesApp')
     # initialise isotope.
     $scope.init_collection = (selector_for_container)->
       $timeout ->
-        $(selector_for_container).isotope $scope.collection_options
+        # $(selector_for_container).isotope $scope.collection_options
 
     $scope.refresh_collection = (selector_for_container)->
       $timeout ->
