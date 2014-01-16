@@ -18,7 +18,7 @@
 
 post_bridge_attach = =>
   @webbuddy.env.name = 'webbuddy'
-  @webbuddy.env.data_pattern = 'http://localhost:9123/data'  # TACTICAL eventually improve the model exposed by the api.
+  @webbuddy.env.data_pattern = 'http://localhost:59123/data'  # TACTICAL eventually improve the model exposed by the api.
 
   ## set up some useful stuff.
   @console.log = @webbuddy.log
