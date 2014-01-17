@@ -98,11 +98,8 @@ angular.module('modulesApp')
         # # any page matches.
         # search.pages?.filter((e)-> name_match e).length > 0
 
-        if matched
-          # update the classnames here to minimise redundant loops. HACK
-          search.hit_class = 'hit'
-        else
-          search.hit_class = ''
+        # update the view model item.
+        search.matched = matched
 
         matched
 
@@ -115,17 +112,19 @@ angular.module('modulesApp')
 
     ## ui ops.
 
+    $scope.classes = (item) ->
+      hit: item.matched
+      selected: $scope.view_model.selected_item == item
+
+
     $scope.highlight = (input = $scope.data?.input) ->
       $timeout ->
         # apply highlights. BAD-DEP
         $('body').highlightRegex()
         $('body').highlightRegex new RegExp input, 'i'
 
-    $scope.preview = (item) ->
-      # update classes.
-      $scope.view_model?.selected_item?.selected_class = ''
-      item?.selected_class = 'selected'
 
+    $scope.preview = (item) ->
       $scope.view_model.selected_item = item
       $scope.view_model.detail =
         if item

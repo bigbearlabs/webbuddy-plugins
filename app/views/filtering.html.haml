@@ -35,8 +35,7 @@
     )
 
     %li.item( ng-repeat="item in view_model.hits | orderBy: view_model.sort"
-      class="{{item.hit_class}} {{item.selected_class}}"
-      bindonce
+      ng-class="classes(item)"
       ng-mouseover="preview(item)"
       ng-mouseleave_="hide_preview(item)"
       isotope-item_
