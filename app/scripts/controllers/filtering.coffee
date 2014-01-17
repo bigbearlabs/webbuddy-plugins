@@ -103,7 +103,7 @@ angular.module('modulesApp')
         # search.pages?.filter((e)-> name_match e).length > 0
 
         if matched
-          # update the classnames here to minimise redundant loops.
+          # update the classnames here to minimise redundant loops. HACK
           search.hit_class = 'hit'
         else
           search.hit_class = ''
@@ -175,12 +175,14 @@ angular.module('modulesApp')
       #   page.name?.toLowerCase().match input.toLowerCase()
 
       # update_search_hits $scope.view_model.searches, $scope.view_model.hits
-      $scope.view_model.hits = _.clone $scope.view_model.searches
+      # $scope.view_model.hits = $scope.view_model.searches
+      if $scope.data?.searches != $scope.view_model.hits
+        $scope.view_model.hits = _.values $scope.data.searches  # PERF
 
       update_smart_stacks()
 
       # invoke preview on the first hit.
-      $scope.preview $scope.view_model.hits[0]
+      $scope.preview $scope.view_model.searches[0]
 
       # # we must re-isotope to avoid errors from isotope due to deviation between model and jquery objs.
       $scope.refresh_collection '.hit-list'
@@ -189,7 +191,7 @@ angular.module('modulesApp')
     ## statics
     $scope.view_model ||=
       limit: 5
-      sort: 'last_accessed_timestamp'
+      sort: '-last_accessed_timestamp'
       show_dev: ->
         webbuddy.env.name is 'stub'
 

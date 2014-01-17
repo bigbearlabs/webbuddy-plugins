@@ -35,17 +35,18 @@
     )
 
     %li.item( ng-repeat="item in view_model.hits | orderBy: view_model.sort"
-      ng-mouseover="preview(item)"
       class="{{item.hit_class}} {{item.selected_class}}"
+      bindonce
+      ng-mouseover="preview(item)"
       ng-mouseleave_="hide_preview(item)"
       isotope-item_
       )
 
       -# render a stack
-      %a( href="{{item.url}}" title="{{item.name}}")
-        %img.hit-icon( ng-src="{{item.thumbnail_url}}")
-        %p {{item.name}}
-        %p {{item.last_accessed_timestamp}}
+      %a( bo-href="item.url" bo-title="item.name")
+        %img.hit-icon( bo-src="item.thumbnail_url")
+        %p( bo-text="item.name" )
+        %p( bo-text="item.last_accessed_timestamp" )
 
 
     -### enable this to show a 'more...' button.

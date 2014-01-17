@@ -4,6 +4,7 @@ angular.module('modulesApp',  [
   'ngRoute',
   'restangular',
   # 'iso.directives',
+  'pasvaz.bindonce',
   "xeditable"
 ])
   .config ($routeProvider) ->
