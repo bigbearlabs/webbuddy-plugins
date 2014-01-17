@@ -1,5 +1,6 @@
 @import "../bower_components/foundation/scss/foundation";
 
+
 //## DEV
 .item {
   background-color: lightyellow;
@@ -28,6 +29,12 @@
   textarea {
     width: 100% !important;
     height: 200px;
+  }
+}
+
+.button-group {
+  > p, .button {
+    display: inline-block;
   }
 }
 

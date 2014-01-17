@@ -189,8 +189,10 @@ angular.module('modulesApp')
     ## statics
     $scope.view_model ||=
       limit: 5
-      show_dev: webbuddy.env.name is 'stub'
       sort: 'last_accessed_timestamp'
+      show_dev: ->
+        webbuddy.env.name is 'stub'
+
       # show_dev: true
 
 
@@ -220,11 +222,13 @@ angular.module('modulesApp')
 
 
     ## doit.
-    $scope.fetch_data = ->
-      data_url = webbuddy.env.data_pattern.replace '#{name}', 'filtering'
+    $scope.fetch_data = (data_url)->
+      data_url ||= webbuddy.env.data_pattern.replace '#{name}', 'filtering'
       console.log "fetch data from #{data_url} (env #{webbuddy.env.name})"
+      data_url = data_url.replace '://', '@scheme_token@'  # escape scheme.
       [ base_segs..., last_seg ] = data_url.split '/'
-      Restangular.setBaseUrl base_segs.join '/'
+      base_url = base_segs.join('/').replace('@scheme_token@', '://')
+      Restangular.setBaseUrl base_url
       Restangular.one(last_seg).get()
       .then (data)->
         $scope.refresh_data data

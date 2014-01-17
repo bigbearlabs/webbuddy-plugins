@@ -3,7 +3,7 @@
 -# attributes suffixed with _ are temporary disabled but not removed as they can be useful for future behavioural tweaks.
 
 
-%section.dev( ng-show="webbuddy.env != 'webbuddy'" )
+%section.dev( ng-show="view_model.show_dev()" )
   %h3 Filter
   %input( ng-model="data.input" ng-change="")
 
@@ -19,6 +19,16 @@
 
 
   -### list of master items
+
+  .button-group( ng-show="false" )
+    %p.hidden sort:
+    .tiny.button.sort#by_date date
+    .tiny.button.sort#by_size size
+    .tiny.button.sort#none none
+
+  -# TODO style to render horizontally stacked.
+  -# TODO wire to a sort controller method, then to implementation components.
+
   %ul.hit-list( ng-show_="view_model.hits.length > 0"
     isotope-container_
     iso-mode_="insert"
