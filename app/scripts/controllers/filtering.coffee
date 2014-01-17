@@ -231,8 +231,6 @@ angular.module('modulesApp')
           $(selector_for_container).isotope()
 
 
-
-    ## doit.
     $scope.fetch_data = (data_url)->
       data_url ||= webbuddy.env.data_pattern.replace '#{name}', 'filtering'
       console.log "fetch data from #{data_url} (env #{webbuddy.env.name})"
@@ -247,15 +245,20 @@ angular.module('modulesApp')
         # signal all data reloaded
         $scope.refresh_collection()
 
-    # queue op to allow the bridge to attach first.
-    $timeout ->
-      # isotope doit.
-      collection_containers.map (selector)->
-        $scope.init_collection selector
 
+    ## doit.
+
+    collection_containers.map (selector)->
+      $scope.init_collection selector
+
+    $scope.fetch_data()
+
+    # sometimes the bridge can attach late. register an event listener to guard against such cases.
+    post_bridge_attach = ->
       $scope.fetch_data()
 
-    , 100
+    document.addEventListener "WebViewJavascriptBridgeReady", post_bridge_attach, false
+
 
 
 
