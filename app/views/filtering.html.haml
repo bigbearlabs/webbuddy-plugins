@@ -31,8 +31,6 @@
 
   %ul.hit-list( ng-show_="view_model.hits.length > 0"
     bindonce="view_model.hits"
-    class="js-isotope"
-    data-isotope-options='{ "itemSelector": ".item",  "layoutMode": "vertical",  "filter": ".hit" }'
     )
 
     %li.item( ng-repeat="item in view_model.hits | orderBy: view_model.sort"

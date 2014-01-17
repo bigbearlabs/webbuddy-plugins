@@ -70,18 +70,8 @@ angular.module('modulesApp')
       if data.searches instanceof Array
         data.searches = to_hash data.searches, 'name'
 
-
-      $timeout ->
-        # console.log "refreshing data: #{JSON.stringify data}"
-
-        $scope.data = data
-        $scope.filter()
-        $scope.$apply()
-
-        # HACK notify some view plugins. this is probably going to bottleneck.
-        $scope.refresh_collection()
-
-        # FIXME this will potentially trigger filtering twice after the watch on data.input
+      $scope.data = data
+      $scope.filter()
 
 
     # for serious development in coffeescript, we need a way to extract stuff like this into separate code modules really quickly. still looking for an agile enough solution.
@@ -93,7 +83,7 @@ angular.module('modulesApp')
       # case-insensitive match of names.
       e.name?.toLowerCase().match input.toLowerCase()
 
-    $scope.matching_searches = (searches, input = '')->
+    $scope.match_searches = (searches, input = '')->
       searches.filter (search)->
         matched = name_match search, input
         # or
@@ -105,11 +95,14 @@ angular.module('modulesApp')
 
         matched
 
+      # return all searches as rendering is determined by class.
+      searches
+
     # $scope.matching_searches_expr = $scope.matching_searches.toString()
 
-    # $scope.update_matching_searches = (expr = $scope.matching_searches_expr) ->
+    # $scope.update_match_searches = (expr = $scope.matching_searches_expr) ->
     #   eval """
-    #     angular.element('.master').scope().matching_searches = #{expr};
+    #     angular.element('.master').scope().match_searches = #{expr};
     #   """
 
     ## ui ops.
@@ -167,26 +160,23 @@ angular.module('modulesApp')
 
       ## filter the view model and update views.
 
-      $scope.view_model.searches = $scope.matching_searches _.values($scope.data?.searches), $scope.data?.input
+      $scope.view_model.searches = $scope.match_searches _.values($scope.data?.searches), $scope.data?.input
 
       # disable pages for now.
       # $scope.view_model.pages = $scope.data?.pages?.filter (page)->
       #   page.name?.toLowerCase().match input.toLowerCase()
 
-      # update_search_hits $scope.view_model.searches, $scope.view_model.hits
-      # $scope.view_model.hits = $scope.view_model.searches
-      if $scope.data?.searches != $scope.view_model.hits
-        $scope.view_model.hits = _.values $scope.data.searches
-      # CLEANUP
+
+      # init view model.
+      if $scope.view_model?.hits != $scope.view_model.searches
+        $scope.view_model.hits = $scope.view_model.searches
 
       update_smart_stacks()
 
       # invoke preview on the first hit.
       $scope.preview $scope.view_model.searches[0]
 
-      # # we must re-isotope to avoid errors from isotope due to deviation between model and jquery objs.
-      $scope.refresh_collection()
-
+      $scope.refresh_collection_filter()
 
     ## statics
     $scope.view_model ||=
@@ -229,19 +219,17 @@ angular.module('modulesApp')
       # temp init (we think.)
       $(selector_for_container).isotope $scope.collection_options
 
-      $scope.isotope_inited = true
-
-    $scope.refresh_collection = (selector_for_container = $scope.collection_options)->
-
-      # if ! $scope.isotope_inited
-      #   $scope.init_collection selector_for_container
-
-        # return
-
+    $scope.refresh_collection = (selector_for_container = collection_containers)->
 
       $timeout ->
-        # $(selector_for_container).isotope('reloadItems').isotope()
-        $(selector_for_container).isotope $scope.collection_options
+        collection_containers.map (selector_for_container) ->
+          $(selector_for_container).isotope('reloadItems').isotope()
+
+    $scope.refresh_collection_filter = (selector_for_container = collection_containers)->
+      $timeout ->
+        collection_containers.map (selector_for_container) ->
+          $(selector_for_container).isotope()
+
 
 
     ## doit.
@@ -256,17 +244,17 @@ angular.module('modulesApp')
       .then (data)->
         $scope.refresh_data data
 
-
-        # # isotope doit.
-        collection_containers.map (selector)->
-          # $scope.init_collection selector
-          # $timeout ->
-
-        $('.hit-list').isotope('reloadItems')
+        # signal all data reloaded
+        $scope.refresh_collection()
 
     # queue op to allow the bridge to attach first.
     $timeout ->
+      # isotope doit.
+      collection_containers.map (selector)->
+        $scope.init_collection selector
+
       $scope.fetch_data()
+
     , 100
 
 
