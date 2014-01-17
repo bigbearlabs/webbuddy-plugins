@@ -64,17 +64,15 @@ angular.module('modulesApp')
     ## view-model ops.
 
     $scope.refresh_data = (data)->
+      ## process the data a bit. REFACTOR
+
+      # convert searches into hash for easy delta application.
+      if data.searches instanceof Array
+        data.searches = to_hash data.searches, 'name'
+
+
       $timeout ->
         # console.log "refreshing data: #{JSON.stringify data}"
-
-        ## process the data a bit. REFACTOR
-
-        # convert searches into hash for easy delta application.
-        if data.searches instanceof Array
-          data.searches = to_hash data.searches, 'name'
-
-        ## end process
-
 
         $scope.data = data
         $scope.filter()
@@ -172,7 +170,8 @@ angular.module('modulesApp')
       # update_search_hits $scope.view_model.searches, $scope.view_model.hits
       # $scope.view_model.hits = $scope.view_model.searches
       if $scope.data?.searches != $scope.view_model.hits
-        $scope.view_model.hits = _.values $scope.data.searches  # PERF
+        $scope.view_model.hits = _.values $scope.data.searches
+      # CLEANUP
 
       update_smart_stacks()
 
