@@ -30,6 +30,7 @@
   -# TODO wire to a sort controller method, then to implementation components.
 
   %ul.hit-list( ng-show_="view_model.hits.length > 0"
+    bindonce="view_model.hits"
     isotope-container_
     iso-mode_="insert"
     )
