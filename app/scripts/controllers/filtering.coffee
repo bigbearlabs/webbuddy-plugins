@@ -73,10 +73,6 @@ angular.module('modulesApp')
         if data.searches instanceof Array
           data.searches = to_hash data.searches, 'name'
 
-        # convert timestamps. should position somewhere else.
-        for k, v of data.searches
-          v.last_accessed_timestamp = new Date(v.last_accessed_timestamp * 1000)
-
         ## end process
 
 
