@@ -77,6 +77,10 @@ angular.module('modulesApp')
         $scope.data = data
         $scope.filter()
         $scope.$apply()
+
+        # HACK notify some view plugins. this is probably going to bottleneck.
+        $scope.refresh_collection()
+
         # FIXME this will potentially trigger filtering twice after the watch on data.input
 
 
@@ -181,7 +185,7 @@ angular.module('modulesApp')
       $scope.preview $scope.view_model.searches[0]
 
       # # we must re-isotope to avoid errors from isotope due to deviation between model and jquery objs.
-      $scope.refresh_collection '.hit-list'
+      $scope.refresh_collection()
 
 
     ## statics
@@ -201,36 +205,43 @@ angular.module('modulesApp')
 
     $scope.collection_options =
       itemSelector: '.item'
-      layoutMode: 'straightDown'
-      # layoutMode: 'straightAcross'
+      layoutMode: 'vertical'
+      filter: '.hit'
+
       # sortBy: 'name'  # TEMP
       # getSortData:
       #   name: ($elem)-> $elem.find('a').attr('title')
 
     # initialise isotope.
     $scope.init_collection = (selector_for_container)->
-      $timeout ->
+      # $timeout ->
         # remove all comments in ng-repeat sections for better isotope behaviour.
         # comments = $('.hit-list').contents().filter ->
         #   this.nodeType == 8
         # comments.remove()
 
-        # add the isotope-container attr to the containers to avoid clash with ng-repeat.
-        $('.hit-list').attr 'isotope-container', ''
-        $('.hit-list > .item').attr 'isotope-item', ''
+        # # add the isotope-container attr to the containers to avoid clash with ng-repeat.
+        # $('.hit-list').attr 'isotope-container', ''
+        # $('.hit-list > .item').attr 'isotope-item', ''
 
-        $(selector_for_container).isotope $scope.collection_options
+      # $(selector_for_container).isotope $scope.collection_options
+
+      # temp init (we think.)
+      $(selector_for_container).isotope $scope.collection_options
 
       $scope.isotope_inited = true
 
-    $scope.refresh_collection = (selector_for_container)->
-      if ! $scope.isotope_inited
-        $scope.init_collection selector_for_container
+    $scope.refresh_collection = (selector_for_container = $scope.collection_options)->
+
+      # if ! $scope.isotope_inited
+      #   $scope.init_collection selector_for_container
+
+        # return
+
 
       $timeout ->
         # $(selector_for_container).isotope('reloadItems').isotope()
-        $(selector_for_container).isotope
-          filter: '.hit'
+        $(selector_for_container).isotope $scope.collection_options
 
 
     ## doit.
@@ -245,11 +256,13 @@ angular.module('modulesApp')
       .then (data)->
         $scope.refresh_data data
 
+
         # # isotope doit.
         collection_containers.map (selector)->
           # $scope.init_collection selector
           # $timeout ->
 
+        $('.hit-list').isotope('reloadItems')
 
     # queue op to allow the bridge to attach first.
     $timeout ->

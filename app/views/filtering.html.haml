@@ -31,15 +31,14 @@
 
   %ul.hit-list( ng-show_="view_model.hits.length > 0"
     bindonce="view_model.hits"
-    isotope-container
-    iso-mode="insert"
+    class="js-isotope"
+    data-isotope-options='{ "itemSelector": ".item",  "layoutMode": "vertical",  "filter": ".hit" }'
     )
 
     %li.item( ng-repeat="item in view_model.hits | orderBy: view_model.sort"
       ng-class="classes(item)"
       ng-mouseover="preview(item)"
       ng-mouseleave_="hide_preview(item)"
-      isotope-item_
       )
 
       -# render a stack

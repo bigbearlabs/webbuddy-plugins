@@ -5,7 +5,7 @@
     "angular": "~1.2.0",
     "restangular": "",
     "jquery": "",
-    "isotope": "",
+    "isotope": "v2",
     "angular-isotope": "",
     "foundation": "~4.3.2",
     "json2": "",
