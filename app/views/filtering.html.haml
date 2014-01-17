@@ -24,7 +24,7 @@
     iso-mode_="insert"
     )
 
-    %li.item( data-ng-repeat="item in data.searches | orderBy:'-last_accessed_timestamp'"
+    %li.item( ng-repeat="item in view_model.hits | orderBy: view_model.sort"
       ng-mouseover="preview(item)"
       class="{{item.hit_class}} {{item.selected_class}}"
       ng-mouseleave_="hide_preview(item)"

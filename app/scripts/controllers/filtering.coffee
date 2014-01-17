@@ -11,9 +11,6 @@ angular.module('modulesApp')
     ## interfacing with hosting env.
 
     to_hash = (array, key_property)->
-      # do nothing if already a hash.
-      return array unless (array instanceof Array)
-
       array.reduce (acc, e)->
         key = encodeURIComponent e[key_property]
         acc[key] = e
@@ -70,9 +67,18 @@ angular.module('modulesApp')
       $timeout ->
         # console.log "refreshing data: #{JSON.stringify data}"
 
-        # convert searches into hash.
-        if data.searches
+        ## process the data a bit. REFACTOR
+
+        # convert searches into hash for easy delta application.
+        if data.searches instanceof Array
           data.searches = to_hash data.searches, 'name'
+
+        # convert timestamps. should position somewhere else.
+        for k, v of data.searches
+          v.last_accessed_timestamp = new Date(v.last_accessed_timestamp * 1000)
+
+        ## end process
+
 
         $scope.data = data
         $scope.filter()
@@ -184,6 +190,7 @@ angular.module('modulesApp')
     $scope.view_model ||=
       limit: 5
       show_dev: webbuddy.env.name is 'stub'
+      sort: 'last_accessed_timestamp'
       # show_dev: true
 
 
