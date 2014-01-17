@@ -132,27 +132,26 @@ section.detail {
   }
 
   // presenting filter results.
-  .item {
-    display: none;
+  .item:not(.hit) {
+    // display: none;
+    height: 0;
+    padding: 0;
+    > a, p, div {
+      visibility: hidden;
+      height: 0;
+      padding: 0;
+    }
   }
-  .item.hit {
-    display: block;
+  .hit-add, .hit-remove {
+    transition:0.2s ease-in-out all;
   }
-
-  // .item.ng-enter {
-  //   transition:0.3s ease-in-out all;
-  //   opacity:0;
-  // }
-  // .item.ng-enter.ng-enter-active {
-  //   opacity:1;
-  // }
-  // .item.ng-leave {
-  //   transition:0.3s ease-in-out all;
-  //   opacity:1;
-  // }
-  // .item.ng-leave.ng-leave-active {
-  //   opacity:0;
-  // }
+  .hit,
+  .hit-add.hit-add-active {
+    height:100%;
+  }
+  .hit-remove.hit-remove-active {
+    height:0;
+  }
 }
 
 .detail-list {
