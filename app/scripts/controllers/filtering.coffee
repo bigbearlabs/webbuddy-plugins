@@ -217,18 +217,18 @@ angular.module('modulesApp')
       # $(selector_for_container).isotope $scope.collection_options
 
       # temp init (we think.)
-      $(selector_for_container).isotope $scope.collection_options
+      # $(selector_for_container).isotope $scope.collection_options
 
     $scope.refresh_collection = (selector_for_container = collection_containers)->
 
-      $timeout ->
-        collection_containers.map (selector_for_container) ->
-          $(selector_for_container).isotope('reloadItems').isotope()
+      # $timeout ->
+      #   collection_containers.map (selector_for_container) ->
+      #     $(selector_for_container).isotope('reloadItems').isotope()
 
     $scope.refresh_collection_filter = (selector_for_container = collection_containers)->
-      $timeout ->
-        collection_containers.map (selector_for_container) ->
-          $(selector_for_container).isotope()
+      # $timeout ->
+      #   collection_containers.map (selector_for_container) ->
+      #     $(selector_for_container).isotope()
 
 
     $scope.fetch_data = (data_url)->
