@@ -3,22 +3,8 @@
 
 //## DEV
 .item {
-  background-color: lightyellow;
-  // background-color: none;
-
-  // padding-top: 15px;
-  // padding-bottom: 15px;
-  // TODO ensure fixed size.
+  // background-color: lightyellow;
 }
-
-// // vertically centre.
-// .item::before{
-//     content:'';
-//     display:inline-block;
-//     height:100%;
-//     vertical-align:middle;
-//     width:0px;
-// }
 
 .dev {
   display: block;
@@ -48,6 +34,10 @@ p {
   margin: 0;
 }
 
+//## colours.
+body {
+  background: white;
+}
 
 //## visual roles.
 
@@ -101,24 +91,33 @@ section.detail {
 .item {
   // @include grid-column(4);  // 3-column layout
 
+  max-width: 100%;  // bound to parent element width
+
   a {
     display: inline-block;
-    width: 100px;
     text-align: center;
 
+    max-width: 100%;
+
     // make immediate children fit.
-    > img, p {
-      width: 100%;
+    > img {
+      display: inline-block;
+
+      margin-top: 20px;
+
+      width: 80%;
+      // width: 100px;
+      height: auto;  // should be scaled to width
+      min-height: 80px;
+
+      @include clearfix;
     }
-  }
 
-  img {
-    display: inline-block;  // horizontally centre
+    > p {
+      margin: 0;
 
-    height: auto;  // should be scaled to width
-    min-height: 80px;
-
-    @include clearfix;
+      max-width: 95%;
+    }
   }
 
 }
