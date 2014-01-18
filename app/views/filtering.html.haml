@@ -33,14 +33,18 @@
     bindonce="view_model.hits"
     )
 
+    -# %li.item( ng-repeat="item in view_model.hits | filter:{matched:true} | orderBy: view_model.sort"
     %li.item( ng-repeat="item in view_model.hits | orderBy: view_model.sort"
-      ng-class="classes(item)"
       ng-mouseover="preview(item)"
       ng-mouseleave_="hide_preview(item)"
       )
+      -# ng-show="item.matched"
+      -# ng-class="classes(item)"
+
 
       -# render a stack
-      %a( bo-href="item.url" bo-title="item.name")
+      %a( bo-href="item.url" bo-title="item.name"
+        )
         %img.hit-icon( bo-src="item.thumbnail_url")
         %p( bo-text="item.name" )
         %p( bo-text="item.last_accessed_timestamp" )

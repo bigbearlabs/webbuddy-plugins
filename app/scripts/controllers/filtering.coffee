@@ -95,15 +95,9 @@ angular.module('modulesApp')
 
         matched
 
-      # return all searches as rendering is determined by class.
-      searches
+      # # return all searches as rendering is determined by class.
+      # searches
 
-    # $scope.matching_searches_expr = $scope.matching_searches.toString()
-
-    # $scope.update_match_searches = (expr = $scope.matching_searches_expr) ->
-    #   eval """
-    #     angular.element('.master').scope().match_searches = #{expr};
-    #   """
 
     ## ui ops.
 
@@ -166,12 +160,13 @@ angular.module('modulesApp')
       # $scope.view_model.pages = $scope.data?.pages?.filter (page)->
       #   page.name?.toLowerCase().match input.toLowerCase()
 
-
-      # init view model.
-      if $scope.view_model?.hits != $scope.view_model.searches
-        $scope.view_model.hits = $scope.view_model.searches
-
       update_smart_stacks()
+
+      # # init view model.
+      # if $scope.view_model?.hits != $scope.view_model.searches
+      #   $scope.view_model.hits = $scope.view_model.searches
+
+      $scope.view_model.hits = $scope.view_model.searches
 
       # invoke preview on the first hit.
       $scope.preview $scope.view_model.searches[0]

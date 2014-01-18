@@ -6,8 +6,8 @@
   background-color: lightyellow;
   // background-color: none;
 
-  padding-top: 15px;
-  padding-bottom: 15px;
+  // padding-top: 15px;
+  // padding-bottom: 15px;
   // TODO ensure fixed size.
 }
 
@@ -131,26 +131,61 @@ section.detail {
     min-height: 50px;
   }
 
-  // presenting filter results.
-  .item:not(.hit) {
-    // display: none;
-    height: 0;
-    padding: 0;
-    > a, p, div {
-      visibility: hidden;
-      height: 0;
-      padding: 0;
-    }
+  // // hiding filter misses.
+  // .item:not(.hit) {
+  //   // display: none;
+  //   height: 0;
+  //   padding: 0;
+  //   > a, p, div {
+  //     visibility: hidden;
+  //     height: 0;
+  //     padding: 0;
+  //   }
+  // }
+
+  // .item {
+  //   transition:0.2s ease-in-out all;
+  //   height: 100%;
+  // }
+  // .item.ng-hide-add, .item.ng-hide-remove {
+  //   display: block !important;  // show element during animation
+  // }
+  // .item.ng-hide {
+  //   height:0;
+  // }
+
+  transform: translate3d(0,0,0);
+  -webkit-transform-style: preserve-3d;
+
+  .item.ng-enter,
+  .item.ng-leave {
+    transition:0.3s linear all;
+    position: relative;
+    display: block;
   }
-  .hit-add, .hit-remove {
-    transition:0.2s ease-in-out all;
+
+  // hidden state
+  .item.ng-enter,
+  .item.ng-leave.ng-leave-active {
+    transform: scale3d(0, 0, 1);
+    // translate3d(0,-50px,0);
+    // height: 0;
+    // top: -50px;
+    height: 0px;
   }
-  .hit,
-  .hit-add.hit-add-active {
-    height:100%;
+
+  // visible state
+  .item.ng-leave,
+  .item.ng-enter.ng-enter-active {
+    transform: scale3d(1, 1, 1);
+      // translate3d(0,0,0);
+    // height: auto;
+    top: 0;
+    height: 30px;
   }
-  .hit-remove.hit-remove-active {
-    height:0;
+
+  .item.ng-move {
+    transition:0.3s linear all;
   }
 }
 
