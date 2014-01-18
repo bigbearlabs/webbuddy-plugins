@@ -35,11 +35,11 @@
 
     -# %li.item( ng-repeat="item in view_model.hits | filter:{matched:true} | orderBy: view_model.sort"
     %li.item( ng-repeat="item in view_model.hits | orderBy: view_model.sort"
+      ng-class="view_model.selected_item == item ? 'selected' : ''"
       ng-mouseover="preview(item)"
       ng-mouseleave_="hide_preview(item)"
       )
       -# ng-show="item.matched"
-      -# ng-class="classes(item)"
 
 
       -# render a stack
