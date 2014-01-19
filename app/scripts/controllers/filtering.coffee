@@ -6,7 +6,7 @@
 
 angular.module('modulesApp')
   .controller 'FilteringCtrl', ($scope, $window, $timeout, $q,
-    Restangular) ->
+    Restangular, $webbuddy) ->
 
     ## statics
 
@@ -26,45 +26,9 @@ angular.module('modulesApp')
       layoutMode: 'vertical'
       filter: '.hit'
 
-
-    ## interfacing with hosting env.
-
-    to_hash = (array, key_property)->
-      array.reduce (acc, e)->
-        key = encodeURIComponent e[key_property]
-        acc[key] = e
-        acc
-      , {}
-
-    # attach data handler to the bridge
-    webbuddy.on_data = (new_data, scope = $scope)->
-      data = _.clone scope.data
-      data ||= {}
-
-      for k, v of new_data
-
-        if k.indexOf('_delta') >= 0
-          # for keys /.*_delta/, merge values with existing key.
-
-          k = k.replace '_delta', ''
-          v_hash = to_hash v, 'name'
-
-          delta_applied = _.clone data[k]
-          for delta_k, delta_v of v_hash
-            console.log "setting #{k}.#{delta_k} to #{delta_v}"
-            delta_applied[delta_k] = delta_v
-
-          data[k] = delta_applied
-        else
-          # just add to the data.
-
-          console.log "setting #{k}"
-          data[k] = v
-
+    $webbuddy.reg_on_data ->
       scope.refresh_data data
       scope.$apply()
-
-    # FIXME refactor the above into a service that represents the host env.
 
 
     ## view-model observations.
@@ -88,7 +52,7 @@ angular.module('modulesApp')
 
       # convert searches into hash for easy delta application.
       if data.searches instanceof Array
-        data.searches = to_hash data.searches, 'name'
+        data.searches = $webbuddy.to_hash data.searches, 'name'
 
       $scope.data = data
       $scope.filter()
