@@ -11,6 +11,10 @@
   // display: none;
 }
 
+.hidden {
+  display: none;
+}
+
 .editable-controls {
   textarea {
     width: 100% !important;
@@ -124,7 +128,7 @@ section.detail {
       width: 80%;
       // width: 100px;
       height: auto;  // should be scaled to width
-      min-height: 80px;
+      min-height: 50px;
 
       @include clearfix;
     }
@@ -140,10 +144,17 @@ section.detail {
 
 
 .hit-list {
-  .item a {
-    // display: inline-block;
-    min-width: 50px;  // constrain min item size
-    min-height: 50px;
+  .item  {
+    > a {
+      // display: inline-block;
+      min-width: 50px;  // constrain min item size
+      min-height: 50px;
+
+      > img {
+        width: 50px;
+        height: 50px;
+      }
+    }
   }
 
   // callout triangle
@@ -156,30 +167,6 @@ section.detail {
 
     @include triangle(24px, #878787, left);
   }
-
-
-  // // hiding filter misses.
-  // .item:not(.hit) {
-  //   // display: none;
-  //   height: 0;
-  //   padding: 0;
-  //   > a, p, div {
-  //     visibility: hidden;
-  //     height: 0;
-  //     padding: 0;
-  //   }
-  // }
-
-  // .item {
-  //   transition:0.2s ease-in-out all;
-  //   height: 100%;
-  // }
-  // .item.ng-hide-add, .item.ng-hide-remove {
-  //   display: block !important;  // show element during animation
-  // }
-  // .item.ng-hide {
-  //   height:0;
-  // }
 
   transform: translate3d(0,0,0);
   transform-style: preserve-3d;

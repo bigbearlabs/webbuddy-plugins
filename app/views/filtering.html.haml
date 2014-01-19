@@ -5,9 +5,11 @@
 
 %section.dev( ng-show="view_model.show_dev()" )
   %h3 Filter
-  %input( ng-model="data.input" ng-change="")
+  %input( ng-model="data.input" ng-change="" )
 
   -# %h3 Matching
+
+
   -# %p( editable-textarea="matching_searches_expr"
   -#   onbeforesave="update_matching_searches()"
   -#   ) {{ matching_searches_expr }}
@@ -15,12 +17,9 @@
 
 %section.master
 
-  %h2( ng-show="false" ) Hits
+  %h2 Stacks
 
-
-  -### list of master items
-
-  .button-group( ng-show="false" )
+  .button-group.hidden
     %p.hidden sort:
     .tiny.button.sort#by_date date
     .tiny.button.sort#by_size size
@@ -29,18 +28,18 @@
   -# TODO style to render horizontally stacked.
   -# TODO wire to a sort controller method, then to implementation components.
 
-  %ul.hit-list( ng-show_="view_model.hits.length > 0"
-    bindonce="view_model.hits"
+  -### list of master items
+
+  %ul.hit-list( bindonce="view_model.hits"
     )
 
     -# %li.item( ng-repeat="item in view_model.hits | filter:{matched:true} | orderBy: view_model.sort"
-    %li.item( ng-repeat="item in view_model.hits | orderBy: view_model.sort"
-      ng-class="view_model.selected_item == item ? 'selected' : ''"
+    %li.item.stack( ng-repeat="item in view_model.hits | limitTo:view_model.limit"
+      ng-class="classes(item)"
       ng-mouseover="preview(item)"
-      ng-mouseleave_="hide_preview(item)"
       )
+      -# ng-mouseleave_="hide_preview(item)"
       -# ng-show="item.matched"
-
 
       -# render a stack
       %a( bo-href="item.url" bo-title="item.name"
@@ -49,35 +48,38 @@
         %p( bo-text="item.name" )
         %p( bo-text="item.last_accessed_timestamp" )
 
+    -### a 'more...' button.
+    %li.button( ng-show="view_model.hits.length > view_model.limit" )
+      %p More...
 
-    -### enable this to show a 'more...' button.
-    -# %li.item( ng-show="view_model.hits.length > view_model.limit" )
-    -#   %p More...
+    -# end hit-list.
 
 
     -### WIP smart-stack placeholders.
+    -# ALT consider making these data-driven.
 
-    -# pages smart-stack currently created in filtering.coffee.
-
-    -# %li.item.highlights( ng-show_="view_model.hits.length == 0")
-    -#   %h3 Placeholder
-    -#   %p TODO Matching snippets to show here.
-
-    -# %li.item.search-suggestions( ng-show_="view_model.hits.length == 0")
-    -#   %h3 Placeholder
-    -#   %p TODO Suggested searches stack to show here.
+    %li.item.smart-stack( ng-repeat="item in view_model.smart_stacks"
+      ng-class="classes(item)"
+      ng-mouseover="preview(item)"
+      )
+      %a( ng-click="preview_feature_clicked()" )
+        %img.placeholder( ng-src="{{item.thumbnail_url}}")
+        %p {{item.name}}
 
 
 -### display details for the highlighted item in master
 %section.detail
 
-  %h2( ng-bind="view_model.detail.name" )
+  %h2 {{view_model.selected_item.name}}
+
+  %p( ng-show="view_model.selected_item.msg" ) {{view_model.selected_item.msg}} <br/> <a {{href="view_model.selected_item.details_url}}">More info...</a>
 
   %ul.detail-list
-    %li.item.thumbnail( ng-repeat="detail_item in view_model.detail.items" )
+    %li.item.thumbnail( ng-repeat="detail_item in view_model.selected_item.items | limitTo: view_model.limit_detail" )
       %a( href="{{detail_item.url}}" title="{{detail_item.name}}")
         %img( ng-src="{{detail_item.thumbnail_url}}" )
         %p {{detail_item.name}}
+
 
 
 %section.evaluator.dev

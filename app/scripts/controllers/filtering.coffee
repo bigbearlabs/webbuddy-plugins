@@ -6,97 +6,32 @@
 
 angular.module('modulesApp')
   .controller 'FilteringCtrl', ($scope, $window, $timeout, $q,
-    Restangular) ->
+    Restangular, webbuddy) ->
 
-    ## interfacing with hosting env.
+    ## statics
 
-    to_hash = (array, key_property)->
-      array.reduce (acc, e)->
-        key = encodeURIComponent e[key_property]
-        acc[key] = e
-        acc
-      , {}
-
-    # attach data handler to the bridge
-    webbuddy.on_data = (new_data, scope = $scope)->
-      data = _.clone scope.data
-      data ||= {}
-
-      for k, v of new_data
-
-        if k.indexOf('_delta') >= 0
-          # for keys /.*_delta/, merge values with existing key.
-
-          k = k.replace '_delta', ''
-          v_hash = to_hash v, 'name'
-
-          delta_applied = _.clone data[k]
-          for delta_k, delta_v of v_hash
-            console.log "setting #{k}.#{delta_k} to #{delta_v}"
-            delta_applied[delta_k] = delta_v
-
-          data[k] = delta_applied
-        else
-          # just add to the data.
-
-          console.log "setting #{k}"
-          data[k] = v
-
-      scope.refresh_data data
-      scope.$apply()
-
-    # FIXME refactor the above into a service that represents the host env.
+    $scope.view_model ||=
+      limit: 5
+      limit_detail: 20
+      sort: '-last_accessed_timestamp'
+      show_dev: ->
+        webbuddy.env.name is 'stub'
+      matcher: (e)->
+        # this should be passed into #filter - treat it as a strategy.
 
 
-    ## view-model observations.
-
-    # watch model to trigger view behaviour.
-    $scope.$watch 'data.input', ->
-      # filter data
-      $scope.filter()
+    $scope.collection_options =
+      itemSelector: '.item'
+      layoutMode: 'vertical'
+      filter: '.hit'
 
 
-      # $scope.highlight()  # PERF
+    ## data ops.
 
-    # FIXME when this code path throws, it will be silent from webbuddy. not good
-
-
-    ## view-model ops.
-
-    $scope.refresh_data = (data)->
-      ## process the data a bit. REFACTOR
-
-      # convert searches into hash for easy delta application.
-      if data.searches instanceof Array
-        data.searches = to_hash data.searches, 'name'
+    $scope.update_data = (data)->
+      webbuddy.transform_data data
 
       $scope.data = data
-      $scope.filter()
-
-
-    # for serious development in coffeescript, we need a way to extract stuff like this into separate code modules really quickly. still looking for an agile enough solution.
-
-    name_match = (e, input)->
-      if input.length is 0
-        return true
-
-      # case-insensitive match of names.
-      e.name?.toLowerCase().match input.toLowerCase()
-
-    $scope.match_searches = (searches, input = '')->
-      searches.filter (search)->
-        matched = name_match search, input
-        # or
-        # # any page matches.
-        # search.pages?.filter((e)-> name_match e).length > 0
-
-        # update the view model item.
-        search.matched = matched
-
-        matched
-
-      # # return all searches as rendering is determined by class.
-      # searches
 
 
     ## ui ops.
@@ -115,15 +50,9 @@ angular.module('modulesApp')
 
     $scope.preview = (item) ->
       $scope.view_model.selected_item = item
-      $scope.view_model.detail =
-        if item
-          name: item.name
-          items: if item.pages then item.pages else [ item ]
-        else
-          null
 
     $scope.hide_preview = (item) ->
-      $scope.view_model.detail = null
+      $scope.view_model.selected_item = null
 
 
     update_search_hits = (sync_reference, sync_target)->
@@ -146,52 +75,33 @@ angular.module('modulesApp')
       # add all i to_add.
       to_add.map (e)-> sync_target.push e
 
-    update_smart_stacks = ->
-      console.log 'IMPL update smart stacks'
 
     $scope.filter = (input = $scope.data?.input)->
       console.log("filtering for #{input}")
 
       ## filter the view model and update views.
 
-      $scope.view_model.searches = $scope.match_searches _.values($scope.data?.searches), $scope.data?.input
+      all_searches = _.values($scope.data?.searches)
 
-      # disable pages for now.
-      # $scope.view_model.pages = $scope.data?.pages?.filter (page)->
-      #   page.name?.toLowerCase().match input.toLowerCase()
+      matching_searches = webbuddy.match 'name_match', all_searches, $scope.data?.input
 
-      update_smart_stacks()
+      # build the final view model.
+      $scope.view_model.hits = _.sortBy( matching_searches, (e) -> e.last_accessed_timestamp ).reverse()
 
-      # # init view model.
-      # if $scope.view_model?.hits != $scope.view_model.searches
-      #   $scope.view_model.hits = $scope.view_model.searches
+      $scope.view_model.smart_stacks = webbuddy.smart_stacks all_searches, input  # pages, suggestions, highlights PERF
 
-      $scope.view_model.hits = $scope.view_model.searches
-
-      # invoke preview on the first hit.
-      $scope.preview $scope.view_model.searches[0]
+      # reset selected item.
+      item_to_preview = $scope.view_model.hits[0]
+      item_to_preview ||= $scope.view_model.smart_stacks[0]
+      $scope.preview item_to_preview
 
       $scope.refresh_collection_filter()
 
-    ## statics
-    $scope.view_model ||=
-      limit: 5
-      sort: '-last_accessed_timestamp'
-      show_dev: ->
-        webbuddy.env.name is 'stub'
 
-      # show_dev: true
-
-
-    ## isotope bits.
+    ## collection bits.
 
     # collection_containers = [ '.search-list', '.page-list', '.suggestion-list' ]
     collection_containers = [ '.hit-list' ]
-
-    $scope.collection_options =
-      itemSelector: '.item'
-      layoutMode: 'vertical'
-      filter: '.hit'
 
       # sortBy: 'name'  # TEMP
       # getSortData:
@@ -235,7 +145,9 @@ angular.module('modulesApp')
       Restangular.setBaseUrl base_url
       Restangular.one(last_seg).get()
       .then (data)->
-        $scope.refresh_data data
+        $scope.update_data data
+
+        $scope.filter()
 
         # signal all data reloaded
         $scope.refresh_collection()
@@ -243,15 +155,45 @@ angular.module('modulesApp')
 
     ## doit.
 
+    # # register callback with service.
+    # webbuddy.reg_on_data
+    #   -> $scope.data
+    #   , (data)->
+    #     $scope.update_data data
+    #     $scope.filter()
+    #     $scope.$apply()
+
+    # workaround.
+    window.webbuddy.on_data = (new_data)->
+      data = _.clone $scope.data or {}
+
+      webbuddy.fold_data new_data, data
+      webbuddy.update_items data
+
+      $scope.update_data data
+      $scope.filter()
+      $scope.$apply()
+
+    # watch model to trigger view behaviour.
+    $scope.$watch 'data.input', ->
+      # filter data
+      $scope.filter()
+
+      # $scope.highlight()  # PERF
+
+      # FIXME ensure we see logging.
+      # throw "test exception from data.input watch"
+
+    # init collection.
     collection_containers.map (selector)->
       $scope.init_collection selector
 
+    # get some data.
     $scope.fetch_data()
 
     # sometimes the bridge can attach late. register an event listener to guard against such cases.
     post_bridge_attach = ->
       $scope.fetch_data()
-
     document.addEventListener "WebViewJavascriptBridgeReady", post_bridge_attach, false
 
 
