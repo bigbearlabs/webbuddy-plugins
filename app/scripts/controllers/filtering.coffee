@@ -179,7 +179,7 @@ angular.module('modulesApp')
       # filter data
       $scope.filter()
 
-      # $scope.highlight()  # PERF
+      $scope.highlight()  # PERF
 
       # FIXME ensure we see logging.
       # throw "test exception from data.input watch"
