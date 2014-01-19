@@ -19,33 +19,12 @@ angular.module('modulesApp')
         # this should be passed into #filter - treat it as a strategy.
 
 
-      # show_dev: true
-
     $scope.collection_options =
       itemSelector: '.item'
       layoutMode: 'vertical'
       filter: '.hit'
 
-    webbuddy.reg_on_data ->
-      scope.refresh_data data
-      scope.$apply()
-
-
-    ## view-model observations.
-
-    # watch model to trigger view behaviour.
-    $scope.$watch 'data.input', ->
-      # filter data
-      $scope.filter()
-
-
-      # $scope.highlight()  # PERF
-
-      # FIXME ensure we see logging.
-      # throw "test exception from data.input watch"
-
-
-    ## view-model ops.
+    ## data ops.
 
     $scope.refresh_data = (data)->
       ## process the data a bit. REFACTOR
@@ -56,31 +35,6 @@ angular.module('modulesApp')
 
       $scope.data = data
       $scope.filter()
-
-
-    # for serious development in coffeescript, we need a way to extract stuff like this into separate code modules really quickly. still looking for an agile enough solution.
-
-    name_match = (e, input)->
-      if input.length is 0
-        return true
-
-      # case-insensitive match of names.
-      e.name?.toLowerCase().match input.toLowerCase()
-
-    $scope.match_searches = (searches, input = '')->
-      searches.filter (search)->
-        matched = name_match search, input
-        # or
-        # # any page matches.
-        # search.pages?.filter((e)-> name_match e).length > 0
-
-        # update the view model item.
-        search.matched = matched
-
-        matched
-
-      # # return all searches as rendering is determined by class.
-      # searches
 
 
     ## ui ops.
@@ -130,26 +84,15 @@ angular.module('modulesApp')
       # add all i to_add.
       to_add.map (e)-> sync_target.push e
 
-    # REFACTOR to a service
-    update_smart_stacks = ->
-      # update_stack 'Pages',
-      #   (matcher)->
-      #     $scope.data.stacks.map((e)-> e.pages).filter (page)->
-      #       matcher.match page
-
 
     $scope.filter = (input = $scope.data?.input)->
       console.log("filtering for #{input}")
 
       ## filter the view model and update views.
 
-      $scope.view_model.searches = $scope.match_searches _.values($scope.data?.searches), $scope.data?.input
+      $scope.view_model.searches = webbuddy.match 'name_match', _.values($scope.data?.searches), $scope.data?.input
 
-      # disable pages for now.
-      # $scope.view_model.pages = $scope.data?.pages?.filter (page)->
-      #   page.name?.toLowerCase().match input.toLowerCase()
-
-      update_smart_stacks()
+      $scope.view_model.smart_stacks = webbuddy.update_smart_stacks()  # pages, suggestions, highlights
 
       # # init view model.
       # if $scope.view_model?.hits != $scope.view_model.searches
@@ -218,15 +161,31 @@ angular.module('modulesApp')
 
     ## doit.
 
+    # register callback with service.
+    webbuddy.reg_on_data ->
+      scope.refresh_data data
+      scope.$apply()
+
+    # watch model to trigger view behaviour.
+    $scope.$watch 'data.input', ->
+      # filter data
+      $scope.filter()
+
+      # $scope.highlight()  # PERF
+
+      # FIXME ensure we see logging.
+      # throw "test exception from data.input watch"
+
+    # init collection.
     collection_containers.map (selector)->
       $scope.init_collection selector
 
+    # get some data.
     $scope.fetch_data()
 
     # sometimes the bridge can attach late. register an event listener to guard against such cases.
     post_bridge_attach = ->
       $scope.fetch_data()
-
     document.addEventListener "WebViewJavascriptBridgeReady", post_bridge_attach, false
 
 
