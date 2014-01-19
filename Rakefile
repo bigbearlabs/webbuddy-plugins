@@ -21,7 +21,7 @@ end
 desc "deploy to Google Drive"
 task :stage do
   # copy the entire project to ease collaboration with designers
-  sh %(rsync -av --delete * "#{ENV['HOME']}/Google Drive/bigbearlabs/webbuddy-preview/webbuddy-plugins/")
+  sh %(rsync -av --delete --exclude='.tmp' --exclude='.sass-cache' * "#{ENV['HOME']}/Google Drive/bigbearlabs/webbuddy-preview/webbuddy-plugins/")
 end
 
 desc "deploy to bbl-rails on heroku"
