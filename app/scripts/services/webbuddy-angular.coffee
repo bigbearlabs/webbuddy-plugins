@@ -101,10 +101,11 @@ angular.module('modulesApp').factory 'webbuddy', () ->
 
     ## interfacing with angular controllers.
     smart_stacks: (stacks, input)->
+
       all_pages = _.chain(stacks?.map (e)->e.pages).flatten().uniq().sortBy((e)->e.last_accessed_timestamp).reverse().value()
 
       [
-        name: 'Pages'
+        name: "Pages#{@quote_input(input)}"
         items: @match 'name_match', all_pages, input
 
         # need to consolidate matching algos somehow.
@@ -112,15 +113,21 @@ angular.module('modulesApp').factory 'webbuddy', () ->
         #   $scope.data.stacks.map((e)-> e.pages).filter (page)->
         #     matcher.match page
       ,
-        name: 'Highlights'
+        name: "Highlights#{@quote_input(input)}"
         items: []
         msg: 'Content that was highlighted during your web activity will show up here.'
         details_url: 'http://webbuddyapp.com/features/highlights'
       ,
-        name: 'Search suggestions'
+        name: "Search suggestions#{@quote_input(input, 'for')}"
         items: []
         msg: 'Google search suggestions will show up here.'
       ]
+
+    quote_input: (input, preceding_phrase = 'matching') ->
+      if input?.length > 0
+        " #{preceding_phrase} '#{input}'"
+      else
+        ''
 
     # end service def.
 
