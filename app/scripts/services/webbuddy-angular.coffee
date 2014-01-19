@@ -76,12 +76,22 @@ angular.module('modulesApp').factory 'webbuddy', () ->
 
 
     ## interfacing with angular controllers.
-    update_smart_stacks: ->
-      # update_stack 'Pages',
-      #   (matcher)->
-      #     $scope.data.stacks.map((e)-> e.pages).filter (page)->
-      #       matcher.match page
-      console.log "IMPL smart stacks."
+    smart_stacks: (stacks = [])->
+      [
+        name: 'Pages'
+        pages: _.uniq stacks.map((e)->e.pages)
+
+        # need to consolidate matching algos somehow.
+        # matcher: (matcher)->
+        #   $scope.data.stacks.map((e)-> e.pages).filter (page)->
+        #     matcher.match page
+      ,
+        name: 'Highlights'
+        pages: []
+      ,
+        name: 'Search suggestions'
+        pages: []
+      ]
 
     # end service def.
 

@@ -89,16 +89,12 @@ angular.module('modulesApp')
 
       ## filter the view model and update views.
 
-      $scope.view_model.searches = webbuddy.match 'name_match', _.values($scope.data?.searches), $scope.data?.input
-
-      $scope.view_model.smart_stacks = webbuddy.update_smart_stacks()  # pages, suggestions, highlights
-
-      # # init view model.
-      # if $scope.view_model?.hits != $scope.view_model.searches
-      #   $scope.view_model.hits = $scope.view_model.searches
+      matching_searches = webbuddy.match 'name_match', _.values($scope.data?.searches), $scope.data?.input
 
       # build the final view model.
-      $scope.view_model.hits = _.sortBy( $scope.view_model.searches, (e) -> e.last_accessed_timestamp ).reverse()
+      $scope.view_model.hits = _.sortBy( matching_searches, (e) -> e.last_accessed_timestamp ).reverse()
+
+      $scope.view_model.smart_stacks = webbuddy.smart_stacks $scope.data?.searches  # pages, suggestions, highlights
 
       # reset selected item.
       $scope.preview $scope.view_model.hits[0]

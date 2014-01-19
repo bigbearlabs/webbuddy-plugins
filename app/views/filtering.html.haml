@@ -58,23 +58,13 @@
     -### WIP smart-stack placeholders.
     -# ALT consider making these data-driven.
 
-    %li.item.highlights
+    %li.item.smart-stack( ng-repeat="item in view_model.smart_stacks"
+      ng-class="classes(item)"
+      ng-mouseover="preview(item)"
+      )
       %a( ng-click="preview_feature_clicked()" )
-        %img.placeholder
-        %p Highlights
-
-
-    %li.item.pages( ng-show_="view_model.hits.length == 0")
-      %a( ng-click="preview_feature_clicked()" )
-        %img.placeholder
-        %p Pages
-
-
-    %li.item.search-suggestions( ng-show_="view_model.hits.length == 0")
-      %a( ng-click="preview_feature_clicked()" )
-        %img.placeholder
-        %p Suggested Searches
-
+        %img.placeholder( ng-src="item.thumbnail_url")
+        %p {{item.name}}
 
 
 -### display details for the highlighted item in master
