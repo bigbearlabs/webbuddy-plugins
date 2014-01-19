@@ -34,7 +34,7 @@
     )
 
     -# %li.item( ng-repeat="item in view_model.hits | filter:{matched:true} | orderBy: view_model.sort"
-    %li.item( ng-repeat="item in view_model.hits | orderBy: view_model.sort"
+    %li.item( ng-repeat="item in view_model.hits | orderBy: view_model.sort | limitTo:view_model.limit"
       ng-class="view_model.selected_item == item ? 'selected' : ''"
       ng-mouseover="preview(item)"
       ng-mouseleave_="hide_preview(item)"
@@ -57,15 +57,28 @@
 
     -### WIP smart-stack placeholders.
 
-    -# pages smart-stack currently created in filtering.coffee.
+  -# end hit-list.
 
-    -# %li.item.highlights( ng-show_="view_model.hits.length == 0")
-    -#   %h3 Placeholder
-    -#   %p TODO Matching snippets to show here.
+  -# ALT make this data-driven from a service.
+  %ul.smart-stack-list
 
-    -# %li.item.search-suggestions( ng-show_="view_model.hits.length == 0")
-    -#   %h3 Placeholder
-    -#   %p TODO Suggested searches stack to show here.
+    %li.item.search-suggestions( ng-show_="view_model.hits.length == 0")
+      %a( ng-click="preview_feature_clicked()" )
+        %img Placeholder
+        %p Highlights
+
+
+    %li.item.search-suggestions( ng-show_="view_model.hits.length == 0")
+      %a( ng-click="preview_feature_clicked()" )
+        %img Placeholder
+        %p Pages
+
+
+    %li.item.search-suggestions( ng-show_="view_model.hits.length == 0")
+      %a( ng-click="preview_feature_clicked()" )
+        %img Placeholder
+        %p Suggested Searches
+
 
 
 -### display details for the highlighted item in master

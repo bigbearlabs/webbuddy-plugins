@@ -8,6 +8,25 @@ angular.module('modulesApp')
   .controller 'FilteringCtrl', ($scope, $window, $timeout, $q,
     Restangular) ->
 
+    ## statics
+
+    $scope.view_model ||=
+      limit: 50
+      sort: '-last_accessed_timestamp'
+      show_dev: ->
+        webbuddy.env.name is 'stub'
+      matcher: (e)->
+        # this should be passed into #filter - treat it as a strategy.
+
+
+      # show_dev: true
+
+    $scope.collection_options =
+      itemSelector: '.item'
+      layoutMode: 'vertical'
+      filter: '.hit'
+
+
     ## interfacing with hosting env.
 
     to_hash = (array, key_property)->
@@ -58,7 +77,8 @@ angular.module('modulesApp')
 
       # $scope.highlight()  # PERF
 
-    # FIXME when this code path throws, it will be silent from webbuddy. not good
+      # FIXME ensure we see logging.
+      # throw "test exception from data.input watch"
 
 
     ## view-model ops.
@@ -146,8 +166,13 @@ angular.module('modulesApp')
       # add all i to_add.
       to_add.map (e)-> sync_target.push e
 
+    # REFACTOR to a service
     update_smart_stacks = ->
-      console.log 'IMPL update smart stacks'
+      # update_stack 'Pages',
+      #   (matcher)->
+      #     $scope.data.stacks.map((e)-> e.pages).filter (page)->
+      #       matcher.match page
+
 
     $scope.filter = (input = $scope.data?.input)->
       console.log("filtering for #{input}")
@@ -173,25 +198,11 @@ angular.module('modulesApp')
 
       $scope.refresh_collection_filter()
 
-    ## statics
-    $scope.view_model ||=
-      limit: 5
-      sort: '-last_accessed_timestamp'
-      show_dev: ->
-        webbuddy.env.name is 'stub'
 
-      # show_dev: true
-
-
-    ## isotope bits.
+    ## collection bits.
 
     # collection_containers = [ '.search-list', '.page-list', '.suggestion-list' ]
     collection_containers = [ '.hit-list' ]
-
-    $scope.collection_options =
-      itemSelector: '.item'
-      layoutMode: 'vertical'
-      filter: '.hit'
 
       # sortBy: 'name'  # TEMP
       # getSortData:
