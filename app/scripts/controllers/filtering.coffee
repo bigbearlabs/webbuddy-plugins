@@ -155,8 +155,21 @@ angular.module('modulesApp')
 
     ## doit.
 
-    # register callback with service.
-    webbuddy.reg_on_data ->
+    # # register callback with service.
+    # webbuddy.reg_on_data
+    #   -> $scope.data
+    #   , (data)->
+    #     $scope.update_data data
+    #     $scope.filter()
+    #     $scope.$apply()
+
+    # workaround.
+    window.webbuddy.on_data = (new_data)->
+      data = _.clone $scope.data or {}
+
+      webbuddy.fold_data new_data, data
+      webbuddy.update_items data
+
       $scope.update_data data
       $scope.filter()
       $scope.$apply()

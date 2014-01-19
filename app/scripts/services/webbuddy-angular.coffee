@@ -24,12 +24,12 @@ angular.module('modulesApp').factory 'webbuddy', () ->
             console.log "setting #{k}.#{delta_k} to #{delta_v}"
             delta_applied[delta_k] = delta_v
 
-          data[k] = delta_applied
+          to_data[k] = delta_applied
         else
           # just add to the data.
 
           console.log "setting #{k}"
-          data[k] = v
+          to_data[k] = v
 
 
     transform_data: (data) ->
@@ -55,22 +55,19 @@ angular.module('modulesApp').factory 'webbuddy', () ->
 
     ## interfacing with hosting env.
 
-    reg_on_data: (handler, scope)->
-      @handler = handler
-      @scope = scope
-      # smells.
+    # FIXME working around in controller instead.
+    reg_on_data: (fetch_data, handler)->
+      on_data = (new_data)->
+        data = _.clone fetch_data() or {}
 
-    # TODO needs to be exposed to the host-env side of the bridge.
-    on_data: (new_data)->
-      handler = @handler
+        webbuddy.fold_data new_data, data
+        webbuddy.update_items data
 
-      data = _.clone @scope.data
-      data ||= {}
+        handler(data)
 
-      @fold_data new_data, data
-      @update_items to_data
+      window.webbuddy.on_data = on_data  # DIRTY HACK!
+      # TODO remodel the bridge to have 2 clear sides.
 
-      handler(data)
 
 
     ## filtering strategies.
