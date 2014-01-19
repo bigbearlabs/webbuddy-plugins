@@ -17,9 +17,9 @@
 
 %section.master
 
-  -### list of master items
+  %h2 Stacks
 
-  .button-group( ng-show="false" )
+  .button-group.hidden
     %p.hidden sort:
     .tiny.button.sort#by_date date
     .tiny.button.sort#by_size size
@@ -28,13 +28,13 @@
   -# TODO style to render horizontally stacked.
   -# TODO wire to a sort controller method, then to implementation components.
 
+  -### list of master items
+
   %ul.hit-list( bindonce="view_model.hits"
     )
 
-    -# %h2( ng-show="hide" ) Stacks
-
     -# %li.item( ng-repeat="item in view_model.hits | filter:{matched:true} | orderBy: view_model.sort"
-    %li.item.stack( ng-repeat="item in view_model.hits | orderBy: view_model.sort | limitTo:view_model.limit"
+    %li.item.stack( ng-repeat="item in view_model.hits | limitTo:view_model.limit"
       ng-class="classes(item)"
       ng-mouseover="preview(item)"
       )
@@ -48,7 +48,6 @@
         %p( bo-text="item.name" )
         %p( bo-text="item.last_accessed_timestamp" )
 
-
     -### a 'more...' button.
     %li.button( ng-show="view_model.hits.length > view_model.limit" )
       %p More...
@@ -59,7 +58,7 @@
     -### WIP smart-stack placeholders.
     -# ALT consider making these data-driven.
 
-    %li.item.highlights( ng-show_="view_model.hits.length == 0")
+    %li.item.highlights
       %a( ng-click="preview_feature_clicked()" )
         %img.placeholder
         %p Highlights
