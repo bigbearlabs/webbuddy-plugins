@@ -91,7 +91,9 @@ angular.module('modulesApp')
       $scope.view_model.smart_stacks = webbuddy.smart_stacks all_searches, input  # pages, suggestions, highlights PERF
 
       # reset selected item.
-      $scope.preview $scope.view_model.hits[0]
+      item_to_preview = $scope.view_model.hits[0]
+      item_to_preview ||= $scope.view_model.smart_stacks[0]
+      $scope.preview item_to_preview
 
       $scope.refresh_collection_filter()
 
