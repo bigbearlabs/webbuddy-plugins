@@ -12,6 +12,7 @@ angular.module('modulesApp')
 
     $scope.view_model ||=
       limit: 5
+      limit_detail: 20
       sort: '-last_accessed_timestamp'
       show_dev: ->
         webbuddy.env.name is 'stub'
