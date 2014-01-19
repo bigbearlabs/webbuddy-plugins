@@ -6,7 +6,7 @@
 
 angular.module('modulesApp')
   .controller 'FilteringCtrl', ($scope, $window, $timeout, $q,
-    Restangular, $webbuddy) ->
+    Restangular, webbuddy) ->
 
     ## statics
 
@@ -26,7 +26,7 @@ angular.module('modulesApp')
       layoutMode: 'vertical'
       filter: '.hit'
 
-    $webbuddy.reg_on_data ->
+    webbuddy.reg_on_data ->
       scope.refresh_data data
       scope.$apply()
 
@@ -52,7 +52,7 @@ angular.module('modulesApp')
 
       # convert searches into hash for easy delta application.
       if data.searches instanceof Array
-        data.searches = $webbuddy.to_hash data.searches, 'name'
+        data.searches = webbuddy.to_hash data.searches, 'name'
 
       $scope.data = data
       $scope.filter()

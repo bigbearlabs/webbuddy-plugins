@@ -1,6 +1,4 @@
-# now figure out how to get this integrated.
-
-$provide.service '$webbuddy', () ->
+angular.module('modulesApp').factory 'webbuddy', () ->
   webbuddy =
     to_hash: (array, key_property)->
       array.reduce (acc, e)->
@@ -16,7 +14,7 @@ $provide.service '$webbuddy', () ->
 
     on_data: (new_data)->
       handler = @handler
-      
+
       data = _.clone scope.data
       data ||= {}
 
