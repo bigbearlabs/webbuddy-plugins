@@ -1,17 +1,21 @@
 task :default => [ :build, :assemble, :stage ]
 
 task :heroku => [ :build, :assemble, :'stage:heroku' ]
+
 desc "build"
 task :build do
   sh '''
     grunt build  # will build to dist/
-    rsync -av app/scripts/vendor/* dist/scripts/vendor/  # ship vendored scripts
+    rsync -av app/scripts/vendor dist/scripts/  # ship vendored scripts
   '''
 end
 
 desc "assemble"
 task :assemble do
-  sh 'rsync -av static/* app/data dist/'
+  sh '''
+    ## ship static/, app/data, .tmp/scripts/injectees
+    rsync -av static/* app/data .tmp/scripts/injectees dist/
+  '''
 end
 
 desc "deploy to Google Drive"
