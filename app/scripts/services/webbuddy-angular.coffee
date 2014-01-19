@@ -81,7 +81,7 @@ angular.module('modulesApp').factory 'webbuddy', () ->
       #   (matcher)->
       #     $scope.data.stacks.map((e)-> e.pages).filter (page)->
       #       matcher.match page
-
+      console.log "IMPL smart stacks."
 
     # end service def.
 

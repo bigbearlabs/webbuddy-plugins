@@ -5,18 +5,17 @@
 
 %section.dev( ng-show="view_model.show_dev()" )
   %h3 Filter
-  %input( ng-model="data.input" ng-change="")
+  %input( ng-model="data.input" ng-change="" )
 
   -# %h3 Matching
+
+
   -# %p( editable-textarea="matching_searches_expr"
   -#   onbeforesave="update_matching_searches()"
   -#   ) {{ matching_searches_expr }}
   -# -# TODO on commit, re-eval and store on $scope.matching_searches.
 
 %section.master
-
-  %h2( ng-show="false" ) Hits
-
 
   -### list of master items
 
@@ -29,18 +28,18 @@
   -# TODO style to render horizontally stacked.
   -# TODO wire to a sort controller method, then to implementation components.
 
-  %ul.hit-list( ng-show_="view_model.hits.length > 0"
-    bindonce="view_model.hits"
+  %ul.hit-list( bindonce="view_model.hits"
     )
 
-    -# %li.item( ng-repeat="item in view_model.hits | filter:{matched:true} | orderBy: view_model.sort"
-    %li.item( ng-repeat="item in view_model.hits | orderBy: view_model.sort | limitTo:view_model.limit"
-      ng-class="view_model.selected_item == item ? 'selected' : ''"
-      ng-mouseover="preview(item)"
-      ng-mouseleave_="hide_preview(item)"
-      )
-      -# ng-show="item.matched"
+    -# %h2( ng-show="hide" ) Stacks
 
+    -# %li.item( ng-repeat="item in view_model.hits | filter:{matched:true} | orderBy: view_model.sort"
+    %li.item.stack( ng-repeat="item in view_model.hits | orderBy: view_model.sort | limitTo:view_model.limit"
+      ng-class="classes(item)"
+      ng-mouseover="preview(item)"
+      )
+      -# ng-mouseleave_="hide_preview(item)"
+      -# ng-show="item.matched"
 
       -# render a stack
       %a( bo-href="item.url" bo-title="item.name"
@@ -50,33 +49,31 @@
         %p( bo-text="item.last_accessed_timestamp" )
 
 
-    -### enable this to show a 'more...' button.
-    -# %li.item( ng-show="view_model.hits.length > view_model.limit" )
-    -#   %p More...
+    -### a 'more...' button.
+    %li.button( ng-show="view_model.hits.length > view_model.limit" )
+      %p More...
+
+    -# end hit-list.
 
 
     -### WIP smart-stack placeholders.
+    -# ALT consider making these data-driven.
 
-  -# end hit-list.
-
-  -# ALT make this data-driven from a service.
-  %ul.smart-stack-list
-
-    %li.item.search-suggestions( ng-show_="view_model.hits.length == 0")
+    %li.item.highlights( ng-show_="view_model.hits.length == 0")
       %a( ng-click="preview_feature_clicked()" )
-        %img Placeholder
+        %img.placeholder
         %p Highlights
 
 
-    %li.item.search-suggestions( ng-show_="view_model.hits.length == 0")
+    %li.item.pages( ng-show_="view_model.hits.length == 0")
       %a( ng-click="preview_feature_clicked()" )
-        %img Placeholder
+        %img.placeholder
         %p Pages
 
 
     %li.item.search-suggestions( ng-show_="view_model.hits.length == 0")
       %a( ng-click="preview_feature_clicked()" )
-        %img Placeholder
+        %img.placeholder
         %p Suggested Searches
 
 
@@ -91,6 +88,7 @@
       %a( href="{{detail_item.url}}" title="{{detail_item.name}}")
         %img( ng-src="{{detail_item.thumbnail_url}}" )
         %p {{detail_item.name}}
+
 
 
 %section.evaluator.dev

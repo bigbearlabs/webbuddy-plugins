@@ -11,7 +11,7 @@ angular.module('modulesApp')
     ## statics
 
     $scope.view_model ||=
-      limit: 50
+      limit: 5
       sort: '-last_accessed_timestamp'
       show_dev: ->
         webbuddy.env.name is 'stub'
@@ -34,7 +34,6 @@ angular.module('modulesApp')
         data.searches = webbuddy.to_hash data.searches, 'name'
 
       $scope.data = data
-      $scope.filter()
 
 
     ## ui ops.
@@ -98,10 +97,11 @@ angular.module('modulesApp')
       # if $scope.view_model?.hits != $scope.view_model.searches
       #   $scope.view_model.hits = $scope.view_model.searches
 
-      $scope.view_model.hits = $scope.view_model.searches
+      # build the final view model.
+      $scope.view_model.hits = _.sortBy( $scope.view_model.searches, (e) -> e.last_accessed_timestamp ).reverse()
 
-      # invoke preview on the first hit.
-      $scope.preview $scope.view_model.searches[0]
+      # reset selected item.
+      $scope.preview $scope.view_model.hits[0]
 
       $scope.refresh_collection_filter()
 
@@ -155,6 +155,8 @@ angular.module('modulesApp')
       .then (data)->
         $scope.refresh_data data
 
+        $scope.filter()
+
         # signal all data reloaded
         $scope.refresh_collection()
 
@@ -163,8 +165,9 @@ angular.module('modulesApp')
 
     # register callback with service.
     webbuddy.reg_on_data ->
-      scope.refresh_data data
-      scope.$apply()
+      $scope.refresh_data data
+      $scope.filter()
+      $scope.$apply()
 
     # watch model to trigger view behaviour.
     $scope.$watch 'data.input', ->
