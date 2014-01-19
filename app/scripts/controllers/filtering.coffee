@@ -88,7 +88,7 @@ angular.module('modulesApp')
       # build the final view model.
       $scope.view_model.hits = _.sortBy( matching_searches, (e) -> e.last_accessed_timestamp ).reverse()
 
-      $scope.view_model.smart_stacks = webbuddy.smart_stacks all_searches  # pages, suggestions, highlights
+      $scope.view_model.smart_stacks = webbuddy.smart_stacks all_searches, input  # pages, suggestions, highlights PERF
 
       # reset selected item.
       $scope.preview $scope.view_model.hits[0]

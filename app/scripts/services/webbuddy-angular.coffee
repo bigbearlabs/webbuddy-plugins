@@ -100,10 +100,12 @@ angular.module('modulesApp').factory 'webbuddy', () ->
 
 
     ## interfacing with angular controllers.
-    smart_stacks: (stacks)->
+    smart_stacks: (stacks, input)->
+      all_pages = _.chain(stacks?.map (e)->e.pages).flatten().uniq().sortBy((e)->e.last_accessed_timestamp).reverse().value()
+
       [
         name: 'Pages'
-        items: _.chain(stacks?.map (e)->e.pages).flatten().uniq().sortBy((e)->e.last_accessed_timestamp).reverse().value()
+        items: @match 'name_match', all_pages, input
 
         # need to consolidate matching algos somehow.
         # matcher: (matcher)->
@@ -112,9 +114,12 @@ angular.module('modulesApp').factory 'webbuddy', () ->
       ,
         name: 'Highlights'
         items: []
+        msg: 'Content that was highlighted during your web activity will show up here.'
+        details_url: 'http://webbuddyapp.com/features/highlights'
       ,
         name: 'Search suggestions'
         items: []
+        msg: 'Google search suggestions will show up here.'
       ]
 
     # end service def.

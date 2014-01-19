@@ -72,6 +72,8 @@
 
   %h2 {{view_model.selected_item.name}}
 
+  %p( ng-show="view_model.selected_item.msg" ) {{view_model.selected_item.msg}} <br/> <a {{href="view_model.selected_item.details_url}}">More info...</a>
+
   %ul.detail-list
     %li.item.thumbnail( ng-repeat="detail_item in view_model.selected_item.items | limitTo: view_model.limit_detail" )
       %a( href="{{detail_item.url}}" title="{{detail_item.name}}")
