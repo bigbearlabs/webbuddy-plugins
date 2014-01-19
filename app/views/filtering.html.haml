@@ -63,17 +63,17 @@
       ng-mouseover="preview(item)"
       )
       %a( ng-click="preview_feature_clicked()" )
-        %img.placeholder( ng-src="item.thumbnail_url")
+        %img.placeholder( ng-src="{{item.thumbnail_url}}")
         %p {{item.name}}
 
 
 -### display details for the highlighted item in master
 %section.detail
 
-  %h2( ng-bind="view_model.detail.name" )
+  %h2 {{view_model.selected_item.name}}
 
   %ul.detail-list
-    %li.item.thumbnail( ng-repeat="detail_item in view_model.detail.items" )
+    %li.item.thumbnail( ng-repeat="detail_item in view_model.selected_item.items" )
       %a( href="{{detail_item.url}}" title="{{detail_item.name}}")
         %img( ng-src="{{detail_item.thumbnail_url}}" )
         %p {{detail_item.name}}

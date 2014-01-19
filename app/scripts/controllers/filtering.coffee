@@ -24,14 +24,11 @@ angular.module('modulesApp')
       layoutMode: 'vertical'
       filter: '.hit'
 
+
     ## data ops.
 
-    $scope.refresh_data = (data)->
-      ## process the data a bit. REFACTOR
-
-      # convert searches into hash for easy delta application.
-      if data.searches instanceof Array
-        data.searches = webbuddy.to_hash data.searches, 'name'
+    $scope.update_data = (data)->
+      webbuddy.transform_data data
 
       $scope.data = data
 
@@ -52,15 +49,9 @@ angular.module('modulesApp')
 
     $scope.preview = (item) ->
       $scope.view_model.selected_item = item
-      $scope.view_model.detail =
-        if item
-          name: item.name
-          items: if item.pages then item.pages else [ item ]
-        else
-          null
 
     $scope.hide_preview = (item) ->
-      $scope.view_model.detail = null
+      $scope.view_model.selected_item = null
 
 
     update_search_hits = (sync_reference, sync_target)->
@@ -89,12 +80,14 @@ angular.module('modulesApp')
 
       ## filter the view model and update views.
 
-      matching_searches = webbuddy.match 'name_match', _.values($scope.data?.searches), $scope.data?.input
+      all_searches = _.values($scope.data?.searches)
+
+      matching_searches = webbuddy.match 'name_match', all_searches, $scope.data?.input
 
       # build the final view model.
       $scope.view_model.hits = _.sortBy( matching_searches, (e) -> e.last_accessed_timestamp ).reverse()
 
-      $scope.view_model.smart_stacks = webbuddy.smart_stacks $scope.data?.searches  # pages, suggestions, highlights
+      $scope.view_model.smart_stacks = webbuddy.smart_stacks all_searches  # pages, suggestions, highlights
 
       # reset selected item.
       $scope.preview $scope.view_model.hits[0]
@@ -149,7 +142,7 @@ angular.module('modulesApp')
       Restangular.setBaseUrl base_url
       Restangular.one(last_seg).get()
       .then (data)->
-        $scope.refresh_data data
+        $scope.update_data data
 
         $scope.filter()
 
@@ -161,7 +154,7 @@ angular.module('modulesApp')
 
     # register callback with service.
     webbuddy.reg_on_data ->
-      $scope.refresh_data data
+      $scope.update_data data
       $scope.filter()
       $scope.$apply()
 
