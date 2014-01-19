@@ -103,7 +103,7 @@ angular.module('modulesApp').factory 'webbuddy', () ->
     smart_stacks: (stacks)->
       [
         name: 'Pages'
-        items: _.uniq stacks?.map((e)->e.pages)
+        items: _.chain(stacks?.map (e)->e.pages).flatten().uniq().value()
 
         # need to consolidate matching algos somehow.
         # matcher: (matcher)->
