@@ -41,15 +41,21 @@ angular.module('modulesApp')
       selected: $scope.view_model.selected_item == item
 
 
+    # PERF
     $scope.highlight = (input = $scope.data?.input) ->
       $timeout ->
+        $('.stack, .detail').highlightRegex()
+
         # apply highlights. BAD-DEP
-        $('body').highlightRegex()
-        $('body').highlightRegex new RegExp input, 'i'
+        $('.stack, .detail').highlightRegex new RegExp input, 'i'
+
+        # hackily unhighlight titles.
+        $('.detail h2').highlightRegex()
 
 
     $scope.preview = (item) ->
       $scope.view_model.selected_item = item
+      $scope.highlight()
 
     $scope.hide_preview = (item) ->
       $scope.view_model.selected_item = null
@@ -179,7 +185,7 @@ angular.module('modulesApp')
       # filter data
       $scope.filter()
 
-      $scope.highlight()  # PERF
+      $scope.highlight()
 
       # FIXME ensure we see logging.
       # throw "test exception from data.input watch"
