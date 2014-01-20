@@ -105,7 +105,7 @@ angular.module('modulesApp').service 'webbuddy', () ->
 
       all_pages = _.chain(stacks?.map (e)->e.pages).flatten().uniq().sortBy((e)->e.last_accessed_timestamp).reverse().value()
 
-      [
+      smart_stacks = [
         name: "Pages#{@quote_input(input)}"
         items: @match 'name_match', all_pages, input
 
@@ -117,6 +117,9 @@ angular.module('modulesApp').service 'webbuddy', () ->
         name: "Highlights#{@quote_input(input)}"
         items: @match 'name_match', [
             name: 'stub item'
+            url: 'stub-url'
+            thumbnail_url: 'stub-thumbnail-url'
+          ,  name: 'lorem ipsum'
             url: 'stub-url'
             thumbnail_url: 'stub-thumbnail-url'
           ], input
@@ -131,6 +134,9 @@ angular.module('modulesApp').service 'webbuddy', () ->
           ], input
         msg: 'Google search suggestions will show up here.'
       ]
+
+      # return ones with results.
+      smart_stacks.filter((e)-> e.items.length > 0)
 
     quote_input: (input, preceding_phrase = 'matching') ->
       if input?.length > 0
