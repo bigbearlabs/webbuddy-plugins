@@ -59,6 +59,7 @@
     -# ALT consider making these data-driven.
 
     %li.item.smart-stack( ng-repeat="item in view_model.smart_stacks"
+      ng-show="item.items.length > 0"
       ng-class="classes(item)"
       ng-mouseover="preview(item)"
       )
@@ -70,7 +71,7 @@
 -### display details for the highlighted item in master
 %section.detail
 
-  %h2 {{view_model.selected_item.name}}
+  %h2( ng-bind="view_model.selected_item.name" )
 
   %p( ng-show="view_model.selected_item.msg" ) {{view_model.selected_item.msg}} <br/> <a href="{{view_model.selected_item.details_url}}">More info...</a>
 
