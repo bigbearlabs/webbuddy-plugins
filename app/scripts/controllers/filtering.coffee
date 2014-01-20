@@ -5,8 +5,8 @@
 'use strict'
 
 angular.module('modulesApp')
-  .controller 'FilteringCtrl', ($scope, $window, $timeout, $q,
-    Restangular, webbuddy) ->
+  .controller 'FilteringCtrl',
+  [ 'webbuddy', '$scope', '$window', '$timeout', '$q', 'Restangular', (webbuddy, $scope, $window, $timeout, $q, Restangular ) ->
 
     ## statics
 
@@ -197,5 +197,5 @@ angular.module('modulesApp')
     document.addEventListener "WebViewJavascriptBridgeReady", post_bridge_attach, false
 
 
-
+  ]
 

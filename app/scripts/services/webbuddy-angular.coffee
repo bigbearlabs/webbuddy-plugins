@@ -1,4 +1,4 @@
-angular.module('modulesApp').factory 'webbuddy', () ->
+angular.module('modulesApp').service 'webbuddy', () ->
   webbuddy =
 
     ## data transformations.
