@@ -72,15 +72,19 @@ angular.module('modulesApp').service 'webbuddy', () ->
 
     ## filtering strategies.
     match: (match_strategy_name, items, input = '')->
-      @name_match ||= (e, input)->
-        if input.length is 0
+      @match_strategies ||=
+
+        name_match: (e, input)->
+          if input.length is 0
+            return true
+
+          # case-insensitive to_data of names.
+          e.name?.toLowerCase().match input.toLowerCase()
+
+        null_match: ->
           return true
 
-        # case-insensitive to_data of names.
-        e.name?.toLowerCase().match input.toLowerCase()
-
-
-      match_strategy = @[match_strategy_name]
+      match_strategy = @match_strategies[match_strategy_name]
       items.filter (item)->
         matched = match_strategy item, input
         # or
@@ -111,12 +115,20 @@ angular.module('modulesApp').service 'webbuddy', () ->
         #     matcher.match page
       ,
         name: "Highlights#{@quote_input(input)}"
-        items: []
+        items: @match 'name_match', [
+            name: 'stub item'
+            url: 'stub-url'
+            thumbnail_url: 'stub-thumbnail-url'
+          ], input
         msg: 'Content that was highlighted during your web activity will show up here.'
         details_url: 'http://webbuddyapp.com/features/highlights'
       ,
         name: "Search suggestions#{@quote_input(input, 'for')}"
-        items: []
+        items: @match 'null_match', [
+            name: 'stub item'
+            url: 'stub-url'
+            thumbnail_url: 'stub-thumbnail-url'
+          ], input
         msg: 'Google search suggestions will show up here.'
       ]
 
