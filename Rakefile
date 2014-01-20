@@ -15,6 +15,8 @@ task :assemble do
   sh '''
     ## ship static/, app/data, .tmp/scripts/injectees
     rsync -av static/* app/data .tmp/scripts/injectees dist/
+    ## assume bbl-middleman is built, ship intro.
+    rsync -av ../bbl-middleman/build/webbuddy/intro dist/
   '''
 end
 
@@ -35,5 +37,22 @@ task :'stage:heroku' do
     git ci -a -m "updating webbuddy-plugins, #{Date.new.to_s}"
     git push heroku
     echo "## pushed to heroku"
+  )
+end
+
+desc "clean"
+task :clean do
+  sh %(
+    rm -rf dist
+  )
+end
+
+desc 'bootstrap'
+task :'bootstrap' do
+  sh %(
+    # needs npm, bower.
+    npm install -g grunt-cli
+    npm install -g grunt
+    bower install
   )
 end
