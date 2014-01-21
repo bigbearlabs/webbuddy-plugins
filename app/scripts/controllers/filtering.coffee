@@ -72,6 +72,14 @@ angular.module('modulesApp')
     $scope.hide_preview = (item) ->
       $scope.view_model.selected_item = null
 
+    $scope.reset_preview = ->
+      # reset selected item.
+      subsections_with_hits = $scope.view_model.subsections.filter((e)->e.hits.length > 0)
+      first_hit = subsections_with_hits[0]?.hits[0]  # first hit on a subsection that has any hits.
+      item_to_preview = first_hit
+      $scope.preview item_to_preview
+
+
 
     update_search_hits = (sync_reference, sync_target)->
       ## complicated logic to sync arrays.
@@ -117,11 +125,7 @@ angular.module('modulesApp')
 
       $scope.view_model.subsections[2].hits = matching_smart_stacks
 
-      # reset selected item.
-      subsections_with_hits = $scope.view_model.subsections.filter((e)->e.hits.length > 0)
-      first_hit = subsections_with_hits[0]?.hits[0]  # first hit on a subsection that has any hits.
-      item_to_preview = first_hit
-      $scope.preview item_to_preview
+      $scope.reset_preview()
 
       $scope.refresh_collection_filter()
 
