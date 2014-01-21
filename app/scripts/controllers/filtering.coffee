@@ -21,7 +21,7 @@ angular.module('modulesApp')
 
       subsections: [
         # the singleton section.
-        name: 'Notable'
+        name: 'Favorite'
       ,
         name: 'Topics'
       ,
@@ -103,8 +103,8 @@ angular.module('modulesApp')
 
       # PLACEHOLDER
       matching_notables = webbuddy.match 'name_match', [
-        name: 'stub notable item'
-        msg: 'Notable items are stacks or pages you\'ve favorited.'
+        name: 'stub favorite item'
+        msg: 'Stacks, pages or anything else you\'ve favorited will show up here.'
       ], input
 
       matching_searches = webbuddy.match 'name_match', all_searches, $scope.data?.input
