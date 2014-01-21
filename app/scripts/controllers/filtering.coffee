@@ -101,20 +101,25 @@ angular.module('modulesApp')
 
       all_searches = _.values($scope.data?.searches)
 
+      # PLACEHOLDER
+      matching_notables = webbuddy.match 'name_match', [
+        name: 'stub notable item'
+      ], input
+
       matching_searches = webbuddy.match 'name_match', all_searches, $scope.data?.input
+      matching_smart_stacks = webbuddy.smart_stacks all_searches, input  # pages, suggestions, highlights PERF
 
       # build the final view model.
       # FIXME get rid of the magic indexes
-      $scope.view_model.subsections[0].hits = [
-        name: 'stub notable item'
-      ]
+      $scope.view_model.subsections[0].hits = matching_notables
       $scope.view_model.subsections[1].hits = _.sortBy( matching_searches, (e) -> e.last_accessed_timestamp ).reverse()
 
-      $scope.view_model.subsections[2].hits = webbuddy.smart_stacks all_searches, input  # pages, suggestions, highlights PERF
+      $scope.view_model.subsections[2].hits = matching_smart_stacks
 
       # reset selected item.
-      item_to_preview = $scope.view_model.subsections[0].hits[0]
-      item_to_preview ||= $scope.view_model.subsections[0].smart_stacks[0]
+      subsections_with_hits = $scope.view_model.subsections.filter((e)->e.hits.length > 0)
+      first_hit = subsections_with_hits[0]?.hits[0]  # first hit on a subsection that has any hits.
+      item_to_preview = first_hit
       $scope.preview item_to_preview
 
       $scope.refresh_collection_filter()
