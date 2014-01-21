@@ -21,7 +21,15 @@ angular.module('modulesApp')
 
       subsections: [
         # the singleton section.
-        name: 'stacks'
+        name: 'Notable'
+      ,
+        name: 'Topics'
+      ,
+      #   name: 'Apps'
+      # ,
+        name: 'Smart stacks'
+      ,
+
       ]
 
     $scope.collection_options =
@@ -96,9 +104,13 @@ angular.module('modulesApp')
       matching_searches = webbuddy.match 'name_match', all_searches, $scope.data?.input
 
       # build the final view model.
-      $scope.view_model.subsections[0].hits = _.sortBy( matching_searches, (e) -> e.last_accessed_timestamp ).reverse()
+      # FIXME get rid of the magic indexes
+      $scope.view_model.subsections[0].hits = [
+        name: 'stub notable item'
+      ]
+      $scope.view_model.subsections[1].hits = _.sortBy( matching_searches, (e) -> e.last_accessed_timestamp ).reverse()
 
-      $scope.view_model.subsections[0].smart_stacks = webbuddy.smart_stacks all_searches, input  # pages, suggestions, highlights PERF
+      $scope.view_model.subsections[2].hits = webbuddy.smart_stacks all_searches, input  # pages, suggestions, highlights PERF
 
       # reset selected item.
       item_to_preview = $scope.view_model.subsections[0].hits[0]
