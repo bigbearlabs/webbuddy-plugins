@@ -104,6 +104,7 @@ angular.module('modulesApp')
       # PLACEHOLDER
       matching_notables = webbuddy.match 'name_match', [
         name: 'stub notable item'
+        msg: 'Notable items are stacks or pages you\'ve favorited.'
       ], input
 
       matching_searches = webbuddy.match 'name_match', all_searches, $scope.data?.input
