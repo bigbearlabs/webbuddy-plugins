@@ -119,7 +119,8 @@ angular.module('modulesApp').service 'webbuddy', () ->
             name: 'stub item'
             url: 'stub-url'
             thumbnail_url: 'stub-thumbnail-url'
-          ,  name: 'lorem ipsum'
+          ,
+            name: 'lorem ipsum'
             url: 'stub-url'
             thumbnail_url: 'stub-thumbnail-url'
           ], input
