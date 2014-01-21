@@ -19,6 +19,10 @@ angular.module('modulesApp')
       matcher: (e)->
         # this should be passed into #filter - treat it as a strategy.
 
+      subsections: [
+        # the singleton section.
+        name: 'stacks'
+      ]
 
     $scope.collection_options =
       itemSelector: '.item'
@@ -65,7 +69,7 @@ angular.module('modulesApp')
       ## complicated logic to sync arrays.
 
       unless sync_target
-        $scope.view_model.hits = _.clone sync_reference
+        $scope.view_model.subsections[0].hits = _.clone sync_reference
         return
 
       intersection = _.intersection sync_reference, sync_target
@@ -92,13 +96,13 @@ angular.module('modulesApp')
       matching_searches = webbuddy.match 'name_match', all_searches, $scope.data?.input
 
       # build the final view model.
-      $scope.view_model.hits = _.sortBy( matching_searches, (e) -> e.last_accessed_timestamp ).reverse()
+      $scope.view_model.subsections[0].hits = _.sortBy( matching_searches, (e) -> e.last_accessed_timestamp ).reverse()
 
-      $scope.view_model.smart_stacks = webbuddy.smart_stacks all_searches, input  # pages, suggestions, highlights PERF
+      $scope.view_model.subsections[0].smart_stacks = webbuddy.smart_stacks all_searches, input  # pages, suggestions, highlights PERF
 
       # reset selected item.
-      item_to_preview = $scope.view_model.hits[0]
-      item_to_preview ||= $scope.view_model.smart_stacks[0]
+      item_to_preview = $scope.view_model.subsections[0].hits[0]
+      item_to_preview ||= $scope.view_model.subsections[0].smart_stacks[0]
       $scope.preview item_to_preview
 
       $scope.refresh_collection_filter()

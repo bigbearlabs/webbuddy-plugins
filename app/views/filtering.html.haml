@@ -17,57 +17,60 @@
 
 %section.master
 
-  %h2 Stacks
+  -### master subsections
 
-  .button-group.hidden
-    %p.hidden sort:
-    .tiny.button.sort#by_date date
-    .tiny.button.sort#by_size size
-    .tiny.button.sort#none none
+  .subsection( ng-repeat="subsection in view_model.subsections" )
 
-  -# TODO style to render horizontally stacked.
-  -# TODO wire to a sort controller method, then to implementation components.
+    .button-group.hidden
+      %p.hidden sort:
+      .tiny.button.sort#by_date date
+      .tiny.button.sort#by_size size
+      .tiny.button.sort#none none
+    -# TODO wire to a sort controller method, then to implementation components.
 
-  -### list of master items
+    %h3( ng-bind="subsection.name" )
 
-  %ul.hit-list( bindonce="view_model.hits"
-    )
-
-    -# %li.item( ng-repeat="item in view_model.hits | filter:{matched:true} | orderBy: view_model.sort"
-    %li.item.stack( ng-repeat="item in view_model.hits | limitTo:view_model.limit"
-      ng-class="classes(item)"
-      ng-mouseover="preview(item)"
+    %ul.hit-list( bindonce="subsection.hits"
       )
-      -# ng-mouseleave_="hide_preview(item)"
-      -# ng-show="item.matched"
 
-      -# render a stack
-      %a( bo-href="item.url" bo-title="item.name"
+      -# filtering is now data-driven but left here for reference.
+      -# %li.item( ng-repeat="item in view_model.hits | filter:{matched:true} | orderBy: view_model.sort"
+
+      %li.item.stack( ng-repeat="item in subsection.hits | limitTo:view_model.limit"
+        ng-class="classes(item)"
+        ng-mouseover="preview(item)"
         )
-        %img.hit-icon( bo-src="item.thumbnail_url")
-        %p( bo-text="item.name" )
-        %p( bo-text="item.last_accessed_timestamp" )
+        -# ng-mouseleave_="hide_preview(item)"
+        -# ng-show="item.matched"
 
-    -### a 'more...' button.
-    %li.button( ng-show="view_model.hits.length > view_model.limit" )
-      %p More...
+        -# render a stack
+        %a( bo-href="item.url" bo-title="item.name"
+          )
+          %img.hit-icon( bo-src="item.thumbnail_url")
+          %p( bo-text="item.name" )
+          %p( bo-text="item.last_accessed_timestamp" )
 
-    -# end hit-list.
+      -### a 'more...' button.
+      %li.button( ng-show="subsection.hits.length > view_model.limit" )
+        %p More...
 
-
-    -### WIP smart-stack placeholders.
-    -# ALT consider making these data-driven.
-
-    %li.item.smart-stack( ng-repeat="item in view_model.smart_stacks"
-      ng-class="classes(item)"
-      ng-mouseover="preview(item)"
-      )
-      %a( ng-click="preview_feature_clicked()" )
-        %img.placeholder( ng-src="{{item.thumbnail_url}}")
-        %p {{item.name}}
+      -# end hit-list.
 
 
--### display details for the highlighted item in master
+      -### WIP smart-stack placeholders.
+      -# ALT consider making these data-driven.
+
+      %li.item.smart-stack( ng-repeat="item in subsection.smart_stacks"
+        ng-class="classes(item)"
+        ng-mouseover="preview(item)"
+        )
+        %a( ng-click="preview_feature_clicked()" )
+          %img.placeholder( ng-src="{{item.thumbnail_url}}")
+          %p {{item.name}}
+
+
+-### detail section for the highlighted item in master
+
 %section.detail
 
   %h2( ng-bind="view_model.selected_item.name" )
