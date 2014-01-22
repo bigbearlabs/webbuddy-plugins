@@ -19,6 +19,18 @@ angular.module('modulesApp')
       matcher: (e)->
         # this should be passed into #filter - treat it as a strategy.
 
+      subsections: [
+        # the singleton section.
+        name: 'Favorite'
+      ,
+        name: 'Topics'
+      ,
+      #   name: 'Apps'
+      # ,
+        name: 'Smart stacks'
+      ,
+
+      ]
 
     $scope.collection_options =
       itemSelector: '.item'
@@ -60,12 +72,20 @@ angular.module('modulesApp')
     $scope.hide_preview = (item) ->
       $scope.view_model.selected_item = null
 
+    $scope.reset_preview = ->
+      # reset selected item.
+      subsections_with_hits = $scope.view_model.subsections.filter((e)->e.hits.length > 0)
+      first_hit = subsections_with_hits[0]?.hits[0]  # first hit on a subsection that has any hits.
+      item_to_preview = first_hit
+      $scope.preview item_to_preview
+
+
 
     update_search_hits = (sync_reference, sync_target)->
       ## complicated logic to sync arrays.
 
       unless sync_target
-        $scope.view_model.hits = _.clone sync_reference
+        $scope.view_model.subsections[0].hits = _.clone sync_reference
         return
 
       intersection = _.intersection sync_reference, sync_target
@@ -89,17 +109,23 @@ angular.module('modulesApp')
 
       all_searches = _.values($scope.data?.searches)
 
+      # PLACEHOLDER
+      matching_notables = webbuddy.match 'name_match', [
+        name: 'stub favorite item'
+        msg: 'Stacks, pages or anything else you\'ve favorited will show up here.'
+      ], input
+
       matching_searches = webbuddy.match 'name_match', all_searches, $scope.data?.input
+      matching_smart_stacks = webbuddy.smart_stacks all_searches, input  # pages, suggestions, highlights PERF
 
       # build the final view model.
-      $scope.view_model.hits = _.sortBy( matching_searches, (e) -> e.last_accessed_timestamp ).reverse()
+      # FIXME get rid of the magic indexes
+      $scope.view_model.subsections[0].hits = matching_notables
+      $scope.view_model.subsections[1].hits = _.sortBy( matching_searches, (e) -> e.last_accessed_timestamp ).reverse()
 
-      $scope.view_model.smart_stacks = webbuddy.smart_stacks all_searches, input  # pages, suggestions, highlights PERF
+      $scope.view_model.subsections[2].hits = matching_smart_stacks
 
-      # reset selected item.
-      item_to_preview = $scope.view_model.hits[0]
-      item_to_preview ||= $scope.view_model.smart_stacks[0]
-      $scope.preview item_to_preview
+      $scope.reset_preview()
 
       $scope.refresh_collection_filter()
 
