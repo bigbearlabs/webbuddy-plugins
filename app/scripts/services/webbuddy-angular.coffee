@@ -136,6 +136,17 @@ angular.module('modulesApp').service 'webbuddy', () ->
         msg: 'Google search suggestions will show up here.'
       ]
 
+      # # interesting, how do i refactor the suggestions stack to work with a snippet requiring a promise, such as:
+      # $.getJSON "http://suggestqueries.google.com/complete/search?callback=?",
+      #   hl: "en" # Language
+      #   jsonp: "suggestCallBack" # jsonp callback function name
+      #   q: 'testing' # query term
+      #   client: "youtube" # force youtube style response, i.e. jsonp
+
+      # suggestCallBack = (data) ->
+      #   console.log _.values(data[1]).map (e)-> e[0]
+
+
       # return ones with results.
       smart_stacks.filter((e)-> e.items.length > 0)
 
