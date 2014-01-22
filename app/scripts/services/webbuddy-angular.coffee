@@ -130,6 +130,12 @@ angular.module('modulesApp').service 'webbuddy', () ->
         name: 'Google Suggestions Stack'
       ]
 
+      $.getJSON "http://suggestqueries.google.com/complete/search?callback=?",
+        hl: "en" # Language
+        jsonp: "suggestCallBack" # jsonp callback function name
+        q: input # query term
+        client: "youtube" # force youtube style response, i.e. jsonp
+
       ## get google suggestions.
       window.suggestCallBack = (data) =>
         suggestions = _.values(data[1]).map((e)-> e[0]).map (suggestion) =>
@@ -142,11 +148,6 @@ angular.module('modulesApp').service 'webbuddy', () ->
         # return ones with results.
         callback smart_stacks.filter((e)-> e.items.length > 0)
 
-      $.getJSON "http://suggestqueries.google.com/complete/search?callback=?",
-        hl: "en" # Language
-        jsonp: "suggestCallBack" # jsonp callback function name
-        q: input # query term
-        client: "youtube" # force youtube style response, i.e. jsonp
 
     search_url: (query)->
       "http://google.com/search?q=#{query}"
