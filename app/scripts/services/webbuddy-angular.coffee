@@ -101,7 +101,7 @@ angular.module('modulesApp').service 'webbuddy', () ->
 
 
     ## interfacing with angular controllers.
-    smart_stacks: (stacks, input)->
+    smart_stacks: (stacks, input, callback)->
 
       all_pages = _.chain(stacks?.map (e)->e.pages).flatten().uniq().sortBy((e)->e.last_accessed_timestamp).reverse().value()
 
@@ -127,28 +127,29 @@ angular.module('modulesApp').service 'webbuddy', () ->
         msg: 'Content that was highlighted during your web activity will show up here.'
         details_url: 'http://webbuddyapp.com/features/highlights'
       ,
-        name: "Search suggestions#{@quote_input(input, 'for')}"
-        items: @match 'null_match', [
-            name: 'stub item'
-            url: 'stub-url'
-            thumbnail_url: 'stub-thumbnail-url'
-          ], input
-        msg: 'Google search suggestions will show up here.'
+        name: 'Google Suggestions Stack'
       ]
 
-      # # interesting, how do i refactor the suggestions stack to work with a snippet requiring a promise, such as:
-      # $.getJSON "http://suggestqueries.google.com/complete/search?callback=?",
-      #   hl: "en" # Language
-      #   jsonp: "suggestCallBack" # jsonp callback function name
-      #   q: 'testing' # query term
-      #   client: "youtube" # force youtube style response, i.e. jsonp
+      ## get google suggestions.
+      window.suggestCallBack = (data) =>
+        suggestions = _.values(data[1]).map((e)-> e[0]).map (suggestion) =>
+          name: suggestion
+          url: @search_url suggestion
 
-      # suggestCallBack = (data) ->
-      #   console.log _.values(data[1]).map (e)-> e[0]
+        console.log "suggestions: #{suggestions.map (e)->e.name}"
+        smart_stacks[2].items = suggestions
 
+        # return ones with results.
+        callback smart_stacks.filter((e)-> e.items.length > 0)
 
-      # return ones with results.
-      smart_stacks.filter((e)-> e.items.length > 0)
+      $.getJSON "http://suggestqueries.google.com/complete/search?callback=?",
+        hl: "en" # Language
+        jsonp: "suggestCallBack" # jsonp callback function name
+        q: input # query term
+        client: "youtube" # force youtube style response, i.e. jsonp
+
+    search_url: (query)->
+      "http://google.com/search?q=#{query}"
 
     quote_input: (input, preceding_phrase = 'matching') ->
       if input?.length > 0
@@ -156,7 +157,9 @@ angular.module('modulesApp').service 'webbuddy', () ->
       else
         ''
 
+
     # end service def.
+
 
   # bridge from wb-integration -- copy all props from window.webbuddy
   for k, v of window.webbuddy

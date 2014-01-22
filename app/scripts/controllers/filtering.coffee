@@ -74,7 +74,7 @@ angular.module('modulesApp')
 
     $scope.reset_preview = ->
       # reset selected item.
-      subsections_with_hits = $scope.view_model.subsections.filter((e)->e.hits.length > 0)
+      subsections_with_hits = $scope.view_model.subsections.filter((e)->e.hits?.length > 0)
       first_hit = subsections_with_hits[0]?.hits[0]  # first hit on a subsection that has any hits.
       item_to_preview = first_hit
       $scope.preview item_to_preview
@@ -114,20 +114,21 @@ angular.module('modulesApp')
         name: 'stub favorite item'
         msg: 'Stacks, pages or anything else you\'ve favorited will show up here.'
       ], input
+      $scope.view_model.subsections[0].hits = matching_notables
 
       matching_searches = webbuddy.match 'name_match', all_searches, $scope.data?.input
-      matching_smart_stacks = webbuddy.smart_stacks all_searches, input  # pages, suggestions, highlights PERF
-
-      # build the final view model.
-      # FIXME get rid of the magic indexes
-      $scope.view_model.subsections[0].hits = matching_notables
       $scope.view_model.subsections[1].hits = _.sortBy( matching_searches, (e) -> e.last_accessed_timestamp ).reverse()
 
-      $scope.view_model.subsections[2].hits = matching_smart_stacks
+      # pages, suggestions, highlights PERF
+      webbuddy.smart_stacks all_searches, input, (matching_smart_stacks)->
+        $scope.view_model.subsections[2].hits = matching_smart_stacks
+        $scope.reset_preview()  # UGH
 
       $scope.reset_preview()
 
       $scope.refresh_collection_filter()
+
+      # FIXME get rid of the magic indexes
 
 
     ## collection bits.
