@@ -19,7 +19,9 @@
 
   -### master subsections
 
-  .subsection( ng-repeat="subsection in view_model.subsections" )
+  .subsection( ng-repeat="subsection in view_model.subsections"
+    ng-show="subsection.hits.length > 0"
+    )
 
     .button-group.hidden
       %p.hidden sort:
