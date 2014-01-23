@@ -1,26 +1,49 @@
 {
-  "name": "webbuddy-plugins",
-  "version": "0.0.1",
+  "name": "angular-brunch-seed",
+  "repo": "scotch/angular-brunch-seed",
+  "version": "0.3.0",
+  "main": "_public/js/app.js",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "components"
+  ],
   "dependencies": {
-    "angular": "~1.2.8",
-    "restangular": "",
-    "jquery": "",
-    // "isotope": "v2",
-    // "angular-isotope": "",
-    "foundation": "~4.3.2",
-    "json2": "",
-    "jquery-highlightRegex": "",
-    "angular-route": "~1.2.8",
-    // "angular-xeditable": "~0.1.8",
+    "console-polyfill": "~0.1.0",
+    "jquery": "~2.0.3",
+    "angular": "1.2.0",
+    "angular-sanitize": "",
+    "angular-resource": "",
+    "angular-route": "",
+    "angular-cookies": "",
+    "angular-mocks": "",
+    "bourbon": "~3.1.8",
+
     "angular-bindonce": "~0.2.2",
-    "angular-animate": "~1.2.8",
-    "bourbon": "~3.1.8"
+    "restangular": "",
+    "angular-animate": "~1.2.0",
+
+    "json2": "",
+    "jquery-highlightRegex": ""
   },
-  "devDependencies": {
-    "angular-mocks": "~1.0.7",
-    "angular-scenario": "~1.0.7"
+  "overrides": {
+    "bourbon": {
+      "main": "README.md",
+      "ignore": [
+        "*"
+      ]
+    },
+    "angular-mocks": {
+      "main": "README.md"
+    },
+    "jquery-highlightRegex": {
+      "main": "highlightRegex.js"
+    },
+    "json2": {
+      "main": "cycle.js"
+    }
   },
   "resolutions": {
-    "angular": "~1.2.8"
+    "angular": "1.2.9"
   }
 }

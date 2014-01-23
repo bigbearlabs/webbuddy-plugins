@@ -1,11 +1,22 @@
-dist
-.sass-cache
-.tmp
-app/bower_components
+**/.DS_Store
+nbproject
+manifest.mf
+build.xml
+
 node_modules
-filtering.html
-output.html
-js_obj.html
-index.html
-eval.html
-app/views/*.html
+
+.project
+.settings
+.idea/*
+
+# _public
+node_modules/*
+npm-debug.log
+
+test/test-results.xml
+
+# Bower stuff.
+bower_components/
+
+# build stuff.
+_public
