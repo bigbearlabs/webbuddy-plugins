@@ -2,6 +2,13 @@ task :default => [ :build, :assemble, :stage ]
 
 task :heroku => [ :build, :assemble, :'stage:heroku' ]
 
+desc "loop"
+task :loop do
+  sh '''
+    grunt server
+  '''
+end
+
 desc "build"
 task :build do
   sh '''
