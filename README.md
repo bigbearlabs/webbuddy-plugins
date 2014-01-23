@@ -8,14 +8,15 @@ Plugins for the WebBuddy web client http://webbuddyapp.com/
 
 - Develop
 ```
+$ gem install slim
 $ npm install
 $ bower install
-$ grunt server
+$ rake
 ```
 
 - Build
 ```
-$ rake
+$ rake build
 ```
 
 
