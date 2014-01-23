@@ -34,6 +34,7 @@
     "grunt-node-webkit-builder": "~0.1.14",
     "nodewebkit": "~0.8.4-2",
     "grunt-cli": "~0.1.11",
-    "after-brunch": ""
+    "after-brunch": "",
+    "ngmin-brunch": ""
   }
 }
