@@ -19,6 +19,4 @@ test/test-results.xml
 bower_components/
 
 # build stuff.
-dist
-dist/*
 _public
