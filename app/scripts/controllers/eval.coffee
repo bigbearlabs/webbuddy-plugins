@@ -1,7 +1,7 @@
 'use strict'
 
 # prototyping ruby evaluation.
-angular.module('modulesApp')
+angular.module('app')
   .controller 'EvalCtrl', ($scope, $route, $window, Restangular) ->
 
     # FIXME this shows all the interop warts.
@@ -49,7 +49,7 @@ angular.module('modulesApp')
 
 # used by obj_tree.html.haml.
 # TODO modularise cleanly
-angular.module('modulesApp')
+angular.module('app')
   .controller 'ObjTreeCtrl', ($scope) ->
 
     $scope.obj_keys = (obj)->

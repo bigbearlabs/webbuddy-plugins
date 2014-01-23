@@ -1,0 +1,11 @@
+<script id='obj-node.html' type='text/ng-template'>
+  <ul>
+    <li ng-repeat='key in obj_keys(obj)'>
+      <p><span ng-click="collapsed= ( ! collapsed)">{{key}}</span>: {{to_displayable(obj)}}</p>
+      <p ng-include="'obj-node.html'" ng-init='obj = obj[key]' ng-show='! collapsed'></p>
+    </li>
+  </ul>
+</script>
+<div class='tree-view' ng-controller='ObjTreeCtrl'>
+  <ng-include src="'obj-node.html'"></ng-include>
+</div>

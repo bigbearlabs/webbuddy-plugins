@@ -1,0 +1,44 @@
+// @import "./filtering";
+
+body {
+  background: #fafafa;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 15px;
+  color: #333;
+
+  margin-top: 30px;
+  margin-left: 3%;
+  margin-right: 3%;
+}
+
+ul {
+  overflow: scroll;
+}
+
+li {
+  list-style: none;
+
+  p {
+    white-space: nowrap;
+  }
+}
+
+
+//## end webbuddy-specific styles.
+
+.hero-unit {
+    margin: 50px auto 0 auto;
+    width: 300px;
+    font-size: 18px;
+    font-weight: 200;
+    line-height: 30px;
+    background-color: #eee;
+    border-radius: 6px;
+    padding: 60px;
+}
+
+.hero-unit h1 {
+    font-size: 60px;
+    line-height: 1;
+    letter-spacing: -1px;
+}

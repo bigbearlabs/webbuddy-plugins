@@ -9,3 +9,5 @@ js_obj.html
 index.html
 eval.html
 app/views/*.html
+_public
+bower_components

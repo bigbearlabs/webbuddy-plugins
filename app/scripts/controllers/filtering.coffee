@@ -4,7 +4,7 @@
 
 'use strict'
 
-angular.module('modulesApp')
+angular.module('app')
   .controller 'FilteringCtrl',
   [ 'webbuddy', '$scope', '$window', '$timeout', '$q', 'Restangular', (webbuddy, $scope, $window, $timeout, $q, Restangular ) ->
 

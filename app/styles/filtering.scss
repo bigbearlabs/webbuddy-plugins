@@ -1,5 +1,5 @@
-@import "../bower_components/foundation/scss/foundation";
-@import "../bower_components/bourbon/app/assets/stylesheets/addons/_triangle";
+@import '../../bower_components/bourbon/app/assets/stylesheets/bourbon';
+
 
 //## DEV
 .item {
@@ -80,7 +80,7 @@ span.highlight {
 
 
 section {
-  @include grid-row;  // horizontal sections
+  // @include grid-row;  // horizontal sections
 }
 
 
