@@ -6,28 +6,27 @@ task :heroku => [ :build, :assemble, :'stage:heroku' ]
 
 desc "loop"
 task :loop do
-  sh '''
+  sh %(
     brunch watch --server -p 9000
-  '''
+  )
 end
 
 desc "build"
 task :build do
-  sh '''
-    # grunt build  # will build to _public/
-    # rsync -av app/scripts/vendor _public/scripts/  # ship vendored scripts
-    brunch build --production
-  '''
+  sh %(
+    brunch build --production  # will build to _public
+    find _public -name '*.coffee' | xargs coffee -c  # compile coffee
+  )
 end
 
 desc "assemble"
 task :assemble do
-  sh '''
+  sh %(
     ## ship static/, app/data, .tmp/scripts/injectees
     rsync -av static/* _public/
     ## assume bbl-middleman is built, ship intro.
     rsync -av ../bbl-middleman/build/webbuddy/intro _public/
-  '''
+  )
 end
 
 desc "deploy to Google Drive"
