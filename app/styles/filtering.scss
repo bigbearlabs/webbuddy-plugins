@@ -6,15 +6,6 @@
   // background-color: lightyellow;
 }
 
-.dev {
-  display: block;
-  // display: none;
-}
-
-.hidden {
-  display: none;
-}
-
 .editable-controls {
   textarea {
     width: 100% !important;
@@ -66,10 +57,14 @@ span.highlight {
 }
 
 
+.container {
+  @include clearfix;
+}
+
 @mixin vertical-panel {
   float: left;
 
-  height: 80vh;
+  height: 90vh;
   overflow: scroll;
 }
 

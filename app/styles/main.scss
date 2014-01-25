@@ -1,4 +1,4 @@
-@import "./filtering";
+// @import "./filtering";
 
 body {
   background: #fafafa;
@@ -11,6 +11,11 @@ body {
   margin-right: 3%;
 }
 
+footer {
+  text-align: right;
+}
+
+
 ul {
   overflow: scroll;
 }
@@ -21,6 +26,16 @@ li {
   p {
     white-space: nowrap;
   }
+}
+
+
+.dev {
+  // display: block;
+  display: none;
+}
+
+.hidden {
+  display: none;
 }
 
 
