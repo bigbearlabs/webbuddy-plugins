@@ -4,20 +4,19 @@
 -# ## WIP coffee eval.
 -# ## WIP generic eval for python, REST API tests etc.
 
-.app( ng-app='ng-app')
-  .eval( ng-controller='EvalCtrl')
+.eval( ng-controller='EvalCtrl')
 
-    h3 Evaluator
+  h3 Evaluator
 
-    section.read
-      h3 input:
-      input( ng-model="data.input" type="text" ng-change="evaluate(data.input)" ng-init="data = {}")
+  section.read
+    h3 input:
+    input( ng-model="data.input" type="text" ng-change="evaluate(data.input)" ng-init="data = {}")
 
-    section.print
-      h3 results:
-      .results( ng-include="'views/obj_tree.html'" )
+  section.print
+    h3 results:
+    .results( ng-include="'views/obj_tree.html'" )
 
-      / if expression.error TODO
-      h3 error:
-      p 
-        | {{data.error}}
+    / if expression.error TODO
+    h3 error:
+    p
+      | {{data.error}}
