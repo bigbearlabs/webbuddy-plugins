@@ -10,6 +10,8 @@ angular.module('app')
 
     ## statics
 
+    $scope.$root.pageTitle = 'WebBuddy Filtering'
+
     $scope.view_model ||=
       # master
       limit: 5
@@ -21,8 +23,6 @@ angular.module('app')
         sort: '-last_accessed_timestamp'
       matcher: (e)->
         # this should be passed into #filter - treat it as a strategy.
-
-
       subsections: [
         # the singleton section.
         name: 'Favorite'
