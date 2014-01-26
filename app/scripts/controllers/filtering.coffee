@@ -136,6 +136,14 @@ angular.module('app')
         # singular subsection hack.
         singular_hits = _.chain($scope.view_model.subsections).map((e)->_.take(e?.hits, 5)).flatten().value()
         update_search_hits singular_hits, $scope.view_model.singular_subsection.hits
+        $scope.view_model.singular_subsection.hits.sort (a,b) ->
+          return -1 if a.last_accessed_timestamp is null
+          if a.last_accessed_timestamp > b.last_accessed_timestamp
+            -1
+          else
+            1
+
+
         $scope.reset_preview()  # UGH
 
 
