@@ -2,7 +2,8 @@
 
 # prototyping ruby evaluation.
 angular.module('app')
-  .controller 'EvalCtrl', ($scope, $route, $window, Restangular) ->
+  .controller 'EvalCtrl',
+  ($scope, $route, $window, Restangular) ->
 
     # FIXME this shows all the interop warts.
     # DISABLED clobbers the one in filtering. need to refactor into a bus

@@ -6,7 +6,7 @@
 
 angular.module('app')
   .controller 'FilteringCtrl',
-  [ 'webbuddy', '$scope', '$window', '$timeout', '$q', 'Restangular', (webbuddy, $scope, $window, $timeout, $q, Restangular ) ->
+  (webbuddy, $scope, $window, $timeout, $q, Restangular ) ->
 
     ## statics
 
@@ -234,5 +234,4 @@ angular.module('app')
     document.addEventListener "WebViewJavascriptBridgeReady", post_bridge_attach, false
 
 
-  ]
 

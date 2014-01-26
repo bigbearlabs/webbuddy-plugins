@@ -13,21 +13,18 @@ App = angular.module('app', [
   'ngAnimate'
 ])
 
-App.config([
-  '$routeProvider'
-  '$locationProvider'
+App.config(
+  ($routeProvider, $locationProvider) ->
 
-($routeProvider, $locationProvider, config) ->
+    $routeProvider
 
-  $routeProvider
+      .when('/eval', {templateUrl: 'views/eval.html'})
+      .when('/filtering', {templateUrl: 'views/filtering.html'})
 
-    .when('/eval', {templateUrl: 'views/eval.html'})
-    .when('/filtering', {templateUrl: 'views/filtering.html'})
+      # Catch all
+      .otherwise({redirectTo: '/filtering'})
 
-    # Catch all
-    .otherwise({redirectTo: '/filtering'})
+    # Without server side support html5 must be disabled. -- from BNWH template.
+    # $locationProvider.html5Mode(false)
 
-  # Without server side support html5 must be disabled. -- from BNWH template.
-  # $locationProvider.html5Mode(false)
-])
-
+)
