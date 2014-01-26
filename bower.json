@@ -18,13 +18,12 @@
     "angular-cookies": "",
     "angular-mocks": "",
     "bourbon": "~3.1.8",
-
     "angular-bindonce": "~0.2.2",
     "restangular": "",
     "angular-animate": "~1.2.0",
-
     "json2": "",
-    "jquery-highlightRegex": ""
+    "jquery-highlightRegex": "",
+    "angular-masonry": "~0.7.0"
   },
   "overrides": {
     "bourbon": {

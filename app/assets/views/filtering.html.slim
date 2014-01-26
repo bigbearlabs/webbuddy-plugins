@@ -33,15 +33,16 @@
 
       h3.hidden( ng-bind="subsection.name")
 
-      ul.hit-list( bindonce="subsection.hits"
+      ul.hit-list( bindonce="subsection.hits" masonry
         )
 
         -# filtering is now data-driven but left here for reference.
         -# li.item( ng-repeat="item in view_model.hits | filter:{matched:true} | orderBy: view_model.sort"
 
-        li.item.stack( ng-repeat="item in subsection.hits | limitTo:view_model.limit"
+        li.item.stack.masonry-brick( ng-repeat="item in subsection.hits | limitTo:view_model.limit"
           ng-class="classes(item)"
           ng-mouseover="preview(item)"
+          data-masonry-options='{"columnWidth": ".item", "gutterWidth": 0 }'
           )
           -# ng-mouseleave_="hide_preview(item)"
           -# ng-show="item.matched"

@@ -106,8 +106,6 @@ section.detail {
 
   max-width: 100%;  // bound to parent element width
 
-  position: relative;
-
   vertical-align: top;
 
   a {
@@ -149,7 +147,11 @@ section.detail {
 
 
 .hit-list {
+  padding: 0 0;
+
   .item  {
+    width: 100%;
+
     > a {
       // display: inline-block;
       min-width: 50px;  // constrain min item size
@@ -163,7 +165,8 @@ section.detail {
   }
 
   // callout triangle
-  .selected  > a::after {
+  // FIXME make it happen after the selected item.
+  .selected::after {
     content: "";
 
     position: absolute;
@@ -176,36 +179,37 @@ section.detail {
   transform: translate3d(0,0,0);
   transform-style: preserve-3d;
 
-  .item.ng-enter,
-  .item.ng-leave {
-    transition:0.3s linear all;
-    position: relative;
-    display: block;
-  }
+  // //## angular animations disabled as angular-masonry is not bad at animating a reduced set of items.
+  // .item.ng-enter,
+  // .item.ng-leave {
+  //   transition:0.3s linear all;
+  //   position: relative;
+  //   display: block;
+  // }
 
-  // hidden state
-  .item.ng-enter,
-  .item.ng-leave.ng-leave-active {
-    transform: scale3d(0, 0, 1);
-    // translate3d(0,-50px,0);
-    // height: 0;
-    // top: -50px;
-    height: 0px;
-  }
+  // // hidden state
+  // .item.ng-enter,
+  // .item.ng-leave.ng-leave-active {
+  //   transform: scale3d(0, 0, 1);
+  //   // translate3d(0,-50px,0);
+  //   // height: 0;
+  //   // top: -50px;
+  //   height: 0px;
+  // }
 
-  // visible state
-  .item.ng-leave,
-  .item.ng-enter.ng-enter-active {
-    transform: scale3d(1, 1, 1);
-      // translate3d(0,0,0);
-    // height: auto;
-    top: 0;
-    height: 30px;
-  }
+  // // visible state
+  // .item.ng-leave,
+  // .item.ng-enter.ng-enter-active {
+  //   transform: scale3d(1, 1, 1);
+  //     // translate3d(0,0,0);
+  //   // height: auto;
+  //   top: 0;
+  //   height: 30px;
+  // }
 
-  .item.ng-move {
-    transition:0.3s linear all;
-  }
+  // .item.ng-move {
+  //   transition:0.3s linear all;
+  // }
 }
 
 .detail-list {
@@ -214,7 +218,7 @@ section.detail {
   .item {
     display: inline-block;
 
-    margin-left: 10px;
+    // margin-left: 10px;
 
     // flex: 0 1 auto;  // we can't use flex due to old webkit not supporting it. if we can shim it it would be great as we can get rid of all the layout depending on inline-block.
 
