@@ -56,6 +56,11 @@ angular.module('app')
       hit: item.matched
       selected: $scope.view_model.selected_item == item
 
+    $scope.tooltip = (item) ->
+      item.name +
+        "\n" + item.url +
+        "\n" + 'Last accessed: ' + item.last_accessed_timestamp
+
 
     # PERF
     $scope.highlight = (input = $scope.data?.input) ->
