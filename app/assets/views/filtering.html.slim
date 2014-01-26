@@ -20,9 +20,11 @@
 
     -### master subsections
 
-    .subsection( ng-repeat="subsection in view_model.subsections"
-      ng-show="subsection.hits.length > 0"
-      )
+    .subsection ng-init="subsection = view_model.singular_subsection"
+
+      / .subsection( ng-repeat="subsection in view_model.subsections"
+      /   ng-show="subsection.hits.length > 0"
+      /   )
 
       .button-group.hidden
         p.hidden sort:
@@ -39,10 +41,10 @@
         -# filtering is now data-driven but left here for reference.
         -# li.item( ng-repeat="item in view_model.hits | filter:{matched:true} | orderBy: view_model.sort"
 
-        li.item.stack.masonry-brick( ng-repeat="item in subsection.hits | limitTo:view_model.limit"
+        li.item.stack.masonry-brick( ng-repeat="item in subsection.hits"
           ng-class="classes(item)"
           ng-mouseover="preview(item)"
-          data-masonry-options='{"columnWidth": ".item", "gutterWidth": 0 }'
+          data-masonry-options='{ "itemSelector": "item", "columnWidth": ".item", "gutterWidth": 0 }'
           )
           -# ng-mouseleave_="hide_preview(item)"
           -# ng-show="item.matched"
@@ -58,19 +60,6 @@
           p More...
 
         -# end hit-list.
-
-
-        -### WIP smart-stack placeholders.
-        -# ALT consider making these data-driven.
-
-        li.item.smart-stack( ng-repeat="item in subsection.smart_stacks"
-          ng-class="classes(item)"
-          ng-mouseover="preview(item)"
-          )
-          a( ng-click="preview_feature_clicked()" )
-            img.placeholder( ng-src="{{item.thumbnail_url}}")
-            p
-              | {{item.name}}
 
 
   -### detail section for the highlighted item in master

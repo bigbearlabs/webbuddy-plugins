@@ -32,9 +32,10 @@ angular.module('app')
       #   name: 'Apps'
       # ,
         name: 'Smart stacks'
-      ,
-
       ]
+      singular_subsection:
+        name: 'singular subsection'
+        hits: []
 
     $scope.collection_options =
       itemSelector: '.item'
@@ -131,9 +132,12 @@ angular.module('app')
       # pages, suggestions, highlights PERF
       webbuddy.smart_stacks all_searches, input, (matching_smart_stacks)->
         $scope.view_model.subsections[2].hits = matching_smart_stacks
+
+        # singular subsection hack.
+        singular_hits = _.chain($scope.view_model.subsections).map((e)->_.take(e?.hits, 5)).flatten().value()
+        update_search_hits singular_hits, $scope.view_model.singular_subsection.hits
         $scope.reset_preview()  # UGH
 
-      $scope.reset_preview()
 
       $scope.refresh_collection_filter()
 
