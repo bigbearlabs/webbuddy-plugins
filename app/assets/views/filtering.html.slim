@@ -47,14 +47,13 @@
           -# ng-show="item.matched"
 
           -# render a stack
-          a( bo-href="item.url" bo-title="item.name"
+          a( bo-href="item.url" bo-title="item.name + '\n' + 'Last accessed: ' + item.last_accessed_timestamp"
             )
             img.hit-icon( bo-src="item.thumbnail_url")
             p( bo-text="item.name" )
-            p( bo-text="item.last_accessed_timestamp" )
 
         -### a 'more...' button.
-        li.button( ng-show="subsection.hits.length > view_model.limit" )
+        li.item.button( ng-show="subsection.hits.length > view_model.limit" )
           p More...
 
         -# end hit-list.
@@ -83,12 +82,10 @@
 
     ul.detail-list
       li.item.thumbnail( ng-repeat="detail_item in view_model.selected_item.items | limitTo: view_model.limit_detail | orderBy: view_model.detail.sort" )
-        a( href="{{detail_item.url}}" title="{{detail_item.name}}")
+        a( href="{{detail_item.url}}" title="{{detail_item.name + '\n' + 'Last accessed: ' + detail_item.last_accessed_timestamp}}")
           img( ng-src="{{detail_item.thumbnail_url}}" )
           p
             | {{detail_item.name}}
-          p
-            | {{detail_item.last_accessed_timestamp}}
 
 
 
