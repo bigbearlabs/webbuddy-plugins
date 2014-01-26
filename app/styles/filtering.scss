@@ -131,7 +131,15 @@ section.detail {
     > p {
       margin: 0;
 
-      max-width: 95%;
+      // max-width: 95%; alignment seems better without this, after introducing line clamping.
+
+      // line clamping. webkit only
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      text-overflow: ellipsis;
+      white-space: normal;
     }
   }
 
