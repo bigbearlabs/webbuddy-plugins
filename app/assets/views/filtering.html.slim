@@ -82,11 +82,13 @@
     p( ng-show="view_model.selected_item.msg" ) {{view_model.selected_item.msg}} <br/> <a href="{{view_model.selected_item.details_url}}">More info...</a>
 
     ul.detail-list
-      li.item.thumbnail( ng-repeat="detail_item in view_model.selected_item.items | limitTo: view_model.limit_detail" )
+      li.item.thumbnail( ng-repeat="detail_item in view_model.selected_item.items | limitTo: view_model.limit_detail | orderBy: view_model.detail.sort" )
         a( href="{{detail_item.url}}" title="{{detail_item.name}}")
           img( ng-src="{{detail_item.thumbnail_url}}" )
           p
             | {{detail_item.name}}
+          p
+            | {{detail_item.last_accessed_timestamp}}
 
 
 

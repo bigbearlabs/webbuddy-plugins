@@ -11,13 +11,17 @@ angular.module('app')
     ## statics
 
     $scope.view_model ||=
+      # master
       limit: 5
       limit_detail: 20
       sort: '-last_accessed_timestamp'
       show_dev: ->
         webbuddy.env.name is 'stub'
+      detail:
+        sort: '-last_accessed_timestamp'
       matcher: (e)->
         # this should be passed into #filter - treat it as a strategy.
+
 
       subsections: [
         # the singleton section.
