@@ -209,6 +209,26 @@ angular.module('app')
 
     ## doit.
 
+    item_at_delta = (delta) ->
+      items = $scope.view_model.singular_subsection.hits
+      selected_item = $scope.view_model.selected_item
+      current_index = items.indexOf selected_item
+      new_index = current_index + delta
+      new_index = Math.min(Math.max(new_index, 0), items.length - 1)
+      return items[new_index]
+
+    # register key handlers.
+    $('body').on 'keydown', (event)->
+      console.log event.keyCode
+      switch event.keyCode
+        when 38  # up
+          $scope.preview item_at_delta -1
+        when 40  # down
+          $scope.preview item_at_delta 1
+      event.preventDefault()
+
+      # TODO scroll into view.
+
     # # register callback with service.
     # webbuddy.reg_on_data
     #   -> $scope.data
