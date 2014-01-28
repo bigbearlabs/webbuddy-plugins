@@ -4,7 +4,7 @@
 
 .filtering( ng-controller='FilteringCtrl')
 
-  section.dev( ng-show="view_model.show_dev()" )
+  section( ng-show="view_model.show_dev()" )
     h3 Filter
     input( ng-model="data.input" ng-change="" )
 
@@ -65,17 +65,32 @@
   -### detail section for the highlighted item in master
 
   section.detail
+    / templates
+    script id="thumbnail-grid.html" type="text/ng-template"
+      h2( ng-bind="view_model.selected_item.name" )
 
-    h2( ng-bind="view_model.selected_item.name" )
+      p( ng-show="view_model.selected_item.msg" ) {{view_model.selected_item.msg}} <br/> <a href="{{view_model.selected_item.details_url}}">More info...</a>
 
-    p( ng-show="view_model.selected_item.msg" ) {{view_model.selected_item.msg}} <br/> <a href="{{view_model.selected_item.details_url}}">More info...</a>
+      ul.detail-list
+        li.item.thumbnail( ng-repeat="detail_item in view_model.selected_item.items | limitTo: view_model.limit_detail | orderBy: view_model.detail.sort" )
+          a( href="{{detail_item.url}}" title="{{tooltip(detail_item)}}")
+            img( ng-src="{{detail_item.thumbnail_url}}" )
+            p
+              | {{detail_item.name}}
 
-    ul.detail-list
-      li.item.thumbnail( ng-repeat="detail_item in view_model.selected_item.items | limitTo: view_model.limit_detail | orderBy: view_model.detail.sort" )
-        a( href="{{detail_item.url}}" title="{{tooltip(detail_item)}}")
-          img( ng-src="{{detail_item.thumbnail_url}}" )
-          p
-            | {{detail_item.name}}
+    script id="text-list.html" type="text/ng-template"
+      h2( ng-bind="view_model.selected_item.name" )
+
+      p( ng-show="view_model.selected_item.msg" ) {{view_model.selected_item.msg}} <br/> <a href="{{view_model.selected_item.details_url}}">More info...</a>
+
+      ul.detail-list
+        li.item.list-entry( ng-repeat="detail_item in view_model.selected_item.items | limitTo: view_model.limit_detail | orderBy: view_model.detail.sort" )
+          a( href="{{detail_item.url}}" title="{{tooltip(detail_item)}}")
+            img( ng-src="{{detail_item.thumbnail_url}}" )
+            p
+              | {{detail_item.name}}
+
+    ng-include src="view_model.selected_item.template || view_model.detail.template"
 
 
 

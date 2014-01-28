@@ -123,7 +123,6 @@ section.detail {
       width: 80%;
       // width: 100px;
       height: auto;  // should be scaled to width
-      min-height: 50px;
 
       @include clearfix;
     }
@@ -215,7 +214,7 @@ section.detail {
 .detail-list {
   text-align: justify;
 
-  .item {
+  .item.thumbnail {
     display: inline-block;
 
     // margin-left: 10px;
@@ -240,6 +239,24 @@ section.detail {
 
       p {
         min-height: 30px;
+      }
+    }
+  }
+
+  .item.list-entry {
+    display: block;
+    width: 100%;
+
+
+    > a {
+
+      img {
+        width: 30px;
+        height: 30px;
+      }
+
+      p {
+        display: inline-block;
       }
     }
   }

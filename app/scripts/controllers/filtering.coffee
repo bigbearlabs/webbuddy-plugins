@@ -21,6 +21,7 @@ angular.module('app')
         webbuddy.env.name is 'stub'
       detail:
         sort: '-last_accessed_timestamp'
+        template: 'thumbnail-grid.html'
       matcher: (e)->
         # this should be passed into #filter - treat it as a strategy.
       subsections: [
@@ -222,10 +223,14 @@ angular.module('app')
       console.log event.keyCode
       switch event.keyCode
         when 38  # up
-          $scope.preview item_at_delta -1
+          delta = -1
         when 40  # down
+          delta = 1
           $scope.preview item_at_delta 1
-      event.preventDefault()
+
+      if delta
+        event.preventDefault()
+        $scope.preview item_at_delta delta
 
       # TODO scroll into view.
 
