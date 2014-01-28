@@ -6,19 +6,24 @@
 
 angular.module('app')
   .controller 'FilteringCtrl',
-  [ 'webbuddy', '$scope', '$window', '$timeout', '$q', 'Restangular', (webbuddy, $scope, $window, $timeout, $q, Restangular ) ->
+  (webbuddy, $scope, $window, $timeout, $q, Restangular ) ->
 
     ## statics
 
+    $scope.$root.pageTitle = 'WebBuddy Filtering'
+
     $scope.view_model ||=
+      # master
       limit: 5
       limit_detail: 20
       sort: '-last_accessed_timestamp'
       show_dev: ->
         webbuddy.env.name is 'stub'
+      detail:
+        sort: '-last_accessed_timestamp'
+        template: 'thumbnail-grid.html'
       matcher: (e)->
         # this should be passed into #filter - treat it as a strategy.
-
       subsections: [
         # the singleton section.
         name: 'Favorite'
@@ -28,9 +33,10 @@ angular.module('app')
       #   name: 'Apps'
       # ,
         name: 'Smart stacks'
-      ,
-
       ]
+      singular_subsection:
+        name: 'singular subsection'
+        hits: []
 
     $scope.collection_options =
       itemSelector: '.item'
@@ -51,6 +57,11 @@ angular.module('app')
     $scope.classes = (item) ->
       hit: item.matched
       selected: $scope.view_model.selected_item == item
+
+    $scope.tooltip = (item) ->
+      item.name +
+        "\n" + item.url +
+        "\n" + 'Last accessed: ' + item.last_accessed_timestamp
 
 
     # PERF
@@ -122,9 +133,20 @@ angular.module('app')
       # pages, suggestions, highlights PERF
       webbuddy.smart_stacks all_searches, input, (matching_smart_stacks)->
         $scope.view_model.subsections[2].hits = matching_smart_stacks
+
+        # singular subsection hack.
+        singular_hits = _.chain($scope.view_model.subsections).map((e)->_.take(e?.hits, 5)).flatten().value()
+        update_search_hits singular_hits, $scope.view_model.singular_subsection.hits
+        $scope.view_model.singular_subsection.hits.sort (a,b) ->
+          return -1 if a.last_accessed_timestamp is null
+          if a.last_accessed_timestamp > b.last_accessed_timestamp
+            -1
+          else
+            1
+
+
         $scope.reset_preview()  # UGH
 
-      $scope.reset_preview()
 
       $scope.refresh_collection_filter()
 
@@ -188,6 +210,30 @@ angular.module('app')
 
     ## doit.
 
+    item_at_delta = (delta) ->
+      items = $scope.view_model.singular_subsection.hits
+      selected_item = $scope.view_model.selected_item
+      current_index = items.indexOf selected_item
+      new_index = current_index + delta
+      new_index = Math.min(Math.max(new_index, 0), items.length - 1)
+      return items[new_index]
+
+    # register key handlers.
+    $('body').on 'keydown', (event)->
+      console.log event.keyCode
+      switch event.keyCode
+        when 38  # up
+          delta = -1
+        when 40  # down
+          delta = 1
+          $scope.preview item_at_delta 1
+
+      if delta
+        event.preventDefault()
+        $scope.preview item_at_delta delta
+
+      # TODO scroll into view.
+
     # # register callback with service.
     # webbuddy.reg_on_data
     #   -> $scope.data
@@ -230,5 +276,4 @@ angular.module('app')
     document.addEventListener "WebViewJavascriptBridgeReady", post_bridge_attach, false
 
 
-  ]
 

@@ -129,6 +129,7 @@ angular.module('app').service 'webbuddy', () ->
       ,
         name: 'Google Suggestions Stack'
         items: []
+        template: 'text-list.html'
       ]
 
       call_callback = ->

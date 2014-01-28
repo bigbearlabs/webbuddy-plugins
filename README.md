@@ -3,6 +3,8 @@ webbuddy-plugins
 
 Plugins for the WebBuddy web client http://webbuddyapp.com/
 
+Staging instance [here](http://bbl-rails.herokuapp.com/webbuddy-plugins/index.html).
+
 
 ### Get started
 

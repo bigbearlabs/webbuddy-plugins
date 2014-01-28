@@ -23,6 +23,7 @@
     "css-brunch": ">= 1.0 < 1.8",
     "sass-brunch": ">= 1.0 < 1.8",
     "auto-reload-brunch": ">= 1.0 < 1.8",
+    "ngmin-brunch": "",
     "uglify-js-brunch": ">= 1.0 < 1.8",
     "clean-css-brunch": ">= 1.0 < 1.8",
     "bower": "~1.0",
@@ -34,7 +35,6 @@
     "grunt-node-webkit-builder": "~0.1.14",
     "nodewebkit": "~0.8.4-2",
     "grunt-cli": "~0.1.11",
-    "after-brunch": "",
-    "ngmin-brunch": ""
+    "after-brunch": ""
   }
 }

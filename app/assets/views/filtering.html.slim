@@ -4,7 +4,7 @@
 
 .filtering( ng-controller='FilteringCtrl')
 
-  section.dev( ng-show="view_model.show_dev()" )
+  section( ng-show="view_model.show_dev()" )
     h3 Filter
     input( ng-model="data.input" ng-change="" )
 
@@ -20,9 +20,11 @@
 
     -### master subsections
 
-    .subsection( ng-repeat="subsection in view_model.subsections"
-      ng-show="subsection.hits.length > 0"
-      )
+    .subsection ng-init="subsection = view_model.singular_subsection"
+
+      / .subsection( ng-repeat="subsection in view_model.subsections"
+      /   ng-show="subsection.hits.length > 0"
+      /   )
 
       .button-group.hidden
         p.hidden sort:
@@ -33,60 +35,62 @@
 
       h3.hidden( ng-bind="subsection.name")
 
-      ul.hit-list( bindonce="subsection.hits"
+      ul.hit-list( bindonce="subsection.hits" masonry
         )
 
         -# filtering is now data-driven but left here for reference.
         -# li.item( ng-repeat="item in view_model.hits | filter:{matched:true} | orderBy: view_model.sort"
 
-        li.item.stack( ng-repeat="item in subsection.hits | limitTo:view_model.limit"
+        li.item.stack.masonry-brick( ng-repeat="item in subsection.hits"
           ng-class="classes(item)"
           ng-mouseover="preview(item)"
+          data-masonry-options='{ "itemSelector": "item", "columnWidth": ".item", "gutterWidth": 0 }'
           )
           -# ng-mouseleave_="hide_preview(item)"
           -# ng-show="item.matched"
 
           -# render a stack
-          a( bo-href="item.url" bo-title="item.name"
+          a( bo-href="item.url" bo-title="item.name + '\n' + 'Last accessed: ' + item.last_accessed_timestamp"
             )
             img.hit-icon( bo-src="item.thumbnail_url")
             p( bo-text="item.name" )
-            p( bo-text="item.last_accessed_timestamp" )
 
-        -### a 'more...' button.
-        li.button( ng-show="subsection.hits.length > view_model.limit" )
-          p More...
+        / ## a 'more...' button.
+        / li.item.button( ng-show="subsection.hits.length > view_model.limit" )
+        /   p More...
 
-        -# end hit-list.
-
-
-        -### WIP smart-stack placeholders.
-        -# ALT consider making these data-driven.
-
-        li.item.smart-stack( ng-repeat="item in subsection.smart_stacks"
-          ng-class="classes(item)"
-          ng-mouseover="preview(item)"
-          )
-          a( ng-click="preview_feature_clicked()" )
-            img.placeholder( ng-src="{{item.thumbnail_url}}")
-            p
-              | {{item.name}}
+         / end hit-list.
 
 
   -### detail section for the highlighted item in master
 
   section.detail
+    / templates
+    script id="thumbnail-grid.html" type="text/ng-template"
+      h2( ng-bind="view_model.selected_item.name" )
 
-    h2( ng-bind="view_model.selected_item.name" )
+      p( ng-show="view_model.selected_item.msg" ) {{view_model.selected_item.msg}} <br/> <a href="{{view_model.selected_item.details_url}}">More info...</a>
 
-    p( ng-show="view_model.selected_item.msg" ) {{view_model.selected_item.msg}} <br/> <a href="{{view_model.selected_item.details_url}}">More info...</a>
+      ul.detail-list
+        li.item.thumbnail( ng-repeat="detail_item in view_model.selected_item.items | limitTo: view_model.limit_detail | orderBy: view_model.detail.sort" )
+          a( href="{{detail_item.url}}" title="{{tooltip(detail_item)}}")
+            img( ng-src="{{detail_item.thumbnail_url}}" )
+            p
+              | {{detail_item.name}}
 
-    ul.detail-list
-      li.item.thumbnail( ng-repeat="detail_item in view_model.selected_item.items | limitTo: view_model.limit_detail" )
-        a( href="{{detail_item.url}}" title="{{detail_item.name}}")
-          img( ng-src="{{detail_item.thumbnail_url}}" )
-          p
-            | {{detail_item.name}}
+    script id="text-list.html" type="text/ng-template"
+      h2( ng-bind="view_model.selected_item.name" )
+
+      p( ng-show="view_model.selected_item.msg" ) {{view_model.selected_item.msg}} <br/> <a href="{{view_model.selected_item.details_url}}">More info...</a>
+
+      ul.detail-list
+        li.item.list-entry( ng-repeat="detail_item in view_model.selected_item.items | limitTo: view_model.limit_detail | orderBy: view_model.detail.sort" )
+          a( href="{{detail_item.url}}" title="{{tooltip(detail_item)}}")
+            img( ng-src="{{detail_item.thumbnail_url}}" )
+            p
+              | {{detail_item.name}}
+
+    ng-include src="view_model.selected_item.template || view_model.detail.template"
 
 
 
