@@ -221,14 +221,16 @@ angular.module('app')
     # register key handlers.
     $('body').on 'keydown', (event)->
       console.log event.keyCode
+
       switch event.keyCode
         when 38  # up
           delta = -1
         when 40  # down
           delta = 1
-          $scope.preview item_at_delta 1
+        else
+          return
 
-      if delta
+      # we have a delta.
         event.preventDefault()
         $scope.preview item_at_delta delta
 
