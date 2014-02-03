@@ -129,10 +129,8 @@ angular.module('app')
 
 
       # 0.1-UNSTABLE
-      ## hide unstable feature by setting stub data.
-      $scope.view_model.subsections[1].hits = []
-      # matching_searches = webbuddy.match 'name_match', all_searches, $scope.data?.input
-      # $scope.view_model.subsections[1].hits = _.sortBy( matching_searches, (e) -> e.last_accessed_timestamp ).reverse()
+      matching_searches = webbuddy.match 'name_match', all_searches, $scope.data?.input
+      $scope.view_model.subsections[1].hits = _.sortBy( matching_searches, (e) -> e.last_accessed_timestamp ).reverse()
 
 
       # pages, suggestions, highlights. PERF
