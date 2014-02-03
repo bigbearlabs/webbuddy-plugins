@@ -124,7 +124,7 @@ angular.module('app').service 'webbuddy', () ->
             url: 'stub-url'
             thumbnail_url: 'stub-thumbnail-url'
           ], input
-        msg: 'Content that was highlighted during your web activity will show up here.'
+        msg: 'Content highlighted during your web activity will show up here.'
         details_url: 'http://webbuddyapp.com/features/highlights'
       ,
         name: 'Google Suggestions Stack'
