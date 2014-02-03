@@ -127,22 +127,22 @@ angular.module('app')
       ], input
       $scope.view_model.subsections[0].hits = matching_notables
 
-      matching_searches = webbuddy.match 'name_match', all_searches, $scope.data?.input
-      $scope.view_model.subsections[1].hits = _.sortBy( matching_searches, (e) -> e.last_accessed_timestamp ).reverse()
 
-      # pages, suggestions, highlights PERF
+      # 0.1-UNSTABLE
+      # matching_searches = webbuddy.match 'name_match', all_searches, $scope.data?.input
+      # $scope.view_model.subsections[1].hits = _.sortBy( matching_searches, (e) -> e.last_accessed_timestamp ).reverse()
+
+      ## hide unstable feature by setting stub data.
+      $scope.view_model.subsections[1].hits = []
+
+
+      # pages, suggestions, highlights. PERF
       webbuddy.smart_stacks all_searches, input, (matching_smart_stacks)->
         $scope.view_model.subsections[2].hits = matching_smart_stacks
 
         # singular subsection hack.
         singular_hits = _.chain($scope.view_model.subsections).map((e)->_.take(e?.hits, 5)).flatten().value()
         update_search_hits singular_hits, $scope.view_model.singular_subsection.hits
-        $scope.view_model.singular_subsection.hits.sort (a,b) ->
-          return -1 if a.last_accessed_timestamp is null
-          if a.last_accessed_timestamp > b.last_accessed_timestamp
-            -1
-          else
-            1
 
 
         $scope.reset_preview()  # UGH
