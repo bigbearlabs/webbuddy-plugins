@@ -1,8 +1,9 @@
 task :default => :loop
 
-task :release => [ :build, :assemble, :stage ]
+task :stage => [ :build, :assemble, :'stage:heroku' ]
 
-task :heroku => [ :build, :assemble, :'stage:heroku' ]
+task :release => [ :build, :assemble, :'stage:gdrive' ]
+
 
 desc "loop"
 task :loop do
@@ -10,6 +11,7 @@ task :loop do
     brunch watch --server -p 9000
   )
 end
+
 
 desc "build"
 task :build do
@@ -32,7 +34,7 @@ task :assemble do
 end
 
 desc "deploy to Google Drive"
-task :stage do
+task :'stage:gdrive' do
   # copy the entire project to ease collaboration with designers
   sh %(rsync -av --delete --exclude='.tmp' --exclude='.sass-cache' * "#{ENV['HOME']}/Google Drive/bigbearlabs/webbuddy-preview/webbuddy-plugins/")
 end
@@ -49,6 +51,8 @@ task :'stage:heroku' do
     git push heroku
     echo "## pushed to heroku"
   )
+
+  puts "## visit http://bbl-rails.herokuapp.com/webbuddy-plugins/index.html to test staged build."
 end
 
 desc "clean"
