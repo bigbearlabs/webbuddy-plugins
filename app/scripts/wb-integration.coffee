@@ -2,10 +2,11 @@
 
 # represents the environment from the POV of plugins / other webkit-side artifacts.
 @webbuddy =
-
+  # default env.
   env:
     name: 'stub'
     data_pattern: 'data/#{name}.json'
+
 
   log: (msg...)=>
     @WebViewJavascriptBridge.send "console.log: #{msg}"
@@ -18,7 +19,7 @@
 
 post_bridge_attach = =>
   @webbuddy.env.name = 'webbuddy'
-  @webbuddy.env.data_pattern = 'http://localhost:59124/data'  # TACTICAL eventually improve the model exposed by the api.
+
 
   ## set up some useful stuff.
   @console.log = @webbuddy.log
