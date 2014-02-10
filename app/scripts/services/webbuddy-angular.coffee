@@ -137,21 +137,25 @@ angular.module('app').service 'webbuddy', () ->
         callback smart_stacks.filter((e)-> e.items.length > 0)
 
       if input?.length > 0
-        $.getJSON "http://suggestqueries.google.com/complete/search?callback=?",
-          hl: "en" # Language
-          jsonp: "suggestCallBack" # jsonp callback function name
-          q: input # query term
-          client: "youtube" # force youtube style response, i.e. jsonp
+        try
+          $.getJSON "http://suggestqueries.google.com/complete/search?callback=?",
+            hl: "en" # Language
+            jsonp: "suggestCallBack" # jsonp callback function name
+            q: input # query term
+            client: "youtube" # force youtube style response, i.e. jsonp
 
-        ## get google suggestions.
-        window.suggestCallBack = (data) =>
-          suggestions = _.values(data[1]).map((e)-> e[0]).map (suggestion) =>
-            name: suggestion
-            url: @search_url suggestion
+          ## get google suggestions.
+          window.suggestCallBack = (data) =>
+            suggestions = _.values(data[1]).map((e)-> e[0]).map (suggestion) =>
+              name: suggestion
+              url: @search_url suggestion
 
-          console.log "suggestions: #{suggestions.map (e)->e.name}"
-          smart_stacks[2].items = suggestions
+            console.log "suggestions: #{suggestions.map (e)->e.name}"
+            smart_stacks[2].items = suggestions
 
+            call_callback()
+        catch e
+          console.log "error during suggest queries fetch: #{e}"
           call_callback()
       else
         call_callback()
