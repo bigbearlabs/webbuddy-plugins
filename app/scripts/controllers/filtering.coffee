@@ -14,8 +14,8 @@ angular.module('app')
 
     $scope.view_model ||=
       # master
-      limit: 5
-      limit_detail: 20
+      limit: 200
+      limit_detail: 200
       sort: '-last_accessed_timestamp'
       show_dev: ->
         webbuddy.env.name is 'stub'
@@ -141,7 +141,7 @@ angular.module('app')
         $scope.view_model.subsections[2].hits = matching_smart_stacks
 
         # singular subsection hack.
-        singular_hits = _.chain($scope.view_model.subsections).map((e)->_.take(e?.hits, 5)).flatten().value()
+        singular_hits = _.chain($scope.view_model.subsections).map((e)->_.take(e?.hits, $scope.view_model.limit)).flatten().value()
         update_search_hits singular_hits, $scope.view_model.singular_subsection.hits
         # $scope.view_model.singular_subsection.hits.sort (a,b) ->
         #   return -1 if a.last_accessed_timestamp is null
