@@ -18,8 +18,8 @@ task :build do
   sh %(
     npm install
     bower install
-    brunch build --production  # will build to _public
-    find _public -name '*.coffee' | xargs coffee -c  # compile coffee
+    brunch build --production  # will build to build/
+    find build/ -name '*.coffee' | xargs coffee -c  # compile coffee
   )
 end
 
@@ -27,9 +27,9 @@ desc "assemble"
 task :assemble do
   sh %(
     ## ship static/, app/data, .tmp/scripts/injectees
-    rsync -av static/* _public/
+    rsync -av static/* build/
     ## assume bbl-middleman is built, ship intro.
-    rsync -av ../bbl-middleman/build/webbuddy/intro _public/
+    rsync -av ../bbl-middleman/build/webbuddy/intro build/
   )
 end
 
@@ -43,7 +43,7 @@ desc "deploy to bbl-rails on heroku"
 task :'stage:heroku' do
   sh %(
     echo "## copy to webbuddy-plugins"
-    rsync -av --delete --no-implied-dirs _public/* ../bbl-rails/public/webbuddy-plugins/
+    rsync -av --delete --no-implied-dirs build/* ../bbl-rails/public/webbuddy-plugins/
     cd ../bbl-rails
     echo "## commit"
     git add -A public/webbuddy-plugins
@@ -58,7 +58,7 @@ end
 desc "clean"
 task :clean do
   sh %(
-    rm -rf _public
+    rm -rf build/
   )
 end
 
