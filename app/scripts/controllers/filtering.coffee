@@ -14,7 +14,7 @@ angular.module('app')
 
     $scope.view_model ||=
       # master
-      limit: 200
+      limit: 20
       limit_detail: 200
       sort: '-last_accessed_timestamp'
       show_dev: ->
