@@ -1,4 +1,5 @@
-angular.module('app').service 'webbuddy', () ->
+angular.module('app').service 'webbuddy', ($window) ->
+
   webbuddy =
 
     ## data transformations.
@@ -65,7 +66,7 @@ angular.module('app').service 'webbuddy', () ->
 
         handler(data)
 
-      window.webbuddy.on_data = on_data  # DIRTY HACK!
+      $window.webbuddy.on_data = on_data  # DIRTY HACK!
       # TODO remodel the bridge to have 2 clear sides.
 
 
@@ -145,7 +146,7 @@ angular.module('app').service 'webbuddy', () ->
             client: "youtube" # force youtube style response, i.e. jsonp
 
           ## get google suggestions.
-          window.suggestCallBack = (data) =>
+          $window.suggestCallBack = (data) =>
             suggestions = _.values(data[1]).map((e)-> e[0]).map (suggestion) =>
               name: suggestion
               url: @search_url suggestion
@@ -159,6 +160,13 @@ angular.module('app').service 'webbuddy', () ->
           call_callback()
       else
         call_callback()
+
+    on_input_field_submit: (input) ->
+      # do a google search.
+      @open_url(@search_url(input))
+
+    open_url: (url) ->
+      $window.location.assign url
 
 
     search_url: (query)->
@@ -174,8 +182,8 @@ angular.module('app').service 'webbuddy', () ->
     # end service def.
 
 
-  # bridge from wb-integration -- copy all props from window.webbuddy
-  for k, v of window.webbuddy
+  # bridge from wb-integration -- copy all props from $window.webbuddy
+  for k, v of $window.webbuddy
     webbuddy[k] = v
 
   webbuddy

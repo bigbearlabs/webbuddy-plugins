@@ -4,8 +4,8 @@
 
 .filtering( ng-controller='FilteringCtrl')
 
-  section( ng-show="view_model.show_dev()" )
-    h3 Filter
+  section.command-bar( )
+    h3.hidden Filter
     input( ng-model="data.input" ng-change="" )
 
     -# h3 Matching
