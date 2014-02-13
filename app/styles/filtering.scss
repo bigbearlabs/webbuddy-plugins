@@ -79,6 +79,18 @@ section {
   // @include grid-row;  // horizontal sections
 }
 
+.command-bar {
+  text-align: center;
+
+
+  input {
+    display: inline-block;
+    width: 61.8%;
+
+    font-size: 170%;
+    height: 1.5em;
+  }
+}
 
 section.master {
   @include vertical-panel;

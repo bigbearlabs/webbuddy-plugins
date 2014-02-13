@@ -130,9 +130,6 @@ angular.module('app')
 
       # 0.1-UNSTABLE
       matching_searches = webbuddy.match 'name_match', all_searches, $scope.data?.input
-      matching_searches.map (e) ->
-        e.thumbnail_url = 'img/stack.png'
-
       $scope.view_model.subsections[1].hits = _.sortBy( matching_searches, (e) -> e.last_accessed_timestamp ).reverse()
 
 
@@ -230,7 +227,7 @@ angular.module('app')
 
       switch event.keyCode
         when 13  # enter
-          webbuddy.on_input_field_submit $scope.data.input
+          webbuddy.on_input_field_submit $scope.view_model.input
           return
         when 38  # up
           delta = -1
