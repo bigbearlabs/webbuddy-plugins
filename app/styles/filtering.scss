@@ -41,7 +41,7 @@ body {
 //## visual roles.
 
 .selected {
-  // background-color: #999999;
+  background-color: #999999;
 
   // // #triangle-left {
   // width: 0;
@@ -53,7 +53,7 @@ body {
 
 // text highlight
 span.highlight {
-  background-color: yellow;
+  font-weight: 900;
 }
 
 
@@ -68,6 +68,10 @@ span.highlight {
   overflow: scroll;
 }
 
+@mixin horizontal-panel {
+  width: 100%;
+  overflow: scroll;
+}
 @mixin vertically-centered {
   // TODO bring in recipes https://github.com/MoOx/compass-recipes (make this redundant as necessary, then add to detail list item.)
 }
@@ -93,18 +97,17 @@ section {
 }
 
 section.master {
-  @include vertical-panel;
+  @include horizontal-panel;
 
-  width: 20%;
+  height: 20%;
 
   text-align: center;
 }
 
 section.detail {
-  @include vertical-panel;
+  @include horizontal-panel;
 
-  width: 80%;
-
+  height: 80vh;
   text-align: center;
   // text-align-last: left;  // doesn't work due to webkit bug
 
@@ -162,7 +165,7 @@ section.detail {
   padding: 0 0;
 
   .item  {
-    width: 100%;
+    display: inline-block;
 
     > a {
       // display: inline-block;

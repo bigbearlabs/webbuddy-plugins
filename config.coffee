@@ -41,11 +41,12 @@ exports.config =
     afterBrunch: [
       ''' # compile slim files
         ruby <<EOF
-        path = 'app'
-        Dir.glob("app/**/*.slim")do |file|
-          target = file.gsub( /\.slim$/, '').gsub(%r(^app\/assets), '_public')
-          # system "mkdir -p `dirname target`"
-          system "slimrb #{file} #{target}"
+        [ 'app', 'build' ].map do |path|
+          Dir.glob("#{path}/**/*.slim") do |file|
+            target = file.gsub( /\.slim$/, '').gsub(%r(^app\/assets), '_public')
+            # system "mkdir -p `dirname target`"
+            system "slimrb #{file} #{target}"
+          end
         end
         EOF
       '''
