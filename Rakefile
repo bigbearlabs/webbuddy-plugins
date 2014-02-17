@@ -16,8 +16,6 @@ end
 desc "build"
 task :build do
   sh %(
-    npm install
-    bower install
     brunch build --production  # will build to build/
     find build/ -name '*.coffee' | xargs coffee -c  # compile coffee
   )
