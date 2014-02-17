@@ -4,7 +4,7 @@
 
 .filtering( ng-controller='FilteringCtrl')
 
-  section.command-bar( ng-show="view_model.show_dev()" )
+  section.command-bar( ng-show="view_model.show_dev" )
     h3.hidden Filter
     input( ng-model="data.input" ng-change="" )
 
@@ -101,7 +101,7 @@
 
 
 
-  section.evaluator.dev
+  section.evaluator( ng-show="view_model.show_dev")
     .evaluator( ng-include="'views/eval.html'" ng-controller="EvalCtrl" )
 
 

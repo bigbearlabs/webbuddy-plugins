@@ -17,8 +17,7 @@ angular.module('app')
       limit: 20
       limit_detail: 200
       sort: '-last_accessed_timestamp'
-      show_dev: ->
-        webbuddy.env.name is 'stub'
+      show_dev: true
       detail:
         sort: '-last_accessed_timestamp'
         template: 'thumbnail-grid.html'
