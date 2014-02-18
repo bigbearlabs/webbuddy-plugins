@@ -44,21 +44,21 @@
         -# render each stack.
         li.item.stack( ng-repeat="item in subsection.hits"
           ng-class="classes(item)"
-          ng-mouseover="preview(item)"
+          ng-click="preview(item)"
           data-masonry-options='{ "itemSelector": "item", "columnWidth": ".item", "gutterWidth": 0 }'
           ng-style="view_model.stack_style"
           )
           -# ng-mouseleave_="hide_preview(item)"
           -# ng-show="item.matched"
 
-          a( bo-href="item.url" bo-title="item.name + '\n' + 'Last accessed: ' + item.last_accessed_timestamp"
+          a( href="" bo-title="item.name + '\n' + 'Last accessed: ' + item.last_accessed_timestamp"
             )
             img.hit-icon( bo-src="item.thumbnail_url")
             p( bo-text="item.name" )
 
           -# render each page in stack.
           .stack-element( ng-repeat="detail_item in item.pages" )
-            a( href="{{detail_item.url}}" title="{{tooltip(detail_item)}}")
+            a( href="" title="{{tooltip(detail_item)}}")
               img( ng-src="{{detail_item.thumbnail_url}}" )
               p
                 | {{detail_item.name}}

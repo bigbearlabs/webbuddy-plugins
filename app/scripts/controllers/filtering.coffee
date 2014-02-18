@@ -18,8 +18,6 @@ angular.module('app')
       limit: 20
       limit_detail: 200
       sort: '-last_accessed_timestamp'
-      stack_style:
-        'font-size': '100%'
 
       matcher: (e)->
         # this should be passed into #filter - treat it as a strategy.
@@ -79,8 +77,12 @@ angular.module('app')
 
 
     $scope.preview = (item) ->
+      console.log "previewing item #{item}"
       $scope.view_model.selected_item = item
       $scope.highlight()
+
+      $timeout ->
+        $('.selected')[0].scrollIntoView()
 
     $scope.hide_preview = (item) ->
       $scope.view_model.selected_item = null
