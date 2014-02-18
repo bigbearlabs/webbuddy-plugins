@@ -14,13 +14,13 @@ angular.module('app')
 
     $scope.view_model ||=
       # master
+      show_dev: true
       limit: 20
       limit_detail: 200
       sort: '-last_accessed_timestamp'
-      show_dev: true
-      detail:
-        sort: '-last_accessed_timestamp'
-        template: 'thumbnail-grid.html'
+      stack_style:
+        'font-size': '100%'
+
       matcher: (e)->
         # this should be passed into #filter - treat it as a strategy.
       subsections: [
@@ -36,6 +36,9 @@ angular.module('app')
       singular_subsection:
         name: 'singular subsection'
         hits: []
+      detail:
+        sort: '-last_accessed_timestamp'
+        template: 'thumbnail-grid.html'
 
     $scope.collection_options =
       itemSelector: '.item'

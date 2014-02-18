@@ -8,17 +8,17 @@
     h3.hidden Filter
     input( ng-model="data.input" ng-change="" )
 
-    -# h3 Matching
 
+  section.filtering-condition.dev
+    h3 Matching
 
-    -# p( editable-textarea="matching_searches_expr"
-    -#   onbeforesave="update_matching_searches()"
-    -#   ) {{ matching_searches_expr }}
-    -# -# TODO on commit, re-eval and store on $scope.matching_searches.
+    p( editable-textarea="matching_searches_expr"
+      onbeforesave="update_matching_searches()"
+      ) {{ matching_searches_expr }}
+    -# TODO on commit, re-eval and store on $scope.matching_searches.
+
 
   section.master
-
-    -### master subsections
 
     .subsection ng-init="subsection = view_model.singular_subsection"
 
@@ -33,29 +33,30 @@
         .tiny.button.sort#none none
       -# TODO wire to a sort controller method, then to implementation components.
 
-      h3.hidden( ng-bind="subsection.name")
 
-      ul.hit-list( bindonce="subsection.hits"
-        )
+      h3.hidden ng-bind="subsection.name"
+
+      ul.hit-list bindonce="subsection.hits"
 
         -# filtering is now data-driven but left here for reference.
         -# li.item( ng-repeat="item in view_model.hits | filter:{matched:true} | orderBy: view_model.sort"
 
+        -# render each stack.
         li.item.stack( ng-repeat="item in subsection.hits"
           ng-class="classes(item)"
           ng-mouseover="preview(item)"
           data-masonry-options='{ "itemSelector": "item", "columnWidth": ".item", "gutterWidth": 0 }'
+          ng-style="view_model.stack_style"
           )
           -# ng-mouseleave_="hide_preview(item)"
           -# ng-show="item.matched"
 
-          -# render a stack
           a( bo-href="item.url" bo-title="item.name + '\n' + 'Last accessed: ' + item.last_accessed_timestamp"
             )
             img.hit-icon( bo-src="item.thumbnail_url")
             p( bo-text="item.name" )
 
-          -# stack contents
+          -# render each page in stack.
           .stack-element( ng-repeat="detail_item in item.pages" )
             a( href="{{detail_item.url}}" title="{{tooltip(detail_item)}}")
               img( ng-src="{{detail_item.thumbnail_url}}" )

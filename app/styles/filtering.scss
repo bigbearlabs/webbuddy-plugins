@@ -124,6 +124,8 @@ section.detail {
   vertical-align: top;
   text-align: left;
 
+  font-size: 100%; // this will scale to emulate the zoom.
+
   > a {
     // display: inline-block;
 
@@ -179,8 +181,8 @@ section.detail {
     .stack-element {
       display: inline-block;
       img {
-        width: 100px;
-        height: 100px;
+        width: 5em;
+        height: 5em;
       }
       p {
         display: none;
