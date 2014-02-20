@@ -42,24 +42,29 @@
 
         -# render each stack.
         li.item.stack( ng-repeat="item in subsection.hits"
-          ng-class="classes(item)"
-          ng-click="preview(item)"
-          data-masonry-options='{ "itemSelector": "item", "columnWidth": ".item", "gutterWidth": 0 }'
-          ng-style="view_model.stack_style"
-          )
+            ng-class="classes(item)"
+            ng-click="preview(item)"
+            data-masonry-options='{ "itemSelector": "item", "columnWidth": ".item", "gutterWidth": 0 }'
+            ng-style="view_model.stack_style"
+            focusable
+            )
           -# ng-mouseleave_="hide_preview(item)"
           -# ng-show="item.matched"
 
-          a( href="" bo-title="item.name + '\n' + 'Last accessed: ' + item.last_accessed_timestamp"
-            )
+          a( href=""
+              bo-title="item.name + '\n' + 'Last accessed: ' + item.last_accessed_timestamp"
+              )
             img.hit-icon( bo-src="item.thumbnail_url")
             p( bo-text="item.name" )
 
           / TODO embed in scrollable div.
           .stack-element-container
             -# render each page in stack.
-            .stack-element( focusable ng-repeat="detail_item in item.pages" )
-              a( data-enable-when="" href="{{detail_item.url}}" title="{{tooltip(detail_item)}}")
+            .stack-element( ng-repeat="detail_item in item.pages"
+              focusable )
+              a( href="{{detail_item.url}}" title="{{tooltip(detail_item)}}"
+                  enable-when=""
+                  )
                 img( ng-src="{{detail_item.thumbnail_url}}" )
                 p
                   | {{detail_item.name}}

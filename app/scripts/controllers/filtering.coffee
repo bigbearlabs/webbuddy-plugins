@@ -83,17 +83,11 @@ angular.module('app')
         # hackily unhighlight titles.
         $('.detail h2').highlightRegex()
 
-    $scope.scroll_to_selection = (item)->
-      $timeout ->  # work around selected class application not being quick enough.
-        $('.selected')[0].scrollIntoView()
-
 
     $scope.preview = (item) ->
       console.log "previewing item #{item}"
       $scope.view_model.selected_item = item
       $scope.highlight()
-
-      # $scope.scroll_to_selection item
 
     $scope.hide_preview = (item) ->
       $scope.view_model.selected_item = null
