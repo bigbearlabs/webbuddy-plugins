@@ -58,6 +58,14 @@ angular.module('app')
       hit: item.matched
       selected: $scope.view_model.selected_item == item
 
+    $scope.href = (item) ->
+      # return an href only if item is ready for navigation.
+      $timeout ->   # work around the click registering to the a href when selecting.
+        if item is $scope.view_model.selected_item
+          item.url
+        else
+          ''
+
     $scope.tooltip = (item) ->
       item.name +
         "\n" + item.url +
@@ -75,14 +83,17 @@ angular.module('app')
         # hackily unhighlight titles.
         $('.detail h2').highlightRegex()
 
+    $scope.scroll_to_selection = ->
+      $timeout ->  # work around selected class application not being quick enough.
+        $('.selected')[0].scrollIntoView()
+
 
     $scope.preview = (item) ->
       console.log "previewing item #{item}"
       $scope.view_model.selected_item = item
       $scope.highlight()
 
-      $timeout ->
-        $('.selected')[0].scrollIntoView()
+      $scope.scroll_to_selection()
 
     $scope.hide_preview = (item) ->
       $scope.view_model.selected_item = null
@@ -93,7 +104,6 @@ angular.module('app')
       first_hit = subsections_with_hits[0]?.hits[0]  # first hit on a subsection that has any hits.
       item_to_preview = first_hit
       $scope.preview item_to_preview
-
 
 
     update_search_hits = (sync_reference, sync_target)->
@@ -228,7 +238,7 @@ angular.module('app')
       new_index = Math.min(Math.max(new_index, 0), items.length - 1)
       return items[new_index]
 
-    # register key handlers.
+    # register event handlers.
     $('body').on 'keydown', (event)->
       console.log event.keyCode
 
@@ -249,6 +259,7 @@ angular.module('app')
 
       # TODO scroll into view.
 
+
     # # register callback with service.
     # webbuddy.reg_on_data
     #   -> $scope.data
@@ -258,7 +269,7 @@ angular.module('app')
     #     $scope.$apply()
 
     # workaround.
-    window.webbuddy.on_data = (new_data)->
+    $window.webbuddy.on_data = (new_data)->
       data = _.clone $scope.data or {}
 
       webbuddy.fold_data new_data, data
@@ -292,3 +303,10 @@ angular.module('app')
 
 
 
+angular.module('app')
+  .directive 'enableWhen', ->
+    restrict: 'A'
+    link: (scope, elem, attrs)->
+      $(elem).on 'click', (event) ->
+        event.preventDefault() unless elem.parents('.stack').hasClass('selected')
+        event
