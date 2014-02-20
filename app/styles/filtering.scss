@@ -50,7 +50,11 @@ body {
   // border-right: 100px solid red;
   // border-bottom: 50px solid transparent;
 
+  // 'zoom'.
   font-size: 400% !important;
+
+  // horizontally scrollable.
+  white-space: nowrap;
 }
 
 // text highlight
@@ -178,6 +182,10 @@ section.detail {
       > p {
         font-size: 120%;
       }
+    }
+
+    .stack-element-container {
+      overflow-x: scroll;
     }
 
     .stack-element {

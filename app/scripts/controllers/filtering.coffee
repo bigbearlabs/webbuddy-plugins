@@ -83,7 +83,7 @@ angular.module('app')
         # hackily unhighlight titles.
         $('.detail h2').highlightRegex()
 
-    $scope.scroll_to_selection = ->
+    $scope.scroll_to_selection = (item)->
       $timeout ->  # work around selected class application not being quick enough.
         $('.selected')[0].scrollIntoView()
 
@@ -93,7 +93,7 @@ angular.module('app')
       $scope.view_model.selected_item = item
       $scope.highlight()
 
-      $scope.scroll_to_selection()
+      # $scope.scroll_to_selection item
 
     $scope.hide_preview = (item) ->
       $scope.view_model.selected_item = null
@@ -307,6 +307,12 @@ angular.module('app')
   .directive 'enableWhen', ->
     restrict: 'A'
     link: (scope, elem, attrs)->
-      $(elem).on 'click', (event) ->
+      elem.on 'click', (event) ->
         event.preventDefault() unless elem.parents('.stack').hasClass('selected')
         event
+  .directive 'focusable', ($timeout)->
+    restrict: 'A'
+    link: (scope, elem, attrs)->
+      elem.on 'click', (event)->
+        $timeout ->  # work around selected class application not being quick enough.
+          elem[0].scrollIntoView()
