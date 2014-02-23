@@ -310,3 +310,20 @@ angular.module('app')
       elem.on 'click', (event)->
         $timeout ->  # work around selected class application not being quick enough.
           elem[0].scrollIntoView()
+
+  .directive 'focusOnSelected', ->
+    restrice: 'A'
+    link: (scope, elem, attrs)->
+      scope.$watch 'view_model.selected_item', ->
+        if scope.item == scope.view_model.selected_item
+          console.log {
+            scope,
+            elem,
+            attrs,
+            item: scope.item
+            view_model: scope.view_model
+          }
+          elem[0].scrollIntoView()
+
+
+
