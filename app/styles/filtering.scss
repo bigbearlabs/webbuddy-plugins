@@ -49,6 +49,12 @@ body {
   // border-top: 50px solid transparent;
   // border-right: 100px solid red;
   // border-bottom: 50px solid transparent;
+
+  // 'zoom'.
+  font-size: 400% !important;
+
+  // horizontally scrollable.
+  white-space: nowrap;
 }
 
 // text highlight
@@ -124,6 +130,8 @@ section.detail {
   vertical-align: top;
   text-align: left;
 
+  font-size: 100%; // this will scale to emulate the zoom.
+
   > a {
     // display: inline-block;
 
@@ -176,11 +184,15 @@ section.detail {
       }
     }
 
+    .stack-element-container {
+      overflow-x: scroll;
+    }
+
     .stack-element {
       display: inline-block;
       img {
-        width: 100px;
-        height: 100px;
+        width: 5em;
+        height: 5em;
       }
       p {
         display: none;

@@ -14,13 +14,11 @@ angular.module('app')
 
     $scope.view_model ||=
       # master
+      show_dev: false
       limit: 20
       limit_detail: 200
       sort: '-last_accessed_timestamp'
-      show_dev: true
-      detail:
-        sort: '-last_accessed_timestamp'
-        template: 'thumbnail-grid.html'
+
       matcher: (e)->
         # this should be passed into #filter - treat it as a strategy.
       subsections: [
@@ -36,6 +34,9 @@ angular.module('app')
       singular_subsection:
         name: 'singular subsection'
         hits: []
+      detail:
+        sort: '-last_accessed_timestamp'
+        template: 'thumbnail-grid.html'
 
     $scope.collection_options =
       itemSelector: '.item'
@@ -57,6 +58,14 @@ angular.module('app')
       hit: item.matched
       selected: $scope.view_model.selected_item == item
 
+    $scope.href = (item) ->
+      # return an href only if item is ready for navigation.
+      $timeout ->   # work around the click registering to the a href when selecting.
+        if item is $scope.view_model.selected_item
+          item.url
+        else
+          ''
+
     $scope.tooltip = (item) ->
       item.name +
         "\n" + item.url +
@@ -76,6 +85,7 @@ angular.module('app')
 
 
     $scope.preview = (item) ->
+      console.log "previewing item #{item}"
       $scope.view_model.selected_item = item
       $scope.highlight()
 
@@ -88,7 +98,6 @@ angular.module('app')
       first_hit = subsections_with_hits[0]?.hits[0]  # first hit on a subsection that has any hits.
       item_to_preview = first_hit
       $scope.preview item_to_preview
-
 
 
     update_search_hits = (sync_reference, sync_target)->
@@ -223,7 +232,7 @@ angular.module('app')
       new_index = Math.min(Math.max(new_index, 0), items.length - 1)
       return items[new_index]
 
-    # register key handlers.
+    # register event handlers.
     $('body').on 'keydown', (event)->
       console.log event.keyCode
 
@@ -244,6 +253,7 @@ angular.module('app')
 
       # TODO scroll into view.
 
+
     # # register callback with service.
     # webbuddy.reg_on_data
     #   -> $scope.data
@@ -253,7 +263,7 @@ angular.module('app')
     #     $scope.$apply()
 
     # workaround.
-    window.webbuddy.on_data = (new_data)->
+    $window.webbuddy.on_data = (new_data)->
       data = _.clone $scope.data or {}
 
       webbuddy.fold_data new_data, data
@@ -284,6 +294,36 @@ angular.module('app')
     post_bridge_attach = ->
       $scope.fetch_data()
     document.addEventListener "WebViewJavascriptBridgeReady", post_bridge_attach, false
+
+
+
+angular.module('app')
+  .directive 'enableWhen', ->
+    restrict: 'A'
+    link: (scope, elem, attrs)->
+      elem.on 'click', (event) ->
+        event.preventDefault() unless elem.parents('.stack').hasClass('selected')
+        event
+  .directive 'focusable', ($timeout)->
+    restrict: 'A'
+    link: (scope, elem, attrs)->
+      elem.on 'click', (event)->
+        $timeout ->  # work around selected class application not being quick enough.
+          elem[0].scrollIntoView()
+
+  .directive 'focusOnSelected', ->
+    restrice: 'A'
+    link: (scope, elem, attrs)->
+      scope.$watch 'view_model.selected_item', ->
+        if scope.item == scope.view_model.selected_item
+          console.log {
+            scope,
+            elem,
+            attrs,
+            item: scope.item
+            view_model: scope.view_model
+          }
+          elem[0].scrollIntoView()
 
 
 
