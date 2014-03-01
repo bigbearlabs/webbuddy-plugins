@@ -1,8 +1,8 @@
 task :default => :loop
 
-task :stage => [ :build, :assemble, :'stage:heroku' ]
+task :stage => [ :build, :'stage:heroku' ]
 
-task :release => [ :build, :assemble, :'stage:gdrive' ]
+task :release => [ :build, :'stage:gdrive' ]
 
 
 desc "loop"
@@ -18,16 +18,7 @@ task :build do
   sh %(
     brunch build --production  # will build to build/
     find build/ -name '*.coffee' | xargs coffee -c  # compile coffee
-  )
-end
-
-desc "assemble"
-task :assemble do
-  sh %(
-    ## ship static/, app/data, .tmp/scripts/injectees
-    rsync -av static/* build/
-    ## assume bbl-middleman is built, ship intro.
-    rsync -av ../bbl-middleman/build/webbuddy/intro build/
+    # TODO resolve generation here with generation on brunch-after.
   )
 end
 
