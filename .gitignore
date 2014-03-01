@@ -21,3 +21,5 @@ bower_components/
 # build stuff.
 _public
 build
+webbuddy-plugins.sublime-project
+webbuddy-plugins.sublime-workspace
