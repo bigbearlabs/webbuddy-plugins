@@ -296,6 +296,10 @@ angular.module('app')
     document.addEventListener "WebViewJavascriptBridgeReady", post_bridge_attach, false
 
 
+    # MOVE input field ops.
+    $scope.focus_input_field = () ->
+      $('#input-field')[0].select();
+
 
 angular.module('app')
   .directive 'enableWhen', ->
