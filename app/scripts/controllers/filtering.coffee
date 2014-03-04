@@ -21,10 +21,10 @@ angular.module('app')
 
       subsections:
         favorites:
-          name: 'Favorites'
+          name: 'favorites'
           items: []
         searches:
-          name: 'Searches'
+          name: 'searches'
           items: []
 
       singular_subsection:
@@ -159,10 +159,19 @@ angular.module('app')
 
     $scope.update_singular_subsection = ->
       # singular subsection hack.
-      singular_hits = _.chain($scope.view_model.subsections).values()
-        .map((e)->_.take(e?.items, $scope.view_model.limit))
-        .flatten()
-        .value()
+      singular_subsection = []
+      singular_subsection.push $scope.view_model.subsections.favorites
+      singular_subsection = singular_subsection.concat $scope.view_model.subsections.searches.items
+      singular_subsection.push $scope.view_model.subsections.highlights
+      singular_subsection.push $scope.view_model.subsections.suggestions
+      # singular_subsection.push $scope.view_model.subsections.pages
+
+      singular_subsection = _.reject singular_subsection, (e)-> e == undefined
+      singular_hits = _.flatten(
+        singular_subsection.map (e) ->
+          e?.items
+      )
+
       sync_array singular_hits, $scope.view_model.singular_subsection.items
       # $scope.view_model.singular_subsection.hits.sort (a,b) ->
       #   return -1 if a.last_accessed_timestamp is null
