@@ -164,13 +164,9 @@ angular.module('app')
       singular_subsection = singular_subsection.concat $scope.view_model.subsections.searches.items
       singular_subsection.push $scope.view_model.subsections.highlights
       singular_subsection.push $scope.view_model.subsections.suggestions
-      # singular_subsection.push $scope.view_model.subsections.pages
+      # singular_subsection.push _.clone $scope.view_model.subsections.pages
 
-      singular_subsection = _.reject singular_subsection, (e)-> e == undefined
-      singular_hits = _.flatten(
-        singular_subsection.map (e) ->
-          e?.items
-      )
+      singular_hits = _.reject singular_subsection, (e)-> e == undefined
 
       sync_array singular_hits, $scope.view_model.singular_subsection.items
       # $scope.view_model.singular_subsection.hits.sort (a,b) ->
