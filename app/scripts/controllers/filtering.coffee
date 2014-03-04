@@ -19,24 +19,24 @@ angular.module('app')
       limit_detail: 200
       sort: '-last_accessed_timestamp'
 
-      matcher: (e)->
-        # this should be passed into #filter - treat it as a strategy.
-      subsections: [
-        # the singleton section.
-        name: 'Favorite'
-      ,
-        name: 'Topics'
-      ,
-      #   name: 'Apps'
-      # ,
-        name: 'Smart stacks'
-      ]
+      subsections:
+        favorites:
+          name: 'Favorites'
+          hits: []
+        searches:
+          name: 'Searches'
+          hits: []
+
       singular_subsection:
         name: 'singular subsection'
         hits: []
+
       detail:
         sort: '-last_accessed_timestamp'
         template: 'thumbnail-grid.html'
+
+      matcher: (e)->
+        # this should be passed into #filter - treat it as a strategy.
 
     $scope.collection_options =
       itemSelector: '.item'
@@ -94,12 +94,12 @@ angular.module('app')
 
     $scope.reset_preview = ->
       # reset selected item.
-      subsections_with_hits = $scope.view_model.subsections.filter((e)->e.hits?.length > 0)
+      subsections_with_hits = _.values($scope.view_model.subsections).filter((e)->e.hits?.length > 0)
       first_hit = subsections_with_hits[0]?.hits[0]  # first hit on a subsection that has any hits.
       item_to_preview = first_hit
       $scope.preview item_to_preview
 
-
+    # unused
     update_search_hits = (sync_reference, sync_target)->
       ## complicated logic to sync arrays.
 
@@ -133,7 +133,7 @@ angular.module('app')
         name: 'stub favorite item'
         msg: 'Stacks, pages or anything else you\'ve favorited will show up here.'
       ], input
-      $scope.view_model.subsections[0].hits = matching_notables
+      $scope.view_model.subsections['favorites'].hits = matching_notables
 
 
       # 0.1-UNSTABLE
@@ -141,23 +141,15 @@ angular.module('app')
       matching_searches.map (e) ->
         e.thumbnail_url = 'img/stack.png'
 
-      $scope.view_model.subsections[1].hits = _.sortBy( matching_searches, (e) -> e.last_accessed_timestamp ).reverse()
+      $scope.view_model.subsections['searches'].hits = _.sortBy( matching_searches, (e) -> e.last_accessed_timestamp ).reverse()
 
 
       # pages, suggestions, highlights. PERF
       webbuddy.smart_stacks all_searches, input, (matching_smart_stacks)->
-        $scope.view_model.subsections[2].hits = matching_smart_stacks
+        matching_smart_stacks.map (smart_stack)->
+          $scope.view_model.subsections[smart_stack.name] = smart_stack
 
-        # singular subsection hack.
-        singular_hits = _.chain($scope.view_model.subsections).map((e)->_.take(e?.hits, $scope.view_model.limit)).flatten().value()
-        update_search_hits singular_hits, $scope.view_model.singular_subsection.hits
-        # $scope.view_model.singular_subsection.hits.sort (a,b) ->
-        #   return -1 if a.last_accessed_timestamp is null
-        #   if a.last_accessed_timestamp > b.last_accessed_timestamp
-        #     -1
-        #   else
-        #     1
-
+        $scope.update_singular_subsection()
 
         $scope.reset_preview()  # UGH
 
@@ -165,6 +157,20 @@ angular.module('app')
       $scope.refresh_collection_filter()
 
       # FIXME get rid of the magic indexes
+
+    $scope.update_singular_subsection = ->
+      # singular subsection hack.
+      singular_hits = _.chain($scope.view_model.subsections).values()
+        .map((e)->_.take(e?.hits, $scope.view_model.limit))
+        .flatten()
+        .value()
+      update_search_hits singular_hits, $scope.view_model.singular_subsection.hits
+      # $scope.view_model.singular_subsection.hits.sort (a,b) ->
+      #   return -1 if a.last_accessed_timestamp is null
+      #   if a.last_accessed_timestamp > b.last_accessed_timestamp
+      #     -1
+      #   else
+      #     1
 
 
     ## collection bits.
