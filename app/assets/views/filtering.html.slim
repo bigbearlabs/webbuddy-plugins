@@ -22,7 +22,7 @@
     .subsection ng-init="subsection = view_model.singular_subsection"
 
       / .subsection( ng-repeat="subsection in view_model.subsections"
-      /   ng-show="subsection.hits.length > 0"
+      /   ng-show="subsection.items.length > 0"
       /   )
 
       .button-group.hidden
@@ -35,13 +35,13 @@
 
       h3.hidden ng-bind="subsection.name"
 
-      ul.hit-list bindonce="subsection.hits"
+      ul.hit-list bindonce="subsection.items"
 
         -# filtering is now data-driven but left here for reference.
-        -# li.item( ng-repeat="item in view_model.hits | filter:{matched:true} | orderBy: view_model.sort"
+        -# li.item( ng-repeat="item in view_model.items | filter:{matched:true} | orderBy: view_model.sort"
 
         -# render each stack.
-        li.item.stack( ng-repeat="item in subsection.hits"
+        li.item.stack( ng-repeat="item in subsection.items"
             ng-class="classes(item)"
             ng-click="preview(item)"
             data-masonry-options='{ "itemSelector": "item", "columnWidth": ".item", "gutterWidth": 0 }'
@@ -61,7 +61,7 @@
           / TODO embed in scrollable div.
           .stack-element-container
             -# render each page in stack.
-            .stack-element( ng-repeat="detail_item in item.pages"
+            .stack-element( ng-repeat="detail_item in item.items"
               focusable )
               a( href="{{detail_item.url}}" title="{{tooltip(detail_item)}}"
                   enable-when=""
@@ -71,7 +71,7 @@
                   | {{detail_item.name}}
 
         / ## a 'more...' button.
-        / li.item.button( ng-show="subsection.hits.length > view_model.limit" )
+        / li.item.button( ng-show="subsection.items.length > view_model.limit" )
         /   p More...
 
          / end hit-list.

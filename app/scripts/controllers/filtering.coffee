@@ -22,14 +22,14 @@ angular.module('app')
       subsections:
         favorites:
           name: 'Favorites'
-          hits: []
+          items: []
         searches:
           name: 'Searches'
-          hits: []
+          items: []
 
       singular_subsection:
         name: 'singular subsection'
-        hits: []
+        items: []
 
       detail:
         sort: '-last_accessed_timestamp'
@@ -94,17 +94,16 @@ angular.module('app')
 
     $scope.reset_preview = ->
       # reset selected item.
-      subsections_with_hits = _.values($scope.view_model.subsections).filter((e)->e.hits?.length > 0)
-      first_hit = subsections_with_hits[0]?.hits[0]  # first hit on a subsection that has any hits.
+      subsections_with_hits = _.values($scope.view_model.subsections).filter((e)->e.items?.length > 0)
+      first_hit = subsections_with_hits[0]?.items[0]  # first hit on a subsection that has any hits.
       item_to_preview = first_hit
       $scope.preview item_to_preview
 
-    # unused
-    update_search_hits = (sync_reference, sync_target)->
+    sync_array = (sync_reference, sync_target)->
       ## complicated logic to sync arrays.
 
       unless sync_target
-        $scope.view_model.subsections[0].hits = _.clone sync_reference
+        $scope.view_model.subsections[0].items = _.clone sync_reference
         return
 
       intersection = _.intersection sync_reference, sync_target
@@ -133,7 +132,7 @@ angular.module('app')
         name: 'stub favorite item'
         msg: 'Stacks, pages or anything else you\'ve favorited will show up here.'
       ], input
-      $scope.view_model.subsections['favorites'].hits = matching_notables
+      $scope.view_model.subsections['favorites'].items = matching_notables
 
 
       # 0.1-UNSTABLE
@@ -141,7 +140,7 @@ angular.module('app')
       matching_searches.map (e) ->
         e.thumbnail_url = 'img/stack.png'
 
-      $scope.view_model.subsections['searches'].hits = _.sortBy( matching_searches, (e) -> e.last_accessed_timestamp ).reverse()
+      $scope.view_model.subsections['searches'].items = _.sortBy( matching_searches, (e) -> e.last_accessed_timestamp ).reverse()
 
 
       # pages, suggestions, highlights. PERF
@@ -161,10 +160,10 @@ angular.module('app')
     $scope.update_singular_subsection = ->
       # singular subsection hack.
       singular_hits = _.chain($scope.view_model.subsections).values()
-        .map((e)->_.take(e?.hits, $scope.view_model.limit))
+        .map((e)->_.take(e?.items, $scope.view_model.limit))
         .flatten()
         .value()
-      update_search_hits singular_hits, $scope.view_model.singular_subsection.hits
+      sync_array singular_hits, $scope.view_model.singular_subsection.items
       # $scope.view_model.singular_subsection.hits.sort (a,b) ->
       #   return -1 if a.last_accessed_timestamp is null
       #   if a.last_accessed_timestamp > b.last_accessed_timestamp
@@ -231,7 +230,7 @@ angular.module('app')
     ## doit.
 
     item_at_delta = (delta) ->
-      items = $scope.view_model.singular_subsection.hits
+      items = $scope.view_model.singular_subsection.items
       selected_item = $scope.view_model.selected_item
       current_index = items.indexOf selected_item
       new_index = current_index + delta

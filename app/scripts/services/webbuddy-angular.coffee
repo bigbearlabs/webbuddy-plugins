@@ -50,6 +50,8 @@ angular.module('app').service 'webbuddy', ($window) ->
       _.values(data.searches).map (e) ->
         e.items = e.pages
 
+        # this will get elaborated on.
+
 
       # TODO concat other types of data as they are finished.
 
@@ -107,7 +109,7 @@ angular.module('app').service 'webbuddy', ($window) ->
       all_pages = _.chain(stacks?.map (e)->e.pages).flatten().uniq().sortBy((e)->e.last_accessed_timestamp).reverse().value()
 
       smart_stacks = [
-        name: "Pages#{@quote_input(input)}"
+        name: "Pages"
         items: @match 'name_match', all_pages, input
 
         # need to consolidate matching algos somehow.
@@ -115,7 +117,7 @@ angular.module('app').service 'webbuddy', ($window) ->
         #   $scope.data.stacks.map((e)-> e.pages).filter (page)->
         #     matcher.match page
       ,
-        name: "Highlights#{@quote_input(input)}"
+        name: "Highlights"
         items: @match 'name_match', [
             name: 'stub item'
             url: 'stub-url'
