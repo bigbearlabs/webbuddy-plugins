@@ -86,8 +86,10 @@ section {
 }
 
 .command-bar {
-  text-align: center;
+  // STABILISING
+  display: none;
 
+  text-align: center;
 
   input {
     display: inline-block;
