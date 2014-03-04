@@ -109,7 +109,7 @@ angular.module('app').service 'webbuddy', ($window) ->
       all_pages = _.chain(stacks?.map (e)->e.pages).flatten().uniq().sortBy((e)->e.last_accessed_timestamp).reverse().value()
 
       smart_stacks = [
-        name: "Pages"
+        name: "pages"
         items: @match 'name_match', all_pages, input
 
         # need to consolidate matching algos somehow.
@@ -117,7 +117,7 @@ angular.module('app').service 'webbuddy', ($window) ->
         #   $scope.data.stacks.map((e)-> e.pages).filter (page)->
         #     matcher.match page
       ,
-        name: "Highlights"
+        name: "highlights"
         items: @match 'name_match', [
             name: 'stub item'
             url: 'stub-url'
@@ -130,7 +130,7 @@ angular.module('app').service 'webbuddy', ($window) ->
         msg: 'Content highlighted during your web activity will show up here.'
         details_url: 'http://webbuddyapp.com/features/highlights'
       ,
-        name: 'Google Suggestions Stack'
+        name: 'suggestions'
         items: []
         template: 'text-list.html'
       ]
