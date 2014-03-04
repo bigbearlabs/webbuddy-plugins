@@ -61,7 +61,7 @@
           / TODO embed in scrollable div.
           .stack-element-container
             -# render each page in stack.
-            .stack-element( ng-repeat="detail_item in item.items"
+            .stack-element( ng-repeat="detail_item in item.items | limitTo: view_model.limit_detail"
               focusable )
               a( href="{{detail_item.url}}" title="{{tooltip(detail_item)}}"
                   enable-when=""

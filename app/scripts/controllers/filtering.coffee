@@ -16,7 +16,7 @@ angular.module('app')
       # master
       show_dev: false
       limit: 20
-      limit_detail: 200
+      limit_detail: 20
       sort: '-last_accessed_timestamp'
 
       subsections:
@@ -164,7 +164,7 @@ angular.module('app')
       singular_subsection = singular_subsection.concat $scope.view_model.subsections.searches.items
       singular_subsection.push $scope.view_model.subsections.highlights
       singular_subsection.push $scope.view_model.subsections.suggestions
-      # singular_subsection.push _.clone $scope.view_model.subsections.pages
+      singular_subsection.push _.clone $scope.view_model.subsections.pages
 
       singular_hits = _.reject singular_subsection, (e)-> e == undefined
 
