@@ -151,7 +151,7 @@ angular.module('app').service 'webbuddy', ($window) ->
           $window.suggestCallBack = (data) =>
             suggestions = _.values(data[1]).map((e)-> e[0]).map (suggestion) =>
               name: suggestion
-              url: @search_url suggestion
+              url: @to_search_url suggestion
 
             console.log "suggestions: #{suggestions.map (e)->e.name}"
             smart_stacks[2].items = suggestions
