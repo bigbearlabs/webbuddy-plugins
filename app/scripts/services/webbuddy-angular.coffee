@@ -163,15 +163,24 @@ angular.module('app').service 'webbuddy', ($window) ->
       else
         call_callback()
 
+
+    #= web-side event handlers.
+
     on_input_field_submit: (input) ->
-      # do a google search.
-      @open_url(@search_url(input))
+      if $window.objc_interface
+        $window.objc_interface.on$_input$_field$_submit_(input)
+      else
+        # do a google search.
+        console.log "on_input_field_submit: falling back to web impl."
+        @open_url @to_search_url(input)
+
+
+    #= input handling
 
     open_url: (url) ->
       $window.location.assign url
 
-
-    search_url: (query)->
+    to_search_url: (query)->
       "http://google.com/search?q=#{query}"
 
     quote_input: (input, preceding_phrase = 'matching') ->
