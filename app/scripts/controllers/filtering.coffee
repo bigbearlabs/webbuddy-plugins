@@ -14,7 +14,7 @@ angular.module('app')
 
     $scope.view_model ||=
       # master
-      show_dev: false
+      show_dev: true
       limit: 20
       limit_detail: 20
       sort: '-last_accessed_timestamp'
@@ -310,6 +310,10 @@ angular.module('app')
     $scope.focus_input_field = () ->
       $('#input-field')[0].select();
 
+    $('#input-field').focusin ->
+      webbuddy.on_input_field_focus()
+    $('#input-field').focusout ->
+      webbuddy.on_input_field_unfocus()
 
 angular.module('app')
   .directive 'enableWhen', ->

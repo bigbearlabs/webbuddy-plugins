@@ -174,6 +174,12 @@ angular.module('app').service 'webbuddy', ($window) ->
         console.log "on_input_field_submit: falling back to web impl."
         @open_url @to_search_url(input)
 
+    on_input_field_focus: ->
+      console.log 'TODO focus'
+
+    on_input_field_unfocus: ->
+      console.log 'TODO unfocus'
+
 
     #= input handling
 
