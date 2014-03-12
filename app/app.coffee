@@ -9,10 +9,12 @@ App = angular.module('app', [
   'ngRoute'
   'partials'
   'restangular'
-  'pasvaz.bindonce'
   'rt.debounce'
   # 'ngAnimate'
+
+  'pasvaz.bindonce'
   'wu.masonry'
+  'rn-lazy'
 ])
 
 App.config(

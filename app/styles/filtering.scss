@@ -192,10 +192,15 @@ section.detail {
 
     .stack-element {
       display: inline-block;
-      img {
+
+      .thumbnail {
         width: 5em;
         height: 5em;
+
+        // scale thumbnail images to element size.
+        background-size: contain;
       }
+
       p {
         display: none;
       }

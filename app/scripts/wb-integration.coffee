@@ -5,7 +5,15 @@
   # default env.
   env:
     name: 'stub'
+    show_dev: true
+
     data_pattern: 'data/#{name}.json'
+
+  envs: [
+    name: 'webbuddy'
+    show_dev: false
+  ,
+  ]
 
 
   log: (msg...)=>
@@ -18,7 +26,7 @@
   data: {}
 
 post_bridge_attach = =>
-  @webbuddy.env.name = 'webbuddy'
+  @webbuddy.env = @webbuddy.envs.filter((e)-> e.name == 'webbuddy')[0]
 
 
   ## set up some useful stuff.

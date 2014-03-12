@@ -24,7 +24,8 @@
     "json2": "",
     "jquery-highlightRegex": "",
     "angular-masonry": "~0.7.0",
-    "angular-debounce": "~0.0.2"
+    "angular-debounce": "~0.0.2",
+    "rn-lazy": "/Users/ilo-robbie/dev/src/public/rn-lazy"
   },
   "overrides": {
     "bourbon": {
@@ -41,9 +42,15 @@
     },
     "json2": {
       "main": "cycle.js"
+    },
+    "rn-lazy": {
+      "main": [
+        "src/lazy.js"
+      ]
     }
+
   },
   "resolutions": {
-    "angular": "1.2.10-build.2171+sha.79e519f"
+    "angular": "~1.2.0"
   }
 }
