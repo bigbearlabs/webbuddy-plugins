@@ -41,7 +41,8 @@
         -# li.item( ng-repeat="item in view_model.items | filter:{matched:true} | orderBy: view_model.sort"
 
         -# render each stack.
-        li.item.stack( ng-repeat="item in subsection.items"
+        / TODO needs orderBy.
+        li.item.stack( ng-repeat="item in subsection.items | limitTo:view_model.limit | orderBy:view_model.sort"
             ng-class="classes(item)"
             ng-click="preview(item)"
             data-masonry-options='{ "itemSelector": "item", "columnWidth": ".item", "gutterWidth": 0 }'

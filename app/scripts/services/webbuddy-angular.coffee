@@ -50,6 +50,13 @@ angular.module('app').service 'webbuddy', ($window) ->
       _.values(data.searches).map (e) ->
         e.items = e.pages
 
+        # convert dates
+        e.items.map (i) ->
+          i.last_accessed_timestamp = new Date(i.last_accessed_timestamp)
+
+        # set the collection's date
+        e.last_accessed_timestamp = _.max e.items.map((e)-> e.last_accessed_timestamp)
+
         # this will get elaborated on.
 
 
