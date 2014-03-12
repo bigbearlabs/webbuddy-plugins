@@ -1,4 +1,3 @@
-# TODO move out integration with host env into a service or module.
 # TODO factor out the matching algo, PoC switching to list.js or another fuzzy text match lib.
 
 
@@ -14,7 +13,7 @@ angular.module('app')
 
     $scope.view_model ||=
       # master
-      show_dev: webbuddy.env.show_dev
+      show_dev: true
 
       limit: 20
       limit_detail: 20

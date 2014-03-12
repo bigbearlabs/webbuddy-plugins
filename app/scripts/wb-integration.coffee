@@ -5,8 +5,6 @@
   # default env.
   env:
     name: 'stub'
-    show_dev: true
-
     data_pattern: 'data/#{name}.json'
 
 
