@@ -9,12 +9,6 @@
 
     data_pattern: 'data/#{name}.json'
 
-  envs: [
-    name: 'webbuddy'
-    show_dev: false
-  ,
-  ]
-
 
   log: (msg...)=>
     @WebViewJavascriptBridge.send "console.log: #{msg}"
@@ -26,7 +20,7 @@
   data: {}
 
 post_bridge_attach = =>
-  @webbuddy.env = @webbuddy.envs.filter((e)-> e.name == 'webbuddy')[0]
+  @webbuddy.env.name = 'webbuddy'
 
 
   ## set up some useful stuff.

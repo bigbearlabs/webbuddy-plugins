@@ -14,7 +14,7 @@ angular.module('app')
 
     $scope.view_model ||=
       # master
-      show_dev: $window.webbuddy.env.show_dev
+      show_dev: webbuddy.env.show_dev
 
       limit: 20
       limit_detail: 20
