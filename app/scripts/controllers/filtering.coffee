@@ -75,14 +75,14 @@ angular.module('app')
 
     # PERF
     $scope.highlight = (input = $scope.data?.input) ->
-      # $timeout ->
-      #   $('.stack, .detail').highlightRegex()
+      $timeout ->
+        $('.stack, .detail').highlightRegex()
 
-      #   # apply highlights. BAD-DEP
-      #   $('.stack, .detail').highlightRegex new RegExp input, 'i'
+        # apply highlights. BAD-DEP
+        $('.stack, .detail').highlightRegex new RegExp input, 'i'
 
-      #   # hackily unhighlight titles.
-      #   $('.detail h2').highlightRegex()
+        # hackily unhighlight titles.
+        $('.detail h2').highlightRegex()
 
 
     $scope.preview = (item) ->
