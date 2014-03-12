@@ -23,7 +23,8 @@
     "angular-animate": "~1.2.0",
     "json2": "",
     "jquery-highlightRegex": "",
-    "angular-masonry": "~0.7.0"
+    "angular-masonry": "~0.7.0",
+    "angular-debounce": "~0.0.2"
   },
   "overrides": {
     "bourbon": {
@@ -43,6 +44,6 @@
     }
   },
   "resolutions": {
-    "angular": "1.2.9"
+    "angular": "1.2.10-build.2171+sha.79e519f"
   }
 }

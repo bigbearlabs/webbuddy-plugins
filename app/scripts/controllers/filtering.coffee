@@ -6,7 +6,7 @@
 
 angular.module('app')
   .controller 'FilteringCtrl',
-  (webbuddy, $scope, $window, $timeout, $q, Restangular ) ->
+  (webbuddy, $scope, $window, $timeout, $q, Restangular, debounce ) ->
 
     ## statics
 
@@ -74,14 +74,14 @@ angular.module('app')
 
     # PERF
     $scope.highlight = (input = $scope.data?.input) ->
-      $timeout ->
-        $('.stack, .detail').highlightRegex()
+      # $timeout ->
+      #   $('.stack, .detail').highlightRegex()
 
-        # apply highlights. BAD-DEP
-        $('.stack, .detail').highlightRegex new RegExp input, 'i'
+      #   # apply highlights. BAD-DEP
+      #   $('.stack, .detail').highlightRegex new RegExp input, 'i'
 
-        # hackily unhighlight titles.
-        $('.detail h2').highlightRegex()
+      #   # hackily unhighlight titles.
+      #   $('.detail h2').highlightRegex()
 
 
     $scope.preview = (item) ->
@@ -120,7 +120,8 @@ angular.module('app')
       to_add.map (e)-> sync_target.push e
 
 
-    $scope.filter = (input = $scope.data?.input)->
+    $scope.filter = debounce 500, (input = $scope.data?.input)->
+
       console.log("filtering for #{input}")
 
       ## filter the view model and update views.
@@ -155,7 +156,6 @@ angular.module('app')
 
       $scope.refresh_collection_filter()
 
-      # FIXME get rid of the magic indexes
 
     $scope.update_singular_subsection = ->
       # singular subsection hack.

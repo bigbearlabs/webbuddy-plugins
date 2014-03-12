@@ -10,6 +10,7 @@ App = angular.module('app', [
   'partials'
   'restangular'
   'pasvaz.bindonce'
+  'rt.debounce'
   # 'ngAnimate'
   'wu.masonry'
 ])
