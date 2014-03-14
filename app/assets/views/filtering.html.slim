@@ -8,9 +8,17 @@
     h3.hidden Filter
     input#input-field( autofocus="autofocus" ng-model="data.input" ng-change="" )
 
-  section.filtering-condition.dev
-    h3.hidden Matching
 
+  p ng-click="view_model.show_dev = ! view_model.show_dev" show_dev
+
+  section.tweaks ng-show="view_model.show_dev"
+
+    p ng-click="view_model.classes.stack_content_item_label.hidden = ! view_model.classes.stack_content_item_label.hidden" labels
+
+    p sort: {{view_model.sort}}
+    / TODO make toggle
+
+    // experimental
     p( editable-textarea="matching_searches_expr"
       onbeforesave="update_matching_searches()"
       ) {{ matching_searches_expr }}
@@ -70,7 +78,7 @@
                   enable-when=""
                   )
                 img.thumbnail( rn-lazy-background="'{{detail_item.thumbnail_url}}'" )
-                p
+                p.stack-content-item-label ng-class="view_model.classes.stack_content_item_label"
                   | {{detail_item.name}}
 
         / ## a 'more...' button.

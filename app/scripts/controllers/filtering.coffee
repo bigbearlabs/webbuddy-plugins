@@ -12,12 +12,22 @@ angular.module('app')
     $scope.$root.pageTitle = 'WebBuddy Filtering'
 
     $scope.view_model ||=
-      # master
       show_dev: true
 
+      classes:
+        stack_content_item_label:
+          hidden: false
+
+      # master
       limit: 20
       limit_detail: 20
       sort: '-last_accessed_timestamp'
+
+      detail:
+        sort: '-last_accessed_timestamp'
+        template: 'thumbnail-grid.html'
+
+      ## data
 
       subsections:
         favorites:
@@ -31,9 +41,6 @@ angular.module('app')
         name: 'singular subsection'
         items: []
 
-      detail:
-        sort: '-last_accessed_timestamp'
-        template: 'thumbnail-grid.html'
 
       matcher: (e)->
         # this should be passed into #filter - treat it as a strategy.
