@@ -22,8 +22,9 @@ App.config(
 
     $routeProvider
 
-      .when('/eval', {templateUrl: 'views/eval.html'})
       .when('/filtering', {templateUrl: 'views/filtering.html'})
+      .when('/eval', {templateUrl: 'views/eval.html'})
+      .when('/action', {templateUrl: 'views/action.html'})
 
       # Catch all
       .otherwise({redirectTo: '/filtering'})
