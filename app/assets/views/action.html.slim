@@ -8,15 +8,14 @@
 
   h3 Add / Edit Action
 
+  section.print
+    .results( ng-include="'views/obj_tree.html'" )
+
+  section.commands
+    .command ng-repeat="command in commands"
+      .label() {{command.name}}
+
   section.read
     h3 input:
     input( ng-model="data.input" type="text" ng-change="evaluate(data.input)" )
 
-  section.print
-    h3 results:
-    .results( ng-include="'views/obj_tree.html'" )
-
-    / if expression.error TODO
-    h3 error:
-    p
-      | {{data.error}}

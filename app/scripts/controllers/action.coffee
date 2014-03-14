@@ -7,9 +7,20 @@ angular.module('app')
 
     action =
       name: 'stub action'
-      href: 'http://stub-url'
+      href: 'javascript:blahblahblah.'
 
     $scope.obj = action
+
+    $scope.commands = [
+      name: 'cancel'
+    ,
+      name: 'save'
+    ]
+
+
+    $scope.classes = (key)->
+      key.replace /[ ]/, '-'
+
 
     #== remnants of EvalCtrl.
 
