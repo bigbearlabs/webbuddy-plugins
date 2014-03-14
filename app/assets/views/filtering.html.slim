@@ -56,15 +56,17 @@
           a( href=""
               bo-title="item.name + '\n' + 'Last accessed: ' + item.last_accessed_timestamp"
               )
-            img.hit-icon( bo-src="item.thumbnail_url")
-            p( bo-text="item.name" )
+            img.stack-icon( bo-src="item.thumbnail_url")
+            p.stack-label( bo-text="item.name" )
 
           / TODO embed in scrollable div.
-          .stack-element-container
+          .stack-content-container
             -# render each page in stack.
-            .stack-element( ng-repeat="detail_item in item.items | limitTo: view_model.limit_detail"
-              focusable )
-              a( href="{{detail_item.url}}" title="{{tooltip(detail_item)}}"
+            .stack-content-item( ng-repeat="detail_item in item.items | limitTo: view_model.limit_detail"
+                focusable )
+
+              a( href="{{detail_item.url}}"
+                  title="{{tooltip(detail_item)}}"
                   enable-when=""
                   )
                 img.thumbnail( rn-lazy-background="'{{detail_item.thumbnail_url}}'" )

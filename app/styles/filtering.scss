@@ -186,11 +186,12 @@ section.detail {
       }
     }
 
-    .stack-element-container {
+    .stack-content-container {
       overflow-x: scroll;
     }
 
-    .stack-element {
+    .stack-content-item {
+
       display: inline-block;
 
       .thumbnail {
@@ -202,7 +203,7 @@ section.detail {
       }
 
       p {
-        display: none;
+        max-width: 5em;
       }
     }
   }
