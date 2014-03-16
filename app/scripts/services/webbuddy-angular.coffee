@@ -172,6 +172,14 @@ angular.module('app').service 'webbuddy', ($window) ->
 
 
     #= web-side event handlers.
+    # TODO use arguments.callee.name to dynamically dispatch.
+
+    on_item_click: (item)->
+      if $window.objc_interface
+        $window.objc_interface.on$_item$_click_(item)
+      else
+        console.log "TODO: load #{item}"
+
 
     on_input_field_submit: (input) ->
       if $window.objc_interface

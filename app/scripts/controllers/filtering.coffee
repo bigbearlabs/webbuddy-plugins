@@ -323,12 +323,26 @@ angular.module('app')
       webbuddy.on_input_field_unfocus()
 
 angular.module('app')
-  .directive 'enableWhen', ->
+  # an enableWhen has click enabled only when it's selected.
+  .directive 'enableWhen', (webbuddy)->
     restrict: 'A'
     link: (scope, elem, attrs)->
       elem.on 'click', (event) ->
-        event.preventDefault() unless elem.parents('.stack').hasClass('selected')
+
+        # event.preventDefault() unless elem.parents('.stack').hasClass('selected')
+
+        event.preventDefault()
+
+        item = angular.element(elem).scope().detail_item
+        console.log
+          item: item
+          elem: elem
+        if elem.parents('.stack').hasClass('selected')
+          webbuddy.on_item_click item
+
         event
+
+  # a focusable comes into focus when clicked.
   .directive 'focusable', ($timeout)->
     restrict: 'A'
     link: (scope, elem, attrs)->
