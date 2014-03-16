@@ -17,6 +17,8 @@ angular.module('app')
       classes:
         stack_content_item_label:
           hidden: false
+        command_bar:
+          hidden: true
 
       # master
       limit: 20

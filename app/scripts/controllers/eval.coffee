@@ -70,7 +70,7 @@ angular.module('app')
         when 'object'
           ''
         when 'function'
-          String(val)
+          val.toString()
         # TODO arrays, other types falling under js quirks
         else
           val

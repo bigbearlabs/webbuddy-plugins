@@ -4,7 +4,7 @@
 
 .filtering.app-view( ng-controller='FilteringCtrl')
 
-  section.command-bar
+  section.command-bar ng-class="view_model.classes.command_bar"
     h3.hidden Filter
     input#input-field( autofocus="autofocus" ng-model="data.input" ng-change="" )
 
@@ -12,6 +12,8 @@
   p ng-click="view_model.show_dev = ! view_model.show_dev" show_dev
 
   section.tweaks ng-show="view_model.show_dev"
+
+    p ng-click="view_model.classes.command_bar.hidden = ! view_model.classes.command_bar.hidden" command bar
 
     p ng-click="view_model.classes.stack_content_item_label.hidden = ! view_model.classes.stack_content_item_label.hidden" labels
 
