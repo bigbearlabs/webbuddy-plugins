@@ -27,11 +27,10 @@
 
   section.master
 
-    .subsection ng-init="subsection = view_model.singular_subsection"
-
-      / .subsection( ng-repeat="subsection in view_model.subsections"
-      /   ng-show="subsection.items.length > 0"
-      /   )
+    .subsection(
+        ng-repeat="subsection in view_model.subsections | orderBy: 'order'"
+        ng-show="subsection.items.length > 0"
+        )
 
       .button-group.hidden
         p.hidden sort:

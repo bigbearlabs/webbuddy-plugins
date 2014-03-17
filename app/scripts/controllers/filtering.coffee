@@ -24,6 +24,9 @@ angular.module('app')
       limit: 20
       limit_detail: 20
       sort: '-last_accessed_timestamp'
+      subsection_order: [
+        'favorites', 'searches', 'suggestions', 'pages'
+      ]
 
       detail:
         sort: '-last_accessed_timestamp'
@@ -38,10 +41,6 @@ angular.module('app')
         searches:
           name: 'searches'
           items: []
-
-      singular_subsection:
-        name: 'singular subsection'
-        items: []
 
 
       match_strategies: webbuddy.match_strategies
@@ -164,10 +163,17 @@ angular.module('app')
 
       # pages, suggestions, highlights. PERF
       webbuddy.smart_stacks all_searches, input, (matching_smart_stacks)->
+        # set smart stacks as subsections
         matching_smart_stacks.map (smart_stack)->
-          $scope.view_model.subsections[smart_stack.name] = smart_stack
+          $scope.view_model.subsections[smart_stack.name] =
+            name: smart_stack.name
+            items: [ smart_stack ]
 
-        $scope.update_singular_subsection()
+        # set order
+        _.map $scope.view_model.subsections, (e)->
+          e.order = $scope.view_model.subsection_order.indexOf e.name
+
+        # $scope.update_singular_subsection()
 
         $scope.reset_preview()  # UGH
 
@@ -178,11 +184,11 @@ angular.module('app')
     $scope.update_singular_subsection = ->
       # singular subsection hack.
       singular_subsection = []
-      singular_subsection.push $scope.view_model.subsections.favorites
-      singular_subsection = singular_subsection.concat $scope.view_model.subsections.searches.items
-      singular_subsection.push $scope.view_model.subsections.highlights
-      singular_subsection.push $scope.view_model.subsections.suggestions
-      singular_subsection.push _.clone $scope.view_model.subsections.pages
+      singular_subsection.concat $scope.view_model.subsections.favorites.items
+      singular_subsection = singular_subsection.concat $scope.view_model.subsections.searches?.items
+      singular_subsection.concat $scope.view_model.subsections.highlights?.items
+      singular_subsection.concat $scope.view_model.subsections.suggestions?.items
+      singular_subsection.concat _.clone $scope.view_model.subsections.pages?.items
 
       singular_hits = _.reject singular_subsection, (e)-> e == undefined
 
@@ -252,6 +258,7 @@ angular.module('app')
 
     ## doit.
 
+    # TODO broken after refactoring affecting singular_subsection.
     item_at_delta = (delta) ->
       items = $scope.view_model.singular_subsection.items
       selected_item = $scope.view_model.selected_item
