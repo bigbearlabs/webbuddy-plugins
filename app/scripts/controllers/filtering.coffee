@@ -44,8 +44,12 @@ angular.module('app')
         items: []
 
 
-      matcher: (e)->
-        # this should be passed into #filter - treat it as a strategy.
+      match_strategies: webbuddy.match_strategies
+
+      match_strategy: ->
+        webbuddy.match_strategies['name_match']
+
+    $scope.view_model.match_strategy_text = $scope.view_model.match_strategy().toString()
 
     $scope.collection_options =
       itemSelector: '.item'
@@ -62,6 +66,11 @@ angular.module('app')
 
 
     ## ui ops.
+
+    $scope.update_match_strategy = (data) ->
+      result = eval "(#{$scope.view_model.match_trategy_text})"
+      $scope.view_model.match_strategy = result
+      true
 
     $scope.classes = (item) ->
       hit: item.matched
@@ -138,7 +147,7 @@ angular.module('app')
       all_searches = _.values($scope.data?.searches)
 
       # PLACEHOLDER
-      matching_notables = webbuddy.match 'name_match', [
+      matching_notables = webbuddy.match $scope.view_model.match_strategy(), [
         name: 'stub favorite item'
         msg: 'Stacks, pages or anything else you\'ve favorited will show up here.'
       ], input
@@ -146,7 +155,7 @@ angular.module('app')
 
 
       # 0.1-UNSTABLE
-      matching_searches = webbuddy.match 'name_match', all_searches, $scope.data?.input
+      matching_searches = webbuddy.match $scope.view_model.match_strategy(), all_searches, $scope.data?.input
       matching_searches.map (e) ->
         e.thumbnail_url = 'img/stack.png'
 

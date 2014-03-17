@@ -21,9 +21,7 @@
     / TODO make toggle
 
     // experimental
-    p( editable-textarea="matching_searches_expr"
-      onbeforesave="update_matching_searches()"
-      ) {{ matching_searches_expr }}
+    p editable-textarea="view_model.match_strategy_text" onbeforesave="update_match_strategy($data)" matcher: {{ view_model.match_strategy_text }}
     -# TODO on commit, re-eval and store on $scope.matching_searches.
 
 

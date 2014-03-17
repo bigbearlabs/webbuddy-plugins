@@ -25,7 +25,8 @@
     "jquery-highlightRegex": "",
     "angular-masonry": "~0.7.0",
     "angular-debounce": "~0.0.2",
-    "rn-lazy": "/Users/ilo-robbie/dev/src/public/rn-lazy"
+    "rn-lazy": "/Users/ilo-robbie/dev/src/public/rn-lazy",
+    "angular-xeditable": "~0.1.8"
   },
   "overrides": {
     "bourbon": {
@@ -48,7 +49,6 @@
         "src/lazy.js"
       ]
     }
-
   },
   "resolutions": {
     "angular": "~1.2.0"

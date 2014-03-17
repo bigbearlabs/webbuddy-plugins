@@ -11,6 +11,7 @@ App = angular.module('app', [
   'restangular'
   'rt.debounce'
   # 'ngAnimate'
+  'xeditable'
 
   'pasvaz.bindonce'
   'wu.masonry'
