@@ -99,9 +99,6 @@ angular.module('app').service 'webbuddy', ($window) ->
         # # any page matches.
         # item.pages?.filter((e)-> match_strategy e).length > 0
 
-        # update the view model item.
-        item.matched = matched
-
         matched
 
       # # return all searches as rendering is determined by class.
