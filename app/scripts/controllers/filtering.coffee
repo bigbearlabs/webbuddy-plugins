@@ -18,7 +18,7 @@ angular.module('app')
         stack_content_item_label:
           hidden: false
         command_bar:
-          hidden: false
+          hidden: true
 
       # master
       limit: 20
@@ -265,9 +265,9 @@ angular.module('app')
       console.log event.keyCode
 
       switch event.keyCode
-        when 13  # enter
-          webbuddy.on_input_field_submit $scope.data.input
-          return
+        # when 13  # enter
+        #   webbuddy.on_input_field_submit $scope.data.input
+        #   return
         when 38  # up
           delta = -1
         when 40  # down
