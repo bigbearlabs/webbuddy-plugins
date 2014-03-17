@@ -28,7 +28,7 @@
   section.master
 
     .subsection(
-        ng-repeat="subsection in view_model.subsections | orderBy: 'order'"
+        ng-init="subsection = view_model.singular_subsection"
         ng-show="subsection.items.length > 0"
         )
 
@@ -40,6 +40,8 @@
       -# TODO wire to a sort controller method, then to implementation components.
 
 
+      -# render each stack.
+
       h3.hidden ng-bind="subsection.name"
 
       ul.hit-list bindonce="subsection.items"
@@ -47,9 +49,7 @@
         -# filtering is now data-driven but left here for reference.
         -# li.item( ng-repeat="item in view_model.items | filter:{matched:true} | orderBy: view_model.sort"
 
-        -# render each stack.
-        / TODO needs orderBy.
-        li.item.stack( ng-repeat="item in subsection.items | limitTo:view_model.limit | orderBy:view_model.sort"
+        li.item.stack( ng-repeat="item in subsection.items | limitTo:view_model.limit | orderBy: view_model.sort"
             ng-class="classes(item)"
             ng-click="preview(item)"
             data-masonry-options='{ "itemSelector": "item", "columnWidth": ".item", "gutterWidth": 0 }'

@@ -19,15 +19,17 @@ angular.module('app')
           hidden: false
         command_bar:
           hidden: true
+        stack: {}
 
       # master
-      limit: 20
-      limit_detail: 20
-      sort: '-last_accessed_timestamp'
       subsection_order: [
-        'favorites', 'searches', 'suggestions', 'pages'
+        'favorites', 'searches', 'pages', 'suggestions',
       ]
+      limit: 20
 
+      sort: [ 'subsection_order', '-last_accessed_timestamp' ]
+
+      limit_detail: 20
       detail:
         sort: '-last_accessed_timestamp'
         template: 'thumbnail-grid.html'
@@ -41,6 +43,10 @@ angular.module('app')
         searches:
           name: 'searches'
           items: []
+
+      singular_subsection:
+        name: 'singular subsection'
+        items: []
 
 
       match_strategies: webbuddy.match_strategies
@@ -116,8 +122,13 @@ angular.module('app')
       item_to_preview = first_hit
       $scope.preview item_to_preview
 
-    sync_array = (sync_reference, sync_target)->
-      ## complicated logic to sync arrays.
+    mirror_array = (sync_target, sync_reference)->
+      # # hack.
+      # sync_target.splice 0
+      # sync_reference.map (e) ->
+      #   sync_target.push e
+
+      ## complicated logic to modify sync_target to look like sync_reference.
 
       unless sync_target
         $scope.view_model.subsections[0].items = _.clone sync_reference
@@ -160,7 +171,6 @@ angular.module('app')
 
       $scope.view_model.subsections['searches'].items = _.sortBy( matching_searches, (e) -> e.last_accessed_timestamp ).reverse()
 
-
       # pages, suggestions, highlights. PERF
       webbuddy.smart_stacks all_searches, input, (matching_smart_stacks)->
         # set smart stacks as subsections
@@ -169,11 +179,7 @@ angular.module('app')
             name: smart_stack.name
             items: [ smart_stack ]
 
-        # set order
-        _.map $scope.view_model.subsections, (e)->
-          e.order = $scope.view_model.subsection_order.indexOf e.name
-
-        # $scope.update_singular_subsection()
+        $scope.update_singular_subsection()
 
         $scope.reset_preview()  # UGH
 
@@ -181,18 +187,31 @@ angular.module('app')
       $scope.refresh_collection_filter()
 
 
+    # hack around the difficulty of working with the subsections object by creating a singular subsection.
     $scope.update_singular_subsection = ->
-      # singular subsection hack.
       singular_subsection = []
-      singular_subsection.concat $scope.view_model.subsections.favorites.items
-      singular_subsection = singular_subsection.concat $scope.view_model.subsections.searches?.items
-      singular_subsection.concat $scope.view_model.subsections.highlights?.items
-      singular_subsection.concat $scope.view_model.subsections.suggestions?.items
-      singular_subsection.concat _.clone $scope.view_model.subsections.pages?.items
+
+      $scope.view_model.subsection_order.map (subsection_name) ->
+        subsection = $scope.view_model.subsections[subsection_name]
+
+        if subsection?.items.length > 0
+          subsection_data = _.clone subsection.items
+
+          # add subsection order to items
+          subsection_data.map (e) ->
+            e.subsection_order = $scope.view_model.subsection_order.indexOf subsection_name
+
+          singular_subsection = singular_subsection.concat subsection_data
+
+      # singular_subsection.concat $scope.view_model.subsections.favorites.items
+      # singular_subsection = singular_subsection.concat $scope.view_model.subsections.searches?.items
+      # singular_subsection.concat $scope.view_model.subsections.highlights?.items
+      # singular_subsection.concat $scope.view_model.subsections.suggestions?.items
+      # singular_subsection.concat _.clone $scope.view_model.subsections.pages?.items
 
       singular_hits = _.reject singular_subsection, (e)-> e == undefined
 
-      sync_array singular_hits, $scope.view_model.singular_subsection.items
+      mirror_array $scope.view_model.singular_subsection.items, singular_hits
       # $scope.view_model.singular_subsection.hits.sort (a,b) ->
       #   return -1 if a.last_accessed_timestamp is null
       #   if a.last_accessed_timestamp > b.last_accessed_timestamp
