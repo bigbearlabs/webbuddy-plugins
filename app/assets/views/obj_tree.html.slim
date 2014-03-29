@@ -14,10 +14,11 @@ script( id="obj-node.html" type="text/ng-template")
 
       .property ng-class="classes(key)"
         .key() {{key}}
+
         textarea.value ng-show="! is_object(obj)" {{to_displayable(obj)}}
 
-      -# set obj and recursively render the template.
-      p( ng-show="! collapsed" ng-include="'obj-node.html'" ng-init="obj = obj[key]" )
+        -# set obj and recursively render the template.
+        .value-recursive( ng-show="! collapsed" ng-include="'obj-node.html'" ng-init="obj = obj[key]" )
 
 
 

@@ -36,12 +36,12 @@ angular.module('app')
 
     ## dev
 
-    # $scope.fetch_data = ->
-    #   Restangular.setBaseUrl "data"
-    #   Restangular.one('eval.json').get()
-    #   .then (data)->
-    #     $scope.data.input =
-    #       eval: data.input.eval
+    $scope.fetch_data = ->
+      Restangular.setBaseUrl "data"
+      Restangular.one('eval.json').get()
+      .then (data)->
+        $scope.data = data
+        $scope.evaluate data.input
 
 
     # debug
@@ -49,7 +49,7 @@ angular.module('app')
       restangular: Restangular
 
 
-
+    $scope.fetch_data()
 
 # used by obj_tree.html.haml.
 # TODO modularise cleanly
