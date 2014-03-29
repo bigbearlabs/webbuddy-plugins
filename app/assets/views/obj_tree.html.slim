@@ -6,7 +6,7 @@
 -# a recursive view template.
 -# use by including e.g.
 -#   %ng-include( src="'obj-node.html'" )
-script( type="text/ng-template" id="obj-node.html" )
+script( id="obj-node.html" type="text/ng-template")
 
   -# my properties.
   ul
@@ -14,10 +14,11 @@ script( type="text/ng-template" id="obj-node.html" )
 
       .property ng-class="classes(key)"
         .key() {{key}}
-        textarea.value() {{to_displayable(obj)}}
+        textarea.value ng-show="! is_object(obj)" {{to_displayable(obj)}}
 
       -# set obj and recursively render the template.
       p( ng-show="! collapsed" ng-include="'obj-node.html'" ng-init="obj = obj[key]" )
+
 
 
 .tree-view( ng-controller="ObjTreeCtrl")

@@ -5,20 +5,19 @@ angular.module('app')
   .controller 'EvalCtrl',
   ($scope, $route, $window, Restangular) ->
 
-    # FIXME this shows all the interop warts.
-    # DISABLED clobbers the one in filtering. need to refactor into a bus
-    # $window.webbuddy_data_updated = ->
-    #   $scope.data.input = $window.webbuddy_data.input
-    #   $scope.data.output = $window.webbuddy_data.output
+    set_output = (expr, output) ->
+      $scope.obj = {}  # interface with ObjTreeCtrl
+      $scope.obj[expr] = output
 
-    #   set_output $scope.data.input
-    #   $scope.$apply()
+    $scope.is_object = (obj) ->
+      typeof(obj) == 'object'
 
-    # TODO switch for js or ruby.
+
+
     # evaluate js.
     $scope.evaluate = (expr) ->
       try
-        eval_result = eval(expr)
+        eval_result = $scope.do_eval(expr)
 
         # work around cyclic refs tripping up JSON.stringify
         eval_result = JSON.decycle eval_result
@@ -27,19 +26,23 @@ angular.module('app')
       catch e
         e
 
-    set_output = (expr, output) ->
-      $scope.obj = {}  # interface with ObjTreeCtrl
-      $scope.obj[expr] = output
+
+    # env-specific.
+
+    $scope.do_eval = (expr)->
+      # javascript version.
+      eval(expr)
 
 
     ## dev
 
-    $scope.fetch_stub_data = ->
-      Restangular.setBaseUrl "data"
-      Restangular.one('eval.json').get()
-      .then (data)->
-        $scope.data.input =
-          eval: data.eval
+    # $scope.fetch_data = ->
+    #   Restangular.setBaseUrl "data"
+    #   Restangular.one('eval.json').get()
+    #   .then (data)->
+    #     $scope.data.input =
+    #       eval: data.input.eval
+
 
     # debug
     $scope.debug =
@@ -68,7 +71,7 @@ angular.module('app')
 
       switch typeof(val)
         when 'object'
-          ''
+          'object with the following properties:'
         when 'function'
           val.toString()
         # TODO arrays, other types falling under js quirks
