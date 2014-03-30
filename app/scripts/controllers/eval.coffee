@@ -24,14 +24,15 @@ angular.module('app')
 
         set_output expr, eval_result
       catch e
-        e
+        set_output expr, e
+        # e
 
 
     # env-specific.
 
     $scope.do_eval = (expr)->
       # javascript version.
-      eval(expr)
+      eval "(#{expr})"
 
 
     ## dev
@@ -68,12 +69,19 @@ angular.module('app')
     # quick-hack terminal transformation to ensure recursive rendering succeeds.
     $scope.to_displayable = (val)->
       return '<null>' if val is null
+      return '<undefined>' if val is undefined
 
-      switch typeof(val)
-        when 'object'
-          'object with the following properties:'
-        when 'function'
-          val.toString()
-        # TODO arrays, other types falling under js quirks
-        else
-          val
+      # switch typeof(val)
+      #   when 'object'
+      #     'object with the following properties:'
+      #   when 'function'
+      #     val.toString()
+      #   # TODO arrays, other types falling under js quirks
+      #   else
+      #     val
+
+      if val instanceof Function or val instanceof Error or val instanceof String
+        val.toString()
+      else
+        JSON.stringify val
+
