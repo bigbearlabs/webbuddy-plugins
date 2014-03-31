@@ -1,4 +1,3 @@
-# TODO move out integration with host env into a service or module.
 # TODO factor out the matching algo, PoC switching to list.js or another fuzzy text match lib.
 
 
@@ -6,18 +5,36 @@
 
 angular.module('app')
   .controller 'FilteringCtrl',
-  (webbuddy, $scope, $window, $timeout, $q, Restangular ) ->
+  (webbuddy, $scope, $window, $timeout, $q, Restangular, debounce ) ->
 
     ## statics
 
     $scope.$root.pageTitle = 'WebBuddy Filtering'
 
     $scope.view_model ||=
+      show_dev: true
+
+      classes:
+        stack_content_item_label:
+          hidden: false
+        command_bar:
+          hidden: true
+        stack: {}
+
       # master
-      show_dev: false
+      subsection_order: [
+        'favorites', 'searches', 'pages', 'suggestions',
+      ]
       limit: 20
+
+      sort: [ 'subsection_order', '-last_accessed_timestamp' ]
+
       limit_detail: 20
-      sort: '-last_accessed_timestamp'
+      detail:
+        sort: '-last_accessed_timestamp'
+        template: 'thumbnail-grid.html'
+
+      ## data
 
       subsections:
         favorites:
@@ -31,12 +48,13 @@ angular.module('app')
         name: 'singular subsection'
         items: []
 
-      detail:
-        sort: '-last_accessed_timestamp'
-        template: 'thumbnail-grid.html'
 
-      matcher: (e)->
-        # this should be passed into #filter - treat it as a strategy.
+      match_strategies: webbuddy.match_strategies
+
+      match_strategy: ->
+        webbuddy.match_strategies['name_match']
+
+    $scope.view_model.match_strategy_text = $scope.view_model.match_strategy().toString()
 
     $scope.collection_options =
       itemSelector: '.item'
@@ -53,6 +71,11 @@ angular.module('app')
 
 
     ## ui ops.
+
+    $scope.update_match_strategy = (data) ->
+      result = eval "(#{$scope.view_model.match_trategy_text})"
+      $scope.view_model.match_strategy = result
+      true
 
     $scope.classes = (item) ->
       hit: item.matched
@@ -99,8 +122,13 @@ angular.module('app')
       item_to_preview = first_hit
       $scope.preview item_to_preview
 
-    sync_array = (sync_reference, sync_target)->
-      ## complicated logic to sync arrays.
+    mirror_array = (sync_target, sync_reference)->
+      # # hack.
+      # sync_target.splice 0
+      # sync_reference.map (e) ->
+      #   sync_target.push e
+
+      ## complicated logic to modify sync_target to look like sync_reference.
 
       unless sync_target
         $scope.view_model.subsections[0].items = _.clone sync_reference
@@ -120,7 +148,8 @@ angular.module('app')
       to_add.map (e)-> sync_target.push e
 
 
-    $scope.filter = (input = $scope.data?.input)->
+    $scope.filter = debounce 500, (input = $scope.data?.input)->
+
       console.log("filtering for #{input}")
 
       ## filter the view model and update views.
@@ -128,7 +157,7 @@ angular.module('app')
       all_searches = _.values($scope.data?.searches)
 
       # PLACEHOLDER
-      matching_notables = webbuddy.match 'name_match', [
+      matching_notables = webbuddy.match $scope.view_model.match_strategy(), [
         name: 'stub favorite item'
         msg: 'Stacks, pages or anything else you\'ve favorited will show up here.'
       ], input
@@ -136,17 +165,19 @@ angular.module('app')
 
 
       # 0.1-UNSTABLE
-      matching_searches = webbuddy.match 'name_match', all_searches, $scope.data?.input
+      matching_searches = webbuddy.match $scope.view_model.match_strategy(), all_searches, $scope.data?.input
       matching_searches.map (e) ->
         e.thumbnail_url = 'img/stack.png'
 
       $scope.view_model.subsections['searches'].items = _.sortBy( matching_searches, (e) -> e.last_accessed_timestamp ).reverse()
 
-
       # pages, suggestions, highlights. PERF
       webbuddy.smart_stacks all_searches, input, (matching_smart_stacks)->
+        # set smart stacks as subsections
         matching_smart_stacks.map (smart_stack)->
-          $scope.view_model.subsections[smart_stack.name] = smart_stack
+          $scope.view_model.subsections[smart_stack.name] =
+            name: smart_stack.name
+            items: [ smart_stack ]
 
         $scope.update_singular_subsection()
 
@@ -155,20 +186,32 @@ angular.module('app')
 
       $scope.refresh_collection_filter()
 
-      # FIXME get rid of the magic indexes
 
+    # hack around the difficulty of working with the subsections object by creating a singular subsection.
     $scope.update_singular_subsection = ->
-      # singular subsection hack.
       singular_subsection = []
-      singular_subsection.push $scope.view_model.subsections.favorites
-      singular_subsection = singular_subsection.concat $scope.view_model.subsections.searches.items
-      singular_subsection.push $scope.view_model.subsections.highlights
-      singular_subsection.push $scope.view_model.subsections.suggestions
-      singular_subsection.push _.clone $scope.view_model.subsections.pages
+
+      $scope.view_model.subsection_order.map (subsection_name) ->
+        subsection = $scope.view_model.subsections[subsection_name]
+
+        if subsection?.items.length > 0
+          subsection_data = _.clone subsection.items
+
+          # add subsection order to items
+          subsection_data.map (e) ->
+            e.subsection_order = $scope.view_model.subsection_order.indexOf subsection_name
+
+          singular_subsection = singular_subsection.concat subsection_data
+
+      # singular_subsection.concat $scope.view_model.subsections.favorites.items
+      # singular_subsection = singular_subsection.concat $scope.view_model.subsections.searches?.items
+      # singular_subsection.concat $scope.view_model.subsections.highlights?.items
+      # singular_subsection.concat $scope.view_model.subsections.suggestions?.items
+      # singular_subsection.concat _.clone $scope.view_model.subsections.pages?.items
 
       singular_hits = _.reject singular_subsection, (e)-> e == undefined
 
-      sync_array singular_hits, $scope.view_model.singular_subsection.items
+      mirror_array $scope.view_model.singular_subsection.items, singular_hits
       # $scope.view_model.singular_subsection.hits.sort (a,b) ->
       #   return -1 if a.last_accessed_timestamp is null
       #   if a.last_accessed_timestamp > b.last_accessed_timestamp
@@ -234,6 +277,7 @@ angular.module('app')
 
     ## doit.
 
+    # TODO broken after refactoring affecting singular_subsection.
     item_at_delta = (delta) ->
       items = $scope.view_model.singular_subsection.items
       selected_item = $scope.view_model.selected_item
@@ -247,9 +291,9 @@ angular.module('app')
       console.log event.keyCode
 
       switch event.keyCode
-        when 13  # enter
-          webbuddy.on_input_field_submit $scope.data.input
-          return
+        # when 13  # enter
+        #   webbuddy.on_input_field_submit $scope.data.input
+        #   return
         when 38  # up
           delta = -1
         when 40  # down
@@ -310,14 +354,32 @@ angular.module('app')
     $scope.focus_input_field = () ->
       $('#input-field')[0].select();
 
+    $('#input-field').focusin ->
+      webbuddy.on_input_field_focus()
+    $('#input-field').focusout ->
+      webbuddy.on_input_field_unfocus()
 
 angular.module('app')
-  .directive 'enableWhen', ->
+  # an enableWhen has click enabled only when it's selected.
+  .directive 'enableWhen', (webbuddy)->
     restrict: 'A'
     link: (scope, elem, attrs)->
       elem.on 'click', (event) ->
-        event.preventDefault() unless elem.parents('.stack').hasClass('selected')
+
+        # event.preventDefault() unless elem.parents('.stack').hasClass('selected')
+
+        event.preventDefault()
+
+        item = angular.element(elem).scope().detail_item
+        console.log
+          item: item
+          elem: elem
+        if elem.parents('.stack').hasClass('selected')
+          webbuddy.on_item_click item
+
         event
+
+  # a focusable comes into focus when clicked.
   .directive 'focusable', ($timeout)->
     restrict: 'A'
     link: (scope, elem, attrs)->

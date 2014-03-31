@@ -1,0 +1,50 @@
+-# ## renders a dictionary for debugging.
+-# e.g.
+-#   .results( ng-include="'views/obj_tree.html'" )
+
+
+-# a recursive view template.
+-# use by including e.g.
+-#   %ng-include( src="'obj-node.html'" )
+script( id="obj-node-recursive.html" type="text/ng-template")
+
+  -# my properties.
+  ul
+    li ng-repeat="key in obj_keys(obj)"
+
+      .property ng-class="classes(key)"
+
+        .key() {{key}}
+
+        textarea.value ng-show="! is_object(obj)" {{to_displayable(obj)}}
+
+        -# set obj and recursively render the template.
+        .value-recursive( ng-show="! collapsed" ng-include="'obj-node-recursive.html'" ng-init="obj = obj[key]" )
+
+
+/ a non-recursive template.
+/ TODO make interface identical to the template above.
+script( id="obj-node.html" type="text/ng-template")
+
+  -# my properties.
+  ul
+    li ng-repeat="val in obj_keys(obj)"
+
+      .property ng-class="classes(val)"
+
+        .value() {{to_displayable(val)}}
+
+
+
+
+.tree-view( ng-controller="ObjTreeCtrl")
+  ng-include src="'obj-node-recursive.html'"
+  / ng-include( src="'obj-node.html'" ng-init="obj = obj[data.input]")
+
+
+-# TODO honour line-breaks, pretty-format json objects, make things clickable.
+
+-# define an ng-template.
+
+-# define top-level view element
+

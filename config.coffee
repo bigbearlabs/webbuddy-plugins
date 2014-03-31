@@ -40,11 +40,13 @@ exports.config =
       locals: {}
     afterBrunch: [
       ''' # compile slim files
+        find _public/ -name '*.coffee' | xargs coffee -c  # compile coffee
+
+        # compile slim files
         ruby <<EOF
-        [ 'app', 'build' ].map do |path|
+        [ '_public' ].map do |path|
           Dir.glob("#{path}/**/*.slim") do |file|
-            target = file.gsub( /\.slim$/, '').gsub(%r(^app\/assets), '_public')
-            # system "mkdir -p `dirname target`"
+            target = file.gsub( /\.slim$/, '')
             system "slimrb #{file} #{target}"
           end
         end

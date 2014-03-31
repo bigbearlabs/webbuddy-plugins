@@ -2,55 +2,61 @@
 
 # prototyping ruby evaluation.
 angular.module('app')
-  .controller 'EvalCtrl',
+  .controller 'ActionCtrl',
   ($scope, $route, $window, Restangular) ->
 
-    set_output = (expr, output) ->
-      $scope.obj = {}  # interface with ObjTreeCtrl
-      $scope.obj[expr] = output
+    action =
+      name: 'stub action'
+      href: 'javascript:blahblahblah.'
 
-    $scope.is_object = (obj) ->
-      typeof(obj) == 'object'
+    $scope.obj = action
+
+    $scope.commands = [
+      name: 'cancel'
+    ,
+      name: 'save'
+    ]
 
 
+    $scope.classes = (key)->
+      key.replace /[ ]/, '-'
 
+
+    #== remnants of EvalCtrl.
+
+    # TODO switch for js or ruby.
     # evaluate js.
     $scope.evaluate = (expr) ->
       try
-        eval_result = $scope.do_eval(expr)
+        eval_result = eval(expr)
 
         # work around cyclic refs tripping up JSON.stringify
         eval_result = JSON.decycle eval_result
 
         set_output expr, eval_result
       catch e
-        set_output expr, e
-        # e
+        e
 
-
-    # env-specific.
-
-    $scope.do_eval = (expr)->
-      # javascript version.
-      eval "(#{expr})"
+    set_output = (expr, output) ->
+      $scope.obj = {}  # interface with ObjTreeCtrl
+      $scope.obj[expr] = output
 
 
     ## dev
 
-    $scope.fetch_data = ->
+    $scope.fetch_stub_data = ->
       Restangular.setBaseUrl "data"
       Restangular.one('eval.json').get()
       .then (data)->
-        $scope.data = data
-        $scope.evaluate data.input
-
+        $scope.data.input =
+          eval: data.eval
 
     # debug
     $scope.debug =
       restangular: Restangular
 
 
-    $scope.fetch_data()
+
 
 # used by obj_tree.html.haml.
 # TODO modularise cleanly
@@ -69,19 +75,12 @@ angular.module('app')
     # quick-hack terminal transformation to ensure recursive rendering succeeds.
     $scope.to_displayable = (val)->
       return '<null>' if val is null
-      return '<undefined>' if val is undefined
 
-      # switch typeof(val)
-      #   when 'object'
-      #     'object with the following properties:'
-      #   when 'function'
-      #     val.toString()
-      #   # TODO arrays, other types falling under js quirks
-      #   else
-      #     val
-
-      if val instanceof Function or val instanceof Error or val instanceof String
-        val.toString()
-      else
-        JSON.stringify val
-
+      switch typeof(val)
+        when 'object'
+          ''
+        when 'function'
+          String(val)
+        # TODO arrays, other types falling under js quirks
+        else
+          val

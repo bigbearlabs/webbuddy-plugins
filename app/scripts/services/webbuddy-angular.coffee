@@ -2,6 +2,18 @@ angular.module('app').service 'webbuddy', ($window) ->
 
   webbuddy =
 
+    match_strategies:
+      name_match: (e, input)->
+        if input == undefined or input.length is 0
+          return true
+
+        # case-insensitive to_data of names.
+        e.name?.toLowerCase().match input.toLowerCase()
+
+      null_match: ->
+        return true
+
+
     ## data transformations.
 
     to_hash: (array, key_property)->
@@ -50,6 +62,13 @@ angular.module('app').service 'webbuddy', ($window) ->
       _.values(data.searches).map (e) ->
         e.items = e.pages
 
+        # convert dates
+        e.items.map (i) ->
+          i.last_accessed_timestamp = new Date(i.last_accessed_timestamp)
+
+        # set the collection's date
+        e.last_accessed_timestamp = _.max e.items.map((e)-> e.last_accessed_timestamp)
+
         # this will get elaborated on.
 
 
@@ -72,30 +91,13 @@ angular.module('app').service 'webbuddy', ($window) ->
       # TODO remodel the bridge to have 2 clear sides.
 
 
-
     ## filtering strategies.
-    match: (match_strategy_name, items, input = '')->
-      @match_strategies ||=
-
-        name_match: (e, input)->
-          if input.length is 0
-            return true
-
-          # case-insensitive to_data of names.
-          e.name?.toLowerCase().match input.toLowerCase()
-
-        null_match: ->
-          return true
-
-      match_strategy = @match_strategies[match_strategy_name]
-      items.filter (item)->
+    match: (match_strategy, items, input = '')->
+      items.filter (item)=>
         matched = match_strategy item, input
         # or
         # # any page matches.
         # item.pages?.filter((e)-> match_strategy e).length > 0
-
-        # update the view model item.
-        item.matched = matched
 
         matched
 
@@ -110,15 +112,10 @@ angular.module('app').service 'webbuddy', ($window) ->
 
       smart_stacks = [
         name: "pages"
-        items: @match 'name_match', all_pages, input
-
-        # need to consolidate matching algos somehow.
-        # matcher: (matcher)->
-        #   $scope.data.stacks.map((e)-> e.pages).filter (page)->
-        #     matcher.match page
+        items: @match @match_strategies['name_match'], all_pages, input
       ,
         name: "highlights"
-        items: @match 'name_match', [
+        items: @match @match_strategies['name_match'], [
             name: 'stub item'
             url: 'stub-url'
             thumbnail_url: 'stub-thumbnail-url'
@@ -151,7 +148,7 @@ angular.module('app').service 'webbuddy', ($window) ->
           $window.suggestCallBack = (data) =>
             suggestions = _.values(data[1]).map((e)-> e[0]).map (suggestion) =>
               name: suggestion
-              url: @search_url suggestion
+              url: @to_search_url suggestion
 
             console.log "suggestions: #{suggestions.map (e)->e.name}"
             smart_stacks[2].items = suggestions
@@ -163,15 +160,38 @@ angular.module('app').service 'webbuddy', ($window) ->
       else
         call_callback()
 
+
+    #= web-side event handlers.
+    # TODO use arguments.callee.name to dynamically dispatch.
+
+    on_item_click: (item)->
+      if $window.objc_interface
+        $window.objc_interface.on$_item$_click_(item)
+      else
+        console.log "TODO: load #{item}"
+
+
     on_input_field_submit: (input) ->
-      # do a google search.
-      @open_url(@search_url(input))
+      if $window.objc_interface
+        $window.objc_interface.on$_input$_field$_submit_(input)
+      else
+        # do a google search.
+        console.log "on_input_field_submit: falling back to web impl."
+        @open_url @to_search_url(input)
+
+    on_input_field_focus: ->
+      console.log 'TODO focus'
+
+    on_input_field_unfocus: ->
+      console.log 'TODO unfocus'
+
+
+    #= input handling
 
     open_url: (url) ->
       $window.location.assign url
 
-
-    search_url: (query)->
+    to_search_url: (query)->
       "http://google.com/search?q=#{query}"
 
     quote_input: (input, preceding_phrase = 'matching') ->

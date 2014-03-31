@@ -9,9 +9,13 @@ App = angular.module('app', [
   'ngRoute'
   'partials'
   'restangular'
-  'pasvaz.bindonce'
+  'rt.debounce'
   # 'ngAnimate'
+  'xeditable'
+
+  'pasvaz.bindonce'
   'wu.masonry'
+  'rn-lazy'
 ])
 
 App.config(
@@ -19,8 +23,9 @@ App.config(
 
     $routeProvider
 
-      .when('/eval', {templateUrl: 'views/eval.html'})
       .when('/filtering', {templateUrl: 'views/filtering.html'})
+      .when('/eval', {templateUrl: 'views/eval.html'})
+      .when('/action', {templateUrl: 'views/action.html'})
 
       # Catch all
       .otherwise({redirectTo: '/filtering'})

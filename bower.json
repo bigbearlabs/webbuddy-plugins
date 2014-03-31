@@ -23,7 +23,10 @@
     "angular-animate": "~1.2.0",
     "json2": "",
     "jquery-highlightRegex": "",
-    "angular-masonry": "~0.7.0"
+    "angular-masonry": "~0.7.0",
+    "angular-debounce": "~0.0.2",
+    "rn-lazy": "/Users/ilo-robbie/dev/src/public/rn-lazy",
+    "angular-xeditable": "~0.1.8"
   },
   "overrides": {
     "bourbon": {
@@ -40,9 +43,14 @@
     },
     "json2": {
       "main": "cycle.js"
+    },
+    "rn-lazy": {
+      "main": [
+        "src/lazy.js"
+      ]
     }
   },
   "resolutions": {
-    "angular": "1.2.9"
+    "angular": "~1.2.0"
   }
 }

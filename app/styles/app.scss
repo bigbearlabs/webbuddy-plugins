@@ -1,5 +1,27 @@
 // @import "./filtering";
 
+// REFACTOR action
+
+.property {
+  .key {
+    font-weight: 400;
+  }
+}
+.property.name {
+  .key {
+    display: none;
+  }
+  .value {
+    height: 1em;
+  }
+}
+.property.href .value {
+  height: 4em;
+}
+
+
+// TODO need to clean the style up for eval plugin.
+
 body {
   background: #fafafa;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;

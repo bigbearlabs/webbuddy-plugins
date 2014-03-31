@@ -40,22 +40,6 @@ body {
 
 //## visual roles.
 
-.selected {
-  // background-color: #999999;
-
-  // // #triangle-left {
-  // width: 0;
-  // height: 0;
-  // border-top: 50px solid transparent;
-  // border-right: 100px solid red;
-  // border-bottom: 50px solid transparent;
-
-  // 'zoom'.
-  font-size: 400% !important;
-
-  // horizontally scrollable.
-  white-space: nowrap;
-}
 
 // text highlight
 span.highlight {
@@ -80,15 +64,14 @@ span.highlight {
 }
 
 
-
 section {
   // @include grid-row;  // horizontal sections
 }
 
-.command-bar {
-  // STABILISING
-  display: none;
 
+// app-layer
+
+.command-bar {
   text-align: center;
 
   input {
@@ -186,25 +169,60 @@ section.detail {
       }
     }
 
-    .stack-element-container {
+    .stack-content-container {
       overflow-x: scroll;
     }
 
-    .stack-element {
-      display: inline-block;
-      img {
-        width: 5em;
-        height: 5em;
-      }
-      p {
-        display: none;
-      }
+  }
+
+  .stack-content-item {
+
+    display: inline-block;
+
+    width: 5em;
+    height: 6em;
+
+    > a {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .thumbnail {
+      // place and show inside parent elem.
+      min-width: 100%;
+      min-height: 90%;
+      max-height: 90%;
+
+      // scale thumbnail images to element size.
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
+
+    p {
+      // max-width: 5em;
+    }
+  }
+
+  .selected {
+    // background-color: #999999;
+
+    // 'zoom'.
+    font-size: 400% !important;
+
+    // horizontally scrollable.
+    white-space: nowrap;
+
+    .stack-content-item-label {
+      font-size: 40%;
     }
   }
 
   // callout triangle
   // FIXME make it happen after the selected item.
   .selected::after {
+    display: none;  // DISABLED on change to photo-gallery style
+
     content: "";
 
     position: absolute;

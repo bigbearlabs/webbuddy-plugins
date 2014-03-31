@@ -13,19 +13,34 @@ task :loop do
 end
 
 
-desc "build"
 task :build do
-  sh %(
-    brunch build --production  # will build to build/
-    find build/ -name '*.coffee' | xargs coffee -c  # compile coffee
-    # TODO resolve generation here with generation on brunch-after.
+  sh %Q(
+    # build to build/
+    brunch build --production
+
+    # compile coffee
+    find build/ -name '*.coffee' | xargs coffee -c
   )
+
+  puts '# compile slim files'
+  [ 'build' ].map do |path|
+    Dir.glob("#{path}/**/*.slim") do |file|
+      target = file.gsub( /\.slim$/, '')
+      system "slimrb #{file} #{target}"
+    end
+  end
+
+  # CHROME
+  # sh %Q(
+  #   # work around the prefix ignored by brunch
+  #   rsync -avvv app/assets/_locales build/
+  # )
 end
 
 desc "deploy to Google Drive"
 task :'stage:gdrive' do
   # copy the entire project to ease collaboration with designers
-  sh %(rsync -av --delete --exclude='.tmp' --exclude='.sass-cache' * "#{ENV['HOME']}/Google Drive/bigbearlabs/webbuddy-preview/webbuddy-plugins/")
+  sh %(rsync -av --delete --exclude='.tmp' --exclude='.sass-cache' * "#{ENV['HOME']}/Google Drive/bigbearlabs/webbuddy/webbuddy-preview/webbuddy-plugins/")
 end
 
 desc "deploy to bbl-rails on heroku"

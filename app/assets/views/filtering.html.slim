@@ -4,26 +4,33 @@
 
 .filtering.app-view( ng-controller='FilteringCtrl')
 
-  section.command-bar
+  section.command-bar ng-class="view_model.classes.command_bar"
     h3.hidden Filter
     input#input-field( autofocus="autofocus" ng-model="data.input" ng-change="" )
 
-  section.filtering-condition.dev
-    h3.hidden Matching
 
-    p( editable-textarea="matching_searches_expr"
-      onbeforesave="update_matching_searches()"
-      ) {{ matching_searches_expr }}
+  p ng-click="view_model.show_dev = ! view_model.show_dev" show_dev
+
+  section.tweaks ng-show="view_model.show_dev"
+
+    p ng-click="view_model.classes.command_bar.hidden = ! view_model.classes.command_bar.hidden" command bar
+
+    p ng-click="view_model.classes.stack_content_item_label.hidden = ! view_model.classes.stack_content_item_label.hidden" labels
+
+    p sort: {{view_model.sort}}
+    / TODO make toggle
+
+    // experimental
+    p editable-textarea="view_model.match_strategy_text" onbeforesave="update_match_strategy($data)" matcher: {{ view_model.match_strategy_text }}
     -# TODO on commit, re-eval and store on $scope.matching_searches.
 
 
   section.master
 
-    .subsection ng-init="subsection = view_model.singular_subsection"
-
-      / .subsection( ng-repeat="subsection in view_model.subsections"
-      /   ng-show="subsection.items.length > 0"
-      /   )
+    .subsection(
+        ng-init="subsection = view_model.singular_subsection"
+        ng-show="subsection.items.length > 0"
+        )
 
       .button-group.hidden
         p.hidden sort:
@@ -33,6 +40,8 @@
       -# TODO wire to a sort controller method, then to implementation components.
 
 
+      -# render each stack.
+
       h3.hidden ng-bind="subsection.name"
 
       ul.hit-list bindonce="subsection.items"
@@ -40,12 +49,11 @@
         -# filtering is now data-driven but left here for reference.
         -# li.item( ng-repeat="item in view_model.items | filter:{matched:true} | orderBy: view_model.sort"
 
-        -# render each stack.
-        li.item.stack( ng-repeat="item in subsection.items"
+        li.item.stack( ng-repeat="item in subsection.items | limitTo:view_model.limit | orderBy: view_model.sort"
             ng-class="classes(item)"
             ng-click="preview(item)"
             data-masonry-options='{ "itemSelector": "item", "columnWidth": ".item", "gutterWidth": 0 }'
-            ng-style="view_model.stack_style"
+            ng-style="view_model.classes.stack"
             focusable
             focus-on-selected
             )
@@ -55,19 +63,21 @@
           a( href=""
               bo-title="item.name + '\n' + 'Last accessed: ' + item.last_accessed_timestamp"
               )
-            img.hit-icon( bo-src="item.thumbnail_url")
-            p( bo-text="item.name" )
+            img.stack-icon( bo-src="item.thumbnail_url")
+            p.stack-label( bo-text="item.name" )
 
           / TODO embed in scrollable div.
-          .stack-element-container
+          .stack-content-container
             -# render each page in stack.
-            .stack-element( ng-repeat="detail_item in item.items | limitTo: view_model.limit_detail"
-              focusable )
-              a( href="{{detail_item.url}}" title="{{tooltip(detail_item)}}"
+            .stack-content-item( ng-repeat="detail_item in item.items | limitTo: view_model.limit_detail"
+                focusable )
+
+              a( href="{{detail_item.url}}"
+                  title="{{tooltip(detail_item)}}"
                   enable-when=""
                   )
-                img( ng-src="{{detail_item.thumbnail_url}}" )
-                p
+                img.thumbnail( rn-lazy-background="'{{detail_item.thumbnail_url}}'" )
+                p.stack-content-item-label ng-class="view_model.classes.stack_content_item_label"
                   | {{detail_item.name}}
 
         / ## a 'more...' button.
