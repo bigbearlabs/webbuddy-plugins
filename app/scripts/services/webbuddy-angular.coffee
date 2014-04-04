@@ -132,10 +132,6 @@ angular.module('app').service 'webbuddy', ($window) ->
         template: 'text-list.html'
       ]
 
-      call_callback = ->
-        # return ones with results.
-        callback smart_stacks.filter((e)-> e.items.length > 0)
-
       if input?.length > 0
         try
           $.getJSON "http://suggestqueries.google.com/complete/search?callback=?",
@@ -153,12 +149,12 @@ angular.module('app').service 'webbuddy', ($window) ->
             console.log "suggestions: #{suggestions.map (e)->e.name}"
             smart_stacks[2].items = suggestions
 
-            call_callback()
+            callback smart_stacks
         catch e
           console.log "error during suggest queries fetch: #{e}"
-          call_callback()
+          callback smart_stacks
       else
-        call_callback()
+        callback smart_stacks
 
 
     #= web-side event handlers.

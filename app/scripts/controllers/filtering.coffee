@@ -123,12 +123,6 @@ angular.module('app')
       $scope.preview item_to_preview
 
     mirror_array = (sync_target, sync_reference)->
-      # # hack.
-      # sync_target.splice 0
-      # sync_reference.map (e) ->
-      #   sync_target.push e
-
-      ## complicated logic to modify sync_target to look like sync_reference.
 
       unless sync_target
         $scope.view_model.subsections[0].items = _.clone sync_reference
@@ -148,7 +142,7 @@ angular.module('app')
       to_add.map (e)-> sync_target.push e
 
 
-    $scope.filter = debounce 500, (input = $scope.data?.input)->
+    $scope.filter = debounce 300, (input = $scope.data?.input)->
 
       console.log("filtering for #{input}")
 
@@ -203,21 +197,9 @@ angular.module('app')
 
           singular_subsection = singular_subsection.concat subsection_data
 
-      # singular_subsection.concat $scope.view_model.subsections.favorites.items
-      # singular_subsection = singular_subsection.concat $scope.view_model.subsections.searches?.items
-      # singular_subsection.concat $scope.view_model.subsections.highlights?.items
-      # singular_subsection.concat $scope.view_model.subsections.suggestions?.items
-      # singular_subsection.concat _.clone $scope.view_model.subsections.pages?.items
-
       singular_hits = _.reject singular_subsection, (e)-> e == undefined
 
       mirror_array $scope.view_model.singular_subsection.items, singular_hits
-      # $scope.view_model.singular_subsection.hits.sort (a,b) ->
-      #   return -1 if a.last_accessed_timestamp is null
-      #   if a.last_accessed_timestamp > b.last_accessed_timestamp
-      #     -1
-      #   else
-      #     1
 
 
     ## collection bits.
