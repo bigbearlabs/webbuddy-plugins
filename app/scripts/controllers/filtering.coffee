@@ -160,12 +160,11 @@ angular.module('app')
       $scope.view_model.subsections['searches'].items = _.sortBy( matching_searches, (e) -> e.last_accessed_timestamp ).reverse()
 
       # pages, suggestions, highlights. PERF
-      webbuddy.smart_stacks all_searches, input, (matching_smart_stacks)->
+      webbuddy.smart_stacks all_searches, input, (each_stack)->
         # set smart stacks as subsections
-        matching_smart_stacks.map (smart_stack)->
-          $scope.view_model.subsections[smart_stack.name] =
-            name: smart_stack.name
-            items: [ smart_stack ]
+          $scope.view_model.subsections[each_stack.name] =
+            name: each_stack.name
+            items: [ each_stack ]
 
         $scope.update_singular_subsection()
 

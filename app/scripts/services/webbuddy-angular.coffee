@@ -156,6 +156,10 @@ angular.module('app').service 'webbuddy', ($window) ->
       else
         callback smart_stacks
 
+      smart_stacks?.map (stack)->
+        callback stack
+        # NOTE this may be too much.
+
 
     #= web-side event handlers.
     # TODO use arguments.callee.name to dynamically dispatch.
