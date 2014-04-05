@@ -150,13 +150,7 @@ angular.module('app')
 
       all_searches = _.values($scope.data?.searches)
 
-      # PLACEHOLDER
-      matching_notables = webbuddy.match $scope.view_model.match_strategy(), [
-        name: 'stub favorite item'
-        msg: 'Stacks, pages or anything else you\'ve favorited will show up here.'
-      ], input
-      $scope.view_model.subsections['favorites'].items = matching_notables
-
+      # $scope.add_notables input
 
       # 0.1-UNSTABLE
       matching_searches = webbuddy.match $scope.view_model.match_strategy(), all_searches, $scope.data?.input
