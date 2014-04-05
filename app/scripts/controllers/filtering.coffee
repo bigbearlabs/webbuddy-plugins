@@ -142,7 +142,7 @@ angular.module('app')
       to_add.map (e)-> sync_target.push e
 
 
-    $scope.filter = debounce 300, (input = $scope.data?.input)->
+    $scope.filter = debounce 200, (input = $scope.data?.input)->
 
       console.log("filtering for #{input}")
 
