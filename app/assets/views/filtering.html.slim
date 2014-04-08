@@ -65,6 +65,7 @@
               )
             img.stack-icon( bo-src="item.thumbnail_url")
             p.stack-label( bo-text="item.name" )
+            p.stack-detail() {{ item.last_accessed_timestamp | date:'yyyy.MM.dd'}}
 
           / TODO embed in scrollable div.
           .stack-content-container
