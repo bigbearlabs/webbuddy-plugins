@@ -64,7 +64,7 @@ angular.module('app').service 'webbuddy', ($window) ->
 
         # convert dates
         e.items.map (i) ->
-          i.last_accessed_timestamp = new Date(i.last_accessed_timestamp)
+          i.last_accessed_timestamp = moment(i.last_accessed_timestamp).toDate()
 
         # set the collection's date
         e.last_accessed_timestamp = _.max e.items.map((e)-> e.last_accessed_timestamp)
