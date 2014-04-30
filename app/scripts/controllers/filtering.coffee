@@ -27,11 +27,11 @@ angular.module('app')
       ]
       limit: 20
 
-      sort: [ 'subsection_order', '-last_accessed_timestamp' ]
+      sort: [ 'subsection_order', '-last_accessed' ]
 
       limit_detail: 20
       detail:
-        sort: '-last_accessed_timestamp'
+        sort: '-last_accessed'
         template: 'thumbnail-grid.html'
 
       ## data
@@ -92,7 +92,7 @@ angular.module('app')
     $scope.tooltip = (item) ->
       item.name +
         "\n" + item.url +
-        "\n" + 'Last accessed: ' + item.last_accessed_timestamp
+        "\n" + 'Last accessed: ' + item.last_accessed
 
 
     # PERF
@@ -157,7 +157,7 @@ angular.module('app')
       matching_searches.map (e) ->
         e.thumbnail_url = 'img/stack.png'
 
-      $scope.view_model.subsections['searches'].items = _.sortBy( matching_searches, (e) -> e.last_accessed_timestamp ).reverse()
+      $scope.view_model.subsections['searches'].items = _.sortBy( matching_searches, (e) -> e.last_accessed ).reverse()
 
       # pages, suggestions, highlights. PERF
       webbuddy.smart_stacks all_searches, input, (each_stack)->

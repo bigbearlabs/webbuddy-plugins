@@ -64,10 +64,10 @@ angular.module('app').service 'webbuddy', ($window) ->
 
         # convert dates
         e.items.map (i) ->
-          i.last_accessed_timestamp = moment(i.last_accessed_timestamp).toDate()
+          i.last_accessed = moment(i.last_accessed).toDate()
 
         # set the collection's date
-        e.last_accessed_timestamp = _.max e.items.map((e)-> e.last_accessed_timestamp)
+        e.last_accessed = _.max e.items.map((e)-> e.last_accessed)
 
         # this will get elaborated on.
 
@@ -108,7 +108,7 @@ angular.module('app').service 'webbuddy', ($window) ->
     ## interfacing with angular controllers.
     smart_stacks: (stacks, input, callback)->
 
-      all_pages = _.chain(stacks?.map (e)->e.pages).flatten().uniq().sortBy((e)->e.last_accessed_timestamp).reverse().value()
+      all_pages = _.chain(stacks?.map (e)->e.pages).flatten().uniq().sortBy((e)->e.last_accessed).reverse().value()
 
       smart_stacks = [
         name: "pages"

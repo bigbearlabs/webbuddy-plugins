@@ -61,12 +61,12 @@
           -# ng-show="item.matched"
 
           a( href=""
-              bo-title="item.name + '\n' + 'Last accessed: ' + item.last_accessed_timestamp"
+              bo-title="item.name + '\n' + 'Last accessed: ' + item.last_accessed"
               )
             img.stack-icon( bo-src="item.thumbnail_url")
             p.stack-label( bo-text="item.name" )
-            p.stack-detail() Last accessed: {{ item.last_accessed_timestamp | date:'yyyy.MM.dd H:mm'}}
-            p.stack-detail() First accessed: {{ item.first_accessed_timestamp | date:'yyyy.MM.dd H:mm'}}
+            p.stack-detail() Last accessed: {{ item.last_accessed | date:'yyyy.MM.dd H:mm'}}
+            p.stack-detail() First accessed: {{ item.first_accessed | date:'yyyy.MM.dd H:mm'}}
             p.stack-detail() Frequency: {{ item.visit_count | date:'yyyy.MM.dd H:mm'}}
 
           / TODO embed in scrollable div.
