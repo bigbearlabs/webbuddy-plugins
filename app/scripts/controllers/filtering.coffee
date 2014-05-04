@@ -78,8 +78,11 @@ angular.module('app')
       true
 
     $scope.classes = (item) ->
-      hit: item.matched
-      selected: $scope.view_model.selected_item == item
+      classes =
+        hit: item.matched
+        selected: $scope.view_model.selected_item == item
+      classes[item.name] = true
+      classes
 
     $scope.href = (item) ->
       # return an href only if item is ready for navigation.
@@ -156,15 +159,16 @@ angular.module('app')
       matching_searches = webbuddy.match $scope.view_model.match_strategy(), all_searches, $scope.data?.input
       matching_searches.map (e) ->
         e.thumbnail_url = 'img/stack.png'
+        e.view_template = 'item-thumbnail-grid.html'
 
       $scope.view_model.subsections['searches'].items = _.sortBy( matching_searches, (e) -> e.last_accessed ).reverse()
 
       # pages, suggestions, highlights. PERF
       webbuddy.smart_stacks all_searches, input, (each_stack)->
         # set smart stacks as subsections
-          $scope.view_model.subsections[each_stack.name] =
-            name: each_stack.name
-            items: [ each_stack ]
+        $scope.view_model.subsections[each_stack.name] =
+          name: each_stack.name
+          items: [ each_stack ]
 
         $scope.update_singular_subsection()
 

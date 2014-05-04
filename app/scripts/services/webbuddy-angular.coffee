@@ -129,7 +129,7 @@ angular.module('app').service 'webbuddy', ($window) ->
       ,
         name: 'suggestions'
         items: []
-        template: 'text-list.html'
+        view_template: 'item-text.html'
       ]
 
       if input?.length > 0
@@ -149,12 +149,14 @@ angular.module('app').service 'webbuddy', ($window) ->
             console.log "suggestions: #{suggestions.map (e)->e.name}"
             smart_stacks[2].items = suggestions
 
-            callback smart_stacks
+            callback suggestions
         catch e
           console.log "error during suggest queries fetch: #{e}"
-          callback smart_stacks
+          smart_stacks?.map (stack)->
+            callback stack
       else
-        callback smart_stacks
+        smart_stacks?.map (stack)->
+          callback stack
 
       smart_stacks?.map (stack)->
         callback stack

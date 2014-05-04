@@ -39,17 +39,16 @@
         .tiny.button.sort#none none
       -# TODO wire to a sort controller method, then to implementation components.
 
-
-      -# render each stack.
-
       h3.hidden ng-bind="subsection.name"
 
+      -# render each stack.
       ul.hit-list bindonce="subsection.items"
 
         -# filtering is now data-driven but left here for reference.
         -# li.item( ng-repeat="item in view_model.items | filter:{matched:true} | orderBy: view_model.sort"
 
-        li.item.stack( ng-repeat="item in subsection.items | limitTo:view_model.limit | orderBy: view_model.sort"
+        li.item.stack(
+            ng-repeat="item in subsection.items | limitTo:view_model.limit | orderBy: view_model.sort"
             ng-class="classes(item)"
             ng-click="preview(item)"
             data-masonry-options='{ "itemSelector": "item", "columnWidth": ".item", "gutterWidth": 0 }'
@@ -57,43 +56,10 @@
             focusable
             focus-on-selected
 
-            ng-include="'views/item-thumbnail-grid.html'"
+            ng-include="item.view_template"
             )
           -# ng-mouseleave_="hide_preview(item)"
           -# ng-show="item.matched"
-
-
-
-  -### detail section for the highlighted item in master
-
-  section.detail
-    / templates
-    script id="thumbnail-grid.html" type="text/ng-template"
-      h2( ng-bind="view_model.selected_item.name" )
-
-      p( ng-show="view_model.selected_item.msg" ) {{view_model.selected_item.msg}} <br/> <a href="{{view_model.selected_item.details_url}}">More info...</a>
-
-      ul.detail-list
-        li.item.thumbnail( ng-repeat="detail_item in view_model.selected_item.items | limitTo: view_model.limit_detail | orderBy: view_model.detail.sort" )
-          a( href="{{detail_item.url}}" title="{{tooltip(detail_item)}}")
-            img( ng-src="{{detail_item.thumbnail_url}}" )
-            p
-              | {{detail_item.name}}
-
-    script id="text-list.html" type="text/ng-template"
-      h2( ng-bind="view_model.selected_item.name" )
-
-      p( ng-show="view_model.selected_item.msg" ) {{view_model.selected_item.msg}} <br/> <a href="{{view_model.selected_item.details_url}}">More info...</a>
-
-      ul.detail-list
-        li.item.list-entry( ng-repeat="detail_item in view_model.selected_item.items | limitTo: view_model.limit_detail | orderBy: view_model.detail.sort" )
-          a( href="{{detail_item.url}}" title="{{tooltip(detail_item)}}")
-            img( ng-src="{{detail_item.thumbnail_url}}" )
-            p
-              | {{detail_item.name}}
-
-    ng-include src="view_model.selected_item.template || view_model.detail.template"
-
 
 
   section.evaluator( ng-show="view_model.show_dev")
@@ -101,3 +67,60 @@
 
 
     -# SCRIBBLE design candidate: list with category pane at left or top
+
+
+
+
+script id="item-thumbnail-grid.html" type="text/ng-template"
+
+  a( href=""
+      bo-title="item.name + '\n' + 'Last accessed: ' + item.last_accessed"
+      )
+    img.stack-icon( bo-src="item.thumbnail_url")
+    p.stack-label( bo-text="item.name" )
+    p.stack-detail() Last accessed: {{ item.last_accessed | date:'yyyy.MM.dd H:mm'}}
+    p.stack-detail() First accessed: {{ item.first_accessed | date:'yyyy.MM.dd H:mm'}}
+    p.stack-detail() Frequency: {{ item.visit_count | date:'yyyy.MM.dd H:mm'}}
+
+  / TODO embed in scrollable div.
+  .stack-content-container
+
+    -# render each page in stack.
+    .stack-content-item( ng-repeat="detail_item in item.items | limitTo: view_model.limit_detail"
+        focusable )
+
+      a( href="{{detail_item.url}}"
+          title="{{tooltip(detail_item)}}"
+          enable-when=""
+          )
+        img.thumbnail( rn-lazy-background="'{{detail_item.thumbnail_url}}'" )
+        p.stack-content-item-label ng-class="view_model.classes.stack_content_item_label"
+          | {{detail_item.name}}
+
+  / ## a 'more...' button.
+  / li.item.button( ng-show="subsection.items.length > view_model.limit" )
+  /   p More...
+
+   / end hit-list.
+
+
+script id="item-text.html" type="text/ng-template"
+
+  a( href=""
+      bo-title="item.name"
+      )
+    p.stack-label( bo-text="item.name" )
+
+  .stack-content-container
+
+    -# render each page in stack.
+    .stack-content-item( ng-repeat="detail_item in item.items | limitTo: view_model.limit_detail"
+        focusable )
+
+      a( href="{{detail_item.url}}"
+          title="{{tooltip(detail_item)}}"
+          enable-when=""
+          )
+        p.stack-content-item-label ng-class="view_model.classes.stack_content_item_label"
+          | {{detail_item.name}}
+

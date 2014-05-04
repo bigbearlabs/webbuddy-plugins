@@ -196,8 +196,8 @@ section.detail {
     .thumbnail {
       // place and show inside parent elem.
       min-width: 100%;
-      min-height: 90%;
-      max-height: 90%;
+      min-height: 5em;
+      max-height: 5em;
 
       // scale thumbnail images to element size.
       background-size: contain;
@@ -206,8 +206,18 @@ section.detail {
 
     p {
       // max-width: 5em;
+      min-height: 1em;
     }
   }
+
+  .suggestions {
+    .stack-content-item {
+      display: block;
+      height: 100%;
+      width: 100%;
+    }
+  }
+
 
   .selected {
     // background-color: #999999;
