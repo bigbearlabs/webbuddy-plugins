@@ -92,6 +92,14 @@ angular.module('app')
         else
           ''
 
+    $scope.first_visible_item = ->
+      _($scope.view_model.subsections)
+        .values()
+        .select( (e)-> e.items.length > 0 )
+        .sortBy( (e)-> $scope.view_model.subsection_order.indexOf e.name )
+        .compact()
+        .value()[0]
+        ?.items[0]
     $scope.tooltip = (item) ->
       item.name +
         "\n" + item.url +
@@ -125,11 +133,7 @@ angular.module('app')
       $scope.view_model.selected_item = null
 
     $scope.reset_preview = ->
-      # reset selected item.
-      subsections_with_hits = _.values($scope.view_model.subsections).filter((e)->e.items?.length > 0)
-      first_hit = subsections_with_hits[0]?.items[0]  # first hit on a subsection that has any hits.
-      item_to_preview = first_hit
-      $scope.preview item_to_preview
+      $scope.preview $scope.first_visible_item()
 
     mirror_array = (sync_target, sync_reference)->
 
@@ -186,7 +190,7 @@ angular.module('app')
         # set smart stacks as subsections
         $scope.view_model.subsections[each_stack.name] = stack_view_model
 
-        # $scope.reset_preview()  # UGH
+        $scope.reset_preview()
 
 
       $scope.refresh_collection_filter()
