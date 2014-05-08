@@ -92,14 +92,18 @@ angular.module('app')
         else
           ''
 
-    $scope.first_visible_item = ->
+    $scope.visible_items = ->
       _($scope.view_model.subsections)
         .values()
-        .select( (e)-> e.items.length > 0 )
         .sortBy( (e)-> $scope.view_model.subsection_order.indexOf e.name )
+        .map( (e)-> e.items )
+        .flatten()
         .compact()
-        .value()[0]
-        ?.items[0]
+        .value()
+
+    $scope.first_visible_item = ->
+      $scope.visible_items()[0]
+
 
     ## ui ops
 
@@ -256,13 +260,14 @@ angular.module('app')
 
     ## doit.
 
-    # TODO broken after refactoring affecting singular_subsection.
     item_at_delta = (delta) ->
-      items = $scope.view_model.singular_subsection.items
-      selected_item = $scope.view_model.selected_item
-      current_index = items.indexOf selected_item
+      items = $scope.visible_items()
+
+      current_index = items.indexOf $scope.view_model.selected_item
       new_index = current_index + delta
+      # constrain new index: 0 =< new_index < length
       new_index = Math.min(Math.max(new_index, 0), items.length - 1)
+
       return items[new_index]
 
     # register event handlers.
