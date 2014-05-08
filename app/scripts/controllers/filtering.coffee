@@ -97,8 +97,8 @@ angular.module('app')
         "\n" + item.url +
         "\n" + 'Last accessed: ' + item.last_accessed
 
-    $scope.template = (item) ->
-      if item.name == 'suggestions'
+    $scope.template = (subsection) ->
+      if subsection.name == 'suggestions'
         'item-text.html'
       else
         'item-thumbnail-grid.html'
@@ -186,33 +186,10 @@ angular.module('app')
         # set smart stacks as subsections
         $scope.view_model.subsections[each_stack.name] = stack_view_model
 
-        # $scope.update_singular_subsection()
-
         # $scope.reset_preview()  # UGH
 
 
       $scope.refresh_collection_filter()
-
-
-    # hack around the difficulty of working with the subsections object by creating a singular subsection.
-    $scope.update_singular_subsection = ->
-      singular_subsection = []
-
-      $scope.view_model.subsection_order.map (subsection_name) ->
-        subsection = $scope.view_model.subsections[subsection_name]
-
-        if subsection?.items.length > 0
-          subsection_data = _.clone subsection.items
-
-          # add subsection order to items
-          subsection_data.map (e) ->
-            e.subsection_order = $scope.view_model.subsection_order.indexOf subsection_name
-
-          singular_subsection = singular_subsection.concat subsection_data
-
-      singular_hits = _.reject singular_subsection, (e)-> e == undefined
-
-      mirror_array $scope.view_model.singular_subsection.items, singular_hits
 
 
     ## collection bits.
