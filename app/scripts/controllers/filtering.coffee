@@ -23,7 +23,7 @@ angular.module('app')
 
       # master
       subsection_order: [
-        'favorites', 'searches', 'pages', 'suggestions',
+        'favorites', 'highlights', 'searches', 'pages', 'suggestions',
       ]
       limit: 20
 
