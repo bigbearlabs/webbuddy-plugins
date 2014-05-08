@@ -49,15 +49,21 @@
 
         li.item.stack(
             ng-repeat="item in subsection.items | limitTo:view_model.limit | orderBy: view_model.sort"
-            ng-class="classes(item)"
+
+            ng-init="item_template = template(subsection)"
+
             ng-click="preview(item)"
+
             data-masonry-options='{ "itemSelector": "item", "columnWidth": ".item", "gutterWidth": 0 }'
-            ng-style="view_model.classes.stack"
             focusable
             focus-on-selected
 
-            ng-include="template(item)"
+            ng-class="classes(item)"
+            ng-style="view_model.classes.stack"
+
+            ng-include="item_template"
             )
+
           -# ng-mouseleave_="hide_preview(item)"
           -# ng-show="item.matched"
 

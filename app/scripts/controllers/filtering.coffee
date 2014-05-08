@@ -171,12 +171,17 @@ angular.module('app')
       # pages, suggestions, highlights. PERF
       webbuddy.smart_stacks all_searches, input, (each_stack)->
         stack_view_model =
-          name: each_stack.name
-          items: [ each_stack ]
-
-        # cases
-        # if each_stack.name == 'suggestions'
-        #   each_stack.view_template = 'item-text.html'
+          name: each_stack.name,
+          items:
+            # cases
+            if each_stack.name == 'pages'
+              # all pages should create 1 stack.
+              if each_stack.items.length > 0
+                [ each_stack ]
+              else
+                []
+            else
+              each_stack.items
 
         # set smart stacks as subsections
         $scope.view_model.subsections[each_stack.name] = stack_view_model
