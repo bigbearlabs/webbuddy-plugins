@@ -28,7 +28,7 @@
   section.master
 
     .subsection(
-        ng-init="subsection = view_model.singular_subsection"
+        ng-repeat="(subsection_name, subsection) in view_model.subsections"
         ng-show="subsection.items.length > 0"
         )
 
@@ -39,7 +39,7 @@
         .tiny.button.sort#none none
       -# TODO wire to a sort controller method, then to implementation components.
 
-      h3.hidden ng-bind="subsection.name"
+      h3 ng-bind="subsection.name"
 
       -# render each stack.
       ul.hit-list bindonce="subsection.items"
@@ -56,7 +56,7 @@
             focusable
             focus-on-selected
 
-            ng-include="item.view_template"
+            ng-include="template(item)"
             )
           -# ng-mouseleave_="hide_preview(item)"
           -# ng-show="item.matched"

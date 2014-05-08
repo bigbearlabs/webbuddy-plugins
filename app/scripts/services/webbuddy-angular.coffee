@@ -126,12 +126,12 @@ angular.module('app').service 'webbuddy', ($window) ->
           ], input
         msg: 'Content highlighted during your web activity will show up here.'
         details_url: 'http://webbuddyapp.com/features/highlights'
-      ,
-        name: 'suggestions'
-        items: []
-        view_template: 'item-text.html'
       ]
 
+      smart_stacks.map (stack)->
+        callback stack
+
+      # build the suggestions stack.
       if input?.length > 0
         try
           $.getJSON "http://suggestqueries.google.com/complete/search?callback=?",
@@ -142,25 +142,20 @@ angular.module('app').service 'webbuddy', ($window) ->
 
           ## get google suggestions.
           $window.suggestCallBack = (data) =>
-            suggestions = _.values(data[1]).map((e)-> e[0]).map (suggestion) =>
-              name: suggestion
-              url: @to_search_url suggestion
+            suggestions_stack =
+              name: 'suggestions'
+              items: _.values(data[1]).map((e)-> e[0]).map (suggestion) =>
+                name: suggestion
+                url: @to_search_url suggestion
 
-            console.log "suggestions: #{suggestions.map (e)->e.name}"
-            smart_stacks[2].items = suggestions
+            console.log "suggestions: #{suggestions_stack}"
 
-            callback suggestions
+            callback suggestions_stack
+
         catch e
           console.log "error during suggest queries fetch: #{e}"
-          smart_stacks?.map (stack)->
-            callback stack
-      else
-        smart_stacks?.map (stack)->
-          callback stack
-
-      smart_stacks?.map (stack)->
-        callback stack
-        # NOTE this may be too much.
+          # smart_stacks?.map (stack)->
+          #   callback stack
 
 
     #= web-side event handlers.
@@ -209,5 +204,6 @@ angular.module('app').service 'webbuddy', ($window) ->
   # bridge from wb-integration -- copy all props from $window.webbuddy
   for k, v of $window.webbuddy
     webbuddy[k] = v
+
 
   webbuddy

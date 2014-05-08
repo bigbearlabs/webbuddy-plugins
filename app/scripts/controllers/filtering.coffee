@@ -97,6 +97,12 @@ angular.module('app')
         "\n" + item.url +
         "\n" + 'Last accessed: ' + item.last_accessed
 
+    $scope.template = (item) ->
+      if item.name == 'suggestions'
+        'item-text.html'
+      else
+        'item-thumbnail-grid.html'
+
 
     # PERF
     $scope.highlight = (input = $scope.data?.input) ->
@@ -159,20 +165,25 @@ angular.module('app')
       matching_searches = webbuddy.match $scope.view_model.match_strategy(), all_searches, $scope.data?.input
       matching_searches.map (e) ->
         e.thumbnail_url = 'img/stack.png'
-        e.view_template = 'item-thumbnail-grid.html'
 
       $scope.view_model.subsections['searches'].items = _.sortBy( matching_searches, (e) -> e.last_accessed ).reverse()
 
       # pages, suggestions, highlights. PERF
       webbuddy.smart_stacks all_searches, input, (each_stack)->
-        # set smart stacks as subsections
-        $scope.view_model.subsections[each_stack.name] =
+        stack_view_model =
           name: each_stack.name
           items: [ each_stack ]
 
-        $scope.update_singular_subsection()
+        # cases
+        # if each_stack.name == 'suggestions'
+        #   each_stack.view_template = 'item-text.html'
 
-        $scope.reset_preview()  # UGH
+        # set smart stacks as subsections
+        $scope.view_model.subsections[each_stack.name] = stack_view_model
+
+        # $scope.update_singular_subsection()
+
+        # $scope.reset_preview()  # UGH
 
 
       $scope.refresh_collection_filter()
