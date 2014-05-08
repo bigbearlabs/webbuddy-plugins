@@ -62,20 +62,20 @@ angular.module('app')
       filter: '.hit'
 
 
-    ## data ops.
+    ## data ops
 
     $scope.update_data = (data)->
       webbuddy.transform_data data
 
       $scope.data = data
 
-
-    ## ui ops.
-
     $scope.update_match_strategy = (data) ->
-      result = eval "(#{$scope.view_model.match_trategy_text})"
+      result = eval "(#{$scope.view_model.match_strategy_text})"
       $scope.view_model.match_strategy = result
       true
+
+
+    ## ui accessors
 
     $scope.classes = (item) ->
       classes =
@@ -100,6 +100,9 @@ angular.module('app')
         .compact()
         .value()[0]
         ?.items[0]
+
+    ## ui ops
+
     $scope.tooltip = (item) ->
       item.name +
         "\n" + item.url +
