@@ -27,7 +27,8 @@ angular.module('app')
       ]
       limit: 20
 
-      sort: [ 'subsection_order', '-last_accessed' ]
+      sort:
+        (subsection)=> $scope.view_model.subsection_order.indexOf(subsection.name)
 
       limit_detail: 20
       detail:
@@ -43,10 +44,6 @@ angular.module('app')
         searches:
           name: 'searches'
           items: []
-
-      singular_subsection:
-        name: 'singular subsection'
-        items: []
 
 
       match_strategies: webbuddy.match_strategies
@@ -260,7 +257,7 @@ angular.module('app')
 
     ## doit.
 
-    item_at_delta = (delta) ->
+    $scope.item_at_delta = item_at_delta = (delta) ->
       items = $scope.visible_items()
 
       current_index = items.indexOf $scope.view_model.selected_item
@@ -386,4 +383,10 @@ angular.module('app')
           elem[0].scrollIntoView()
 
 
+  .filter 'toArray', ->
+    (obj)->
+      if ! (obj instanceof Object)
+        return obj;
 
+      _.map obj, (val, key) ->
+        Object.defineProperty(val, '$key', {__proto__: null, value: key})

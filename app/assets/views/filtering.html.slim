@@ -28,7 +28,7 @@
   section.master
 
     .subsection(
-        ng-repeat="(subsection_name, subsection) in view_model.subsections"
+        ng-repeat="subsection in view_model.subsections | toArray | orderBy: view_model.sort"
         ng-show="subsection.items.length > 0"
         )
 
@@ -48,7 +48,7 @@
         -# li.item( ng-repeat="item in view_model.items | filter:{matched:true} | orderBy: view_model.sort"
 
         li.item.stack(
-            ng-repeat="item in subsection.items | limitTo:view_model.limit | orderBy: view_model.sort"
+            ng-repeat="item in subsection.items | limitTo:view_model.limit | orderBy: view_model.detail.sort"
 
             ng-init="item_template = template(subsection)"
 
