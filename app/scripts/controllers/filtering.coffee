@@ -355,20 +355,17 @@ angular.module('app')
     link: (scope, elem, attrs)->
       elem.on 'click', (event) ->
 
-        # event.preventDefault() unless elem.parents('.stack').hasClass('selected')
-
         event.preventDefault()
 
         item = angular.element(elem).scope().detail_item
-        console.log
-          item: item
-          elem: elem
+
         if elem.parents('.stack').hasClass('selected')
           webbuddy.on_item_click item
 
         event
 
-  # a focusable comes into focus when clicked.
+
+  # scrolls element into view when clicked.
   .directive 'focusable', ($timeout)->
     restrict: 'A'
     link: (scope, elem, attrs)->
@@ -376,6 +373,8 @@ angular.module('app')
         $timeout ->  # work around selected class application not being quick enough.
           elem[0].scrollIntoView()
 
+
+  # scrolls element into view when the scope's item equals view_model.selected_item.
   .directive 'focusOnSelected', ->
     restrice: 'A'
     link: (scope, elem, attrs)->
@@ -388,7 +387,20 @@ angular.module('app')
             item: scope.item
             view_model: scope.view_model
           }
-          elem[0].scrollIntoView()
+          # elem[0].scrollIntoView()
+
+          $scrollable = $('.master')
+          elementOffsetY = elem.offset().top - $scrollable.offset().top
+
+          # TACTICAL wack it somewhere visible.
+          if elementOffsetY < 0
+            delta = -1 * elementOffsetY
+          else if elementOffsetY > $scrollable.height()
+            delta = $scrollable.height() -  30
+
+          console.log { delta }
+          if delta?
+            $scrollable.scrollTop(elementOffsetY + delta)
 
 
   .filter 'toArray', ->

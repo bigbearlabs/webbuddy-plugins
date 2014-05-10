@@ -165,7 +165,7 @@ angular.module('app').service 'webbuddy', ($window) ->
       if $window.objc_interface
         $window.objc_interface.on$_item$_click_(item)
       else
-        console.log "TODO: load #{item}"
+        console.log "TODO: load #{JSON.stringify item}"
 
 
     on_input_field_submit: (input) ->

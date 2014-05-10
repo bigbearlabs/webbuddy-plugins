@@ -52,11 +52,10 @@
 
             ng-init="item_template = template(subsection)"
 
-            ng-click="preview(item)"
+            ng-mouseover="preview(item)"
 
-            data-masonry-options='{ "itemSelector": "item", "columnWidth": ".item", "gutterWidth": 0 }'
-            focusable
             focus-on-selected
+            data-masonry-options='{ "itemSelector": "item", "columnWidth": ".item", "gutterWidth": 0 }'
 
             ng-class="classes(item)"
             ng-style="view_model.classes.stack"
@@ -92,8 +91,7 @@ script id="item-thumbnail-grid.html" type="text/ng-template"
   .stack-content-container
 
     -# render each page in stack.
-    .stack-content-item( ng-repeat="detail_item in item.items | limitTo: view_model.limit_detail"
-        focusable )
+    .stack-content-item ng-repeat="detail_item in item.items | limitTo: view_model.limit_detail"
 
       a( href="{{detail_item.url}}"
           title="{{tooltip(detail_item)}}"
@@ -120,8 +118,7 @@ script id="item-text.html" type="text/ng-template"
   .stack-content-container
 
     -# render each page in stack.
-    .stack-content-item( ng-repeat="detail_item in item.items | limitTo: view_model.limit_detail"
-        focusable )
+    .stack-content-item ng-repeat="detail_item in item.items | limitTo: view_model.limit_detail"
 
       a( href="{{detail_item.url}}"
           title="{{tooltip(detail_item)}}"
