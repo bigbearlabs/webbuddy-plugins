@@ -346,10 +346,13 @@ angular.module('app')
       $('.stack.item.selected').removeClass('selected')
       $($stack_items[new_selection_index]).addClass('selected')
 
+      # TODO scroll element into view.
+
 
 # TODO relocate.
 angular.module('app')
   # an enableWhen has click enabled only when it's selected.
+  # TODO refine interface.
   .directive 'enableWhen', (webbuddy)->
     restrict: 'A'
     link: (scope, elem, attrs)->
@@ -363,44 +366,6 @@ angular.module('app')
           webbuddy.on_item_click item
 
         event
-
-
-  # scrolls element into view when clicked.
-  .directive 'focusable', ($timeout)->
-    restrict: 'A'
-    link: (scope, elem, attrs)->
-      elem.on 'click', (event)->
-        $timeout ->  # work around selected class application not being quick enough.
-          elem[0].scrollIntoView()
-
-
-  # scrolls element into view when the scope's item equals view_model.selected_item.
-  .directive 'focusOnSelected', ->
-    restrice: 'A'
-    link: (scope, elem, attrs)->
-      scope.$watch 'view_model.selected_item', ->
-        if scope.item == scope.view_model.selected_item
-          console.log {
-            scope,
-            elem,
-            attrs,
-            item: scope.item
-            view_model: scope.view_model
-          }
-          # elem[0].scrollIntoView()
-
-          $scrollable = $('.master')
-          elementOffsetY = elem.offset().top - $scrollable.offset().top
-
-          # TACTICAL wack it somewhere visible.
-          if elementOffsetY < 0
-            delta = -1 * elementOffsetY
-          else if elementOffsetY > $scrollable.height()
-            delta = $scrollable.height() -  30
-
-          console.log { delta }
-          if delta?
-            $scrollable.scrollTop(elementOffsetY + delta)
 
 
   .filter 'toArray', ->
