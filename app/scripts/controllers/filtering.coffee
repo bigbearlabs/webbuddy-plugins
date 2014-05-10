@@ -267,27 +267,6 @@ angular.module('app')
 
       return items[new_index]
 
-    # register event handlers.
-    $('body').on 'keydown', (event)->
-      console.log event.keyCode
-
-      switch event.keyCode
-        # when 13  # enter
-        #   webbuddy.on_input_field_submit $scope.data.input
-        #   return
-        when 38  # up
-          delta = -1
-        when 40  # down
-          delta = 1
-        else
-          return
-
-      # we have a delta.
-      event.preventDefault()
-      $scope.preview item_at_delta delta
-
-      # TODO scroll into view.
-
 
     # # register callback with service.
     # webbuddy.reg_on_data
@@ -340,6 +319,35 @@ angular.module('app')
     $('#input-field').focusout ->
       webbuddy.on_input_field_unfocus()
 
+    # MOVE
+    # register event handlers.
+    $('body').on 'keydown', (event)->
+      console.log event.keyCode
+
+      switch event.keyCode
+        # when 13  # enter
+        #   webbuddy.on_input_field_submit $scope.data.input
+        #   return
+        when 38  # up
+          delta = -1
+        when 40  # down
+          delta = 1
+        else
+          return
+
+      # we have a delta.
+
+      event.preventDefault()
+
+      $stack_items = $('.stack.item')
+      selection_index = $stack_items.index($('.stack.item.selected'))
+      new_selection_index = Math.max( 0, Math.min(selection_index + delta, $stack_items.length-1) )
+
+      $('.stack.item.selected').removeClass('selected')
+      $($stack_items[new_selection_index]).addClass('selected')
+
+
+# TODO relocate.
 angular.module('app')
   # an enableWhen has click enabled only when it's selected.
   .directive 'enableWhen', (webbuddy)->
