@@ -23,15 +23,16 @@ angular.module('app')
 
       # master
       subsection_order: [
-        'favorites', 'searches', 'pages', 'suggestions',
+        'favorites', 'highlights', 'searches', 'pages', 'suggestions',
       ]
       limit: 20
 
-      sort: [ 'subsection_order', '-last_accessed_timestamp' ]
+      sort:
+        (subsection)=> $scope.view_model.subsection_order.indexOf(subsection.name)
 
       limit_detail: 20
       detail:
-        sort: '-last_accessed_timestamp'
+        sort: '-last_accessed'
         template: 'thumbnail-grid.html'
 
       ## data
@@ -43,10 +44,6 @@ angular.module('app')
         searches:
           name: 'searches'
           items: []
-
-      singular_subsection:
-        name: 'singular subsection'
-        items: []
 
 
       match_strategies: webbuddy.match_strategies
@@ -62,24 +59,27 @@ angular.module('app')
       filter: '.hit'
 
 
-    ## data ops.
+    ## data ops
 
     $scope.update_data = (data)->
       webbuddy.transform_data data
 
       $scope.data = data
 
-
-    ## ui ops.
-
     $scope.update_match_strategy = (data) ->
-      result = eval "(#{$scope.view_model.match_trategy_text})"
+      result = eval "(#{$scope.view_model.match_strategy_text})"
       $scope.view_model.match_strategy = result
       true
 
+
+    ## ui accessors
+
     $scope.classes = (item) ->
-      hit: item.matched
-      selected: $scope.view_model.selected_item == item
+      classes =
+        hit: item.matched
+        selected: $scope.view_model.selected_item == item
+      classes[item.name] = true
+      classes
 
     $scope.href = (item) ->
       # return an href only if item is ready for navigation.
@@ -89,10 +89,31 @@ angular.module('app')
         else
           ''
 
+    $scope.visible_items = ->
+      _($scope.view_model.subsections)
+        .values()
+        .sortBy( (e)-> $scope.view_model.subsection_order.indexOf e.name )
+        .map( (e)-> e.items )
+        .flatten()
+        .compact()
+        .value()
+
+    $scope.first_visible_item = ->
+      $scope.visible_items()[0]
+
+
+    ## ui ops
+
     $scope.tooltip = (item) ->
       item.name +
         "\n" + item.url +
-        "\n" + 'Last accessed: ' + item.last_accessed_timestamp
+        "\n" + 'Last accessed: ' + item.last_accessed
+
+    $scope.template = (subsection) ->
+      if subsection.name == 'suggestions'
+        'item-text.html'
+      else
+        'item-thumbnail-grid.html'
 
 
     # PERF
@@ -116,11 +137,7 @@ angular.module('app')
       $scope.view_model.selected_item = null
 
     $scope.reset_preview = ->
-      # reset selected item.
-      subsections_with_hits = _.values($scope.view_model.subsections).filter((e)->e.items?.length > 0)
-      first_hit = subsections_with_hits[0]?.items[0]  # first hit on a subsection that has any hits.
-      item_to_preview = first_hit
-      $scope.preview item_to_preview
+      $scope.preview $scope.first_visible_item()
 
     mirror_array = (sync_target, sync_reference)->
 
@@ -157,42 +174,30 @@ angular.module('app')
       matching_searches.map (e) ->
         e.thumbnail_url = 'img/stack.png'
 
-      $scope.view_model.subsections['searches'].items = _.sortBy( matching_searches, (e) -> e.last_accessed_timestamp ).reverse()
+      $scope.view_model.subsections['searches'].items = _.sortBy( matching_searches, (e) -> e.last_accessed ).reverse()
 
       # pages, suggestions, highlights. PERF
       webbuddy.smart_stacks all_searches, input, (each_stack)->
+        stack_view_model =
+          name: each_stack.name,
+          items:
+            # cases
+            if each_stack.name == 'pages'
+              # all pages should create 1 stack.
+              if each_stack.items.length > 0
+                [ each_stack ]
+              else
+                []
+            else
+              each_stack.items
+
         # set smart stacks as subsections
-          $scope.view_model.subsections[each_stack.name] =
-            name: each_stack.name
-            items: [ each_stack ]
+        $scope.view_model.subsections[each_stack.name] = stack_view_model
 
-        $scope.update_singular_subsection()
-
-        $scope.reset_preview()  # UGH
+        $scope.reset_preview()
 
 
       $scope.refresh_collection_filter()
-
-
-    # hack around the difficulty of working with the subsections object by creating a singular subsection.
-    $scope.update_singular_subsection = ->
-      singular_subsection = []
-
-      $scope.view_model.subsection_order.map (subsection_name) ->
-        subsection = $scope.view_model.subsections[subsection_name]
-
-        if subsection?.items.length > 0
-          subsection_data = _.clone subsection.items
-
-          # add subsection order to items
-          subsection_data.map (e) ->
-            e.subsection_order = $scope.view_model.subsection_order.indexOf subsection_name
-
-          singular_subsection = singular_subsection.concat subsection_data
-
-      singular_hits = _.reject singular_subsection, (e)-> e == undefined
-
-      mirror_array $scope.view_model.singular_subsection.items, singular_hits
 
 
     ## collection bits.
@@ -252,35 +257,15 @@ angular.module('app')
 
     ## doit.
 
-    # TODO broken after refactoring affecting singular_subsection.
-    item_at_delta = (delta) ->
-      items = $scope.view_model.singular_subsection.items
-      selected_item = $scope.view_model.selected_item
-      current_index = items.indexOf selected_item
+    $scope.item_at_delta = item_at_delta = (delta) ->
+      items = $scope.visible_items()
+
+      current_index = items.indexOf $scope.view_model.selected_item
       new_index = current_index + delta
+      # constrain new index: 0 =< new_index < length
       new_index = Math.min(Math.max(new_index, 0), items.length - 1)
+
       return items[new_index]
-
-    # register event handlers.
-    $('body').on 'keydown', (event)->
-      console.log event.keyCode
-
-      switch event.keyCode
-        # when 13  # enter
-        #   webbuddy.on_input_field_submit $scope.data.input
-        #   return
-        when 38  # up
-          delta = -1
-        when 40  # down
-          delta = 1
-        else
-          return
-
-      # we have a delta.
-      event.preventDefault()
-      $scope.preview item_at_delta delta
-
-      # TODO scroll into view.
 
 
     # # register callback with service.
@@ -334,47 +319,59 @@ angular.module('app')
     $('#input-field').focusout ->
       webbuddy.on_input_field_unfocus()
 
+    # MOVE
+    # register event handlers.
+    $('body').on 'keydown', (event)->
+      console.log event.keyCode
+
+      switch event.keyCode
+        # when 13  # enter
+        #   webbuddy.on_input_field_submit $scope.data.input
+        #   return
+        when 38  # up
+          delta = -1
+        when 40  # down
+          delta = 1
+        else
+          return
+
+      # we have a delta.
+
+      event.preventDefault()
+
+      $stack_items = $('.stack.item')
+      selection_index = $stack_items.index($('.stack.item.selected'))
+      new_selection_index = Math.max( 0, Math.min(selection_index + delta, $stack_items.length-1) )
+
+      $('.stack.item.selected').removeClass('selected')
+      $($stack_items[new_selection_index]).addClass('selected')
+
+      # TODO scroll element into view.
+
+
+# TODO relocate.
 angular.module('app')
   # an enableWhen has click enabled only when it's selected.
+  # TODO refine interface.
   .directive 'enableWhen', (webbuddy)->
     restrict: 'A'
     link: (scope, elem, attrs)->
       elem.on 'click', (event) ->
 
-        # event.preventDefault() unless elem.parents('.stack').hasClass('selected')
-
         event.preventDefault()
 
         item = angular.element(elem).scope().detail_item
-        console.log
-          item: item
-          elem: elem
+
         if elem.parents('.stack').hasClass('selected')
           webbuddy.on_item_click item
 
         event
 
-  # a focusable comes into focus when clicked.
-  .directive 'focusable', ($timeout)->
-    restrict: 'A'
-    link: (scope, elem, attrs)->
-      elem.on 'click', (event)->
-        $timeout ->  # work around selected class application not being quick enough.
-          elem[0].scrollIntoView()
 
-  .directive 'focusOnSelected', ->
-    restrice: 'A'
-    link: (scope, elem, attrs)->
-      scope.$watch 'view_model.selected_item', ->
-        if scope.item == scope.view_model.selected_item
-          console.log {
-            scope,
-            elem,
-            attrs,
-            item: scope.item
-            view_model: scope.view_model
-          }
-          elem[0].scrollIntoView()
+  .filter 'toArray', ->
+    (obj)->
+      if ! (obj instanceof Object)
+        return obj;
 
-
-
+      _.map obj, (val, key) ->
+        Object.defineProperty(val, '$key', {__proto__: null, value: key})

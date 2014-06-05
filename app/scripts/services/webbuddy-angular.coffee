@@ -64,10 +64,10 @@ angular.module('app').service 'webbuddy', ($window) ->
 
         # convert dates
         e.items.map (i) ->
-          i.last_accessed_timestamp = new Date(i.last_accessed_timestamp)
+          i.last_accessed = moment(i.last_accessed).toDate()
 
         # set the collection's date
-        e.last_accessed_timestamp = _.max e.items.map((e)-> e.last_accessed_timestamp)
+        e.last_accessed = _.max e.items.map((e)-> e.last_accessed)
 
         # this will get elaborated on.
 
@@ -108,7 +108,7 @@ angular.module('app').service 'webbuddy', ($window) ->
     ## interfacing with angular controllers.
     smart_stacks: (stacks, input, callback)->
 
-      all_pages = _.chain(stacks?.map (e)->e.pages).flatten().uniq().sortBy((e)->e.last_accessed_timestamp).reverse().value()
+      all_pages = _.chain(stacks?.map (e)->e.pages).flatten().uniq().sortBy((e)->e.last_accessed).reverse().value()
 
       smart_stacks = [
         name: "pages"
@@ -126,12 +126,12 @@ angular.module('app').service 'webbuddy', ($window) ->
           ], input
         msg: 'Content highlighted during your web activity will show up here.'
         details_url: 'http://webbuddyapp.com/features/highlights'
-      ,
-        name: 'suggestions'
-        items: []
-        template: 'text-list.html'
       ]
 
+      smart_stacks.map (stack)->
+        callback stack
+
+      # build the suggestions stack.
       if input?.length > 0
         try
           $.getJSON "http://suggestqueries.google.com/complete/search?callback=?",
@@ -142,23 +142,20 @@ angular.module('app').service 'webbuddy', ($window) ->
 
           ## get google suggestions.
           $window.suggestCallBack = (data) =>
-            suggestions = _.values(data[1]).map((e)-> e[0]).map (suggestion) =>
-              name: suggestion
-              url: @to_search_url suggestion
+            suggestions_stack =
+              name: 'suggestions'
+              items: _.values(data[1]).map((e)-> e[0]).map (suggestion) =>
+                name: suggestion
+                url: @to_search_url suggestion
 
-            console.log "suggestions: #{suggestions.map (e)->e.name}"
-            smart_stacks[2].items = suggestions
+            console.log "suggestions: #{suggestions_stack}"
 
-            callback smart_stacks
+            callback suggestions_stack
+
         catch e
           console.log "error during suggest queries fetch: #{e}"
-          callback smart_stacks
-      else
-        callback smart_stacks
-
-      smart_stacks?.map (stack)->
-        callback stack
-        # NOTE this may be too much.
+          # smart_stacks?.map (stack)->
+          #   callback stack
 
 
     #= web-side event handlers.
@@ -168,7 +165,7 @@ angular.module('app').service 'webbuddy', ($window) ->
       if $window.objc_interface
         $window.objc_interface.on$_item$_click_(item)
       else
-        console.log "TODO: load #{item}"
+        console.log "TODO: load #{JSON.stringify item}"
 
 
     on_input_field_submit: (input) ->
@@ -207,5 +204,6 @@ angular.module('app').service 'webbuddy', ($window) ->
   # bridge from wb-integration -- copy all props from $window.webbuddy
   for k, v of $window.webbuddy
     webbuddy[k] = v
+
 
   webbuddy

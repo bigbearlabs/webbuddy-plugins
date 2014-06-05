@@ -39,9 +39,7 @@ exports.config =
       modules_folder: 'partials'
       locals: {}
     afterBrunch: [
-      ''' # compile slim files
-        find _public/ -name '*.coffee' | xargs coffee -c  # compile coffee
-
+      '''
         # compile slim files
         ruby <<EOF
         [ '_public' ].map do |path|
@@ -51,8 +49,15 @@ exports.config =
           end
         end
         EOF
+
+        # compile slim files
+        find _public/ -name '*.coffee' | xargs coffee -c  # compile coffee
+
       '''
     ]
+    # autoReload:
+    #   delay: 100
+
   # Enable or disable minifying of result js / css files.
   minify: true
 
