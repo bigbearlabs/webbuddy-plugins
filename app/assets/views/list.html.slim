@@ -1,8 +1,8 @@
 .list( ng-controller='ListCtrl')
 
-  ul ng-repeat="list_item in list.items"
+  ul
 
-    li
+    li ng-repeat="list_item in list.items"
       / ng-include src="list_item.template"
 
       / stub render spec.
