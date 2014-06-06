@@ -1,4 +1,9 @@
 .list( ng-controller='ListCtrl')
 
-  ul ng-repeat="list_item in list"
-    li() {{list_item}}
+  ul ng-repeat="list_item in list.items"
+
+    li
+      / ng-include src="list_item.template"
+
+      / stub render spec.
+      p ng-click="dispatch_action(list_item.on_select)" {{ list_item.description }}
