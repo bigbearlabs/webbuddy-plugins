@@ -1,6 +1,3 @@
-# TODO factor out the matching algo, PoC switching to list.js or another fuzzy text match lib.
-
-
 'use strict'
 
 class RenderableList
@@ -26,6 +23,10 @@ angular.module('app')
   (webbuddy, $scope, $window, $timeout, $q, Restangular, debounce ) ->
 
     $scope.list = new RenderableList $scope.data
+
+    $scope.on_select = (item) ->
+      console.log item.on_select
+
 
     # RELOCATE to a host_env service.
     $scope.dispatch_action = (action) ->

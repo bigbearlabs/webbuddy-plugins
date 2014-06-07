@@ -1,9 +1,10 @@
+script id='basic-text' type="text/ng-template"
+  p ng-click="on_select(list_item)" {{ list_item.description }}
+
+
 .list( ng-controller='ListCtrl')
 
   ul
 
     li ng-repeat="list_item in list.items"
-      / ng-include src="list_item.template"
-
-      / stub render spec.
-      p ng-click="dispatch_action(list_item.on_select)" {{ list_item.description }}
+      ng-include src="list_item.template"

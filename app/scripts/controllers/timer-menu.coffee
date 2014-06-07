@@ -1,25 +1,38 @@
-# TODO factor out the matching algo, PoC switching to list.js or another fuzzy text match lib.
-
-
 'use strict'
+
+class RenderableItem
+  constructor: (props) ->
+    for k, v of props
+      @[k] = v
+
+  template: 'basic-text'
+
 
 angular.module('app')
   .controller 'TimerMenuCtrl',
   (webbuddy, $scope, $window, $timeout, $q, Restangular, debounce ) ->
 
     $scope.entity_data = [
-      description: 'Unnamed Timer'
-      on_select: ->
-        # to editable.
+      new RenderableItem
+        description: 'Unnamed Timer'
+        on_select: ->
+          # make editable.
+          # impl:
+          # - set contenteditable to true.
+          # - set confirm action.
+          # - enable confirm trigger.
     ,
     ]
 
     $scope.menu_data = [
-      description: 'Reset'
-      on_select: 'reset'
+      new RenderableItem
+        description: 'Reset'
     ,
-      description: 'about'
-      on_select: 'about'
+      new RenderableItem
+        description: '---'
+    ,
+      new RenderableItem
+        description: 'About'
     ,
     ]
 
