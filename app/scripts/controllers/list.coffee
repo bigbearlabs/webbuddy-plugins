@@ -8,10 +8,6 @@ class RenderableList
 
   items: -> @items  # sadly we must expose this for ng-repeat.
 
-  item_prototype:
-    on_select: ->
-      console.log this
-
   # TODO remove(item)
   # TODO order(order_spec)
   # TODO filter(filter_spec)
@@ -23,9 +19,6 @@ angular.module('app')
   (webbuddy, $scope, $window, $timeout, $q, Restangular, debounce ) ->
 
     $scope.list = new RenderableList $scope.data
-
-    $scope.on_select = (item) ->
-      console.log item.on_select
 
 
     # RELOCATE to a host_env service.
