@@ -1,7 +1,9 @@
 .menu.timer( ng-controller='TimerMenuCtrl')
 
   .properties
-    ng-include src="'views/list.html'" ng-controller="ListCtrl" ng-init="data = entity_data"
+
+    list data="entity_data"
 
   .actions
-    ng-include src="'views/list.html'" ng-controller="ListCtrl" ng-init="data = menu_data"
+
+    list data="menu_data"

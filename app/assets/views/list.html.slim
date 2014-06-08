@@ -1,12 +1,11 @@
 script id="basic-text" type="text/ng-template"
-  div ng-click="list_item.on_select()" {{ list_item.description }}
+  div ng-click="select(list_item)" {{ list_item.description }}
 
 script id="editable-text" type="text/ng-template"
-  div contenteditable="{{list_item.editing}}" ng-model="list_item.description" ng-click="list_item.editing = true" ng-blur="list_item.edit_done()"
+  div contenteditable="{{list_item.editing}}" ng-model="list_item.description" ng-click="list_item.editing = true" ng-blur="edit_done(list_item)"
 
-.list( ng-controller='ListCtrl')
 
-  ul
+ul
 
-    li ng-repeat="list_item in list.items"
-      ng-include src="list_item.template"
+  li ng-repeat="list_item in list.items"
+    ng-include src="list_item.template"

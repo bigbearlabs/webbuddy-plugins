@@ -14,37 +14,35 @@ class RenderableList
   # TODO move(item)
 
 
+class RenderableItem
+  constructor: (props) ->
+    for k, v of props
+      @[k] = v
+
+  template: 'basic-text'
+
+  on_select: =>
+    console.log "TODO impl on_select for #{JSON.stringify @}"
+
+  edit_done: ->
+    console.log "TODO done editing."
+
+
+
 angular.module('app')
-  .controller 'ListCtrl',
-  (webbuddy, $scope, $window, $timeout, $q, Restangular, debounce ) ->
 
-    $scope.list = new RenderableList $scope.data
+  .directive 'list', ->
+    restrict: 'E'
+    templateUrl: 'views/list.html'
+    scope:
+      data: '='
+    controller: ($scope, $window, $timeout, $q, Restangular, debounce ) ->
+
+      $scope.list = new RenderableList $scope.data
+      $scope.$watch 'data', (new_val, old_val)->
+        unless new_val == old_val
+          $scope.list = new RenderableList new_val
 
 
-    # RELOCATE to a host_env service.
-    $scope.dispatch_action = (action) ->
-      console.log "TODO dispatch #{action}"
-
-      if typeof(action) is 'string'
-        data =
-          name: 'action'
-          value: action
-
-        url = "perform?op=send_data&data=#{encodeURIComponent(JSON.stringify data)}"
-        window.location = url
-      else
-        # assume proc.
-        action()
-
-    # actionUpdated = (defaultName, value) ->
-    #   # send down to the hosting layer.
-    #   data =
-    #     name: defaultName
-    #     value: value
-    #   url = "perform?op=send_data&data=#{encodeURIComponent(JSON.stringify data)}"
-
-    #   # $.get url
-    #   # WORKAROUND doesn't hit the delegate method.
-    #   window.location = url
 
 

@@ -1,32 +1,19 @@
 'use strict'
 
-class RenderableItem
-  constructor: (props) ->
-    for k, v of props
-      @[k] = v
-
-  template: 'basic-text'
-
-  on_select: =>
-    console.log "TODO impl on_select for #{JSON.stringify @}"
-
-  edit_done: ->
-    console.log "TODO done editing."
-
-
 
 angular.module('app')
 
   .controller 'TimerMenuCtrl',
-    (webbuddy, $scope, $window, $timeout, $q, Restangular, debounce ) ->
+    ($scope, $route, $location, $window, $timeout, $q, host_env, Restangular, debounce ) ->
 
-      $scope.entity_data = [
-        new RenderableItem
-          description: 'Unnamed Timer'
-          template: 'editable-text'
-      ,
-      ]
+      $scope.select = (item) ->
+        item.on_select()
 
+      $scope.edit_done = (item) ->
+        host_env.update item.id,
+          description: item.description
+
+      # stub
       $scope.menu_data = [
         new RenderableItem
           description: 'Reset'
@@ -38,6 +25,22 @@ angular.module('app')
           description: 'About'
       ,
       ]
+
+
+      ## doit
+
+      # request data for id.
+      id = $route.current.params.id
+      throw "id must not be nil" unless id?
+      $q.when(host_env.get id)
+      .then (data) ->
+        items = _.keys(data).map (k)->
+          new RenderableItem
+            description: data[k]
+            template: 'editable-text'
+
+        $scope.entity_data = items
+        # $scope.$apply()
 
 
 
@@ -53,6 +56,4 @@ angular.module('app')
 
       element.bind "blur keyup change", ->
         scope.$apply read
-
-
 
