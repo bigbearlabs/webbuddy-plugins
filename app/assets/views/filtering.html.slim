@@ -109,20 +109,9 @@ script id="item-thumbnail-grid.html" type="text/ng-template"
 
 script id="item-text.html" type="text/ng-template"
 
-  a( href=""
+  a( bo-href="item.url"
       bo-title="item.name"
       )
     p.stack-label( bo-text="item.name" )
 
-  .stack-content-container
-
-    -# render each page in stack.
-    .stack-content-item ng-repeat="detail_item in item.items | limitTo: view_model.limit_detail"
-
-      a( href="{{detail_item.url}}"
-          title="{{tooltip(detail_item)}}"
-          enable-when=""
-          )
-        p.stack-content-item-label ng-class="view_model.classes.stack_content_item_label"
-          | {{detail_item.name}}
 
