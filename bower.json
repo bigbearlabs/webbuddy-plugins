@@ -25,7 +25,7 @@
     "jquery-highlightRegex": "",
     "angular-masonry": "~0.7.0",
     "angular-debounce": "~0.0.2",
-    "rn-lazy": "/Users/ilo-robbie/dev/src/public/rn-lazy",
+    "rn-lazy": "git://github.com/revolunet/rn-lazy",
     "angular-xeditable": "~0.1.8",
     "momentjs": "~2.6.0"
   },
