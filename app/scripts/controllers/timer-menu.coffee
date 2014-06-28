@@ -31,7 +31,10 @@ angular.module('app')
 
       # request data for id.
       id = $route.current.params.id
-      throw "id must not be nil" unless id?
+
+      # throw "id must not be nil" unless id?  # DEBUG
+      id ||= 'stub'
+
       $q.when(host_env.get id)
       .then (data) ->
         items = _.keys(data).map (k)->
