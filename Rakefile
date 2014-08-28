@@ -26,7 +26,7 @@ task :build do
   [ 'build' ].map do |path|
     Dir.glob("#{path}/**/*.slim") do |file|
       target = file.gsub( /\.slim$/, '')
-      system "slimrb #{file} #{target}"
+      sh "slimrb #{file} #{target}"
     end
   end
 
