@@ -1,9 +1,22 @@
 .menu.timer( ng-controller='TimerMenuCtrl')
 
-  .properties
+  .pane
 
-    list data="entity_data"
+    p Apps
+    / list data="data.apps"
+    select multiple="" ng-model="selected_apps" ng-options="app.description for app in data.apps"
 
-  .actions
+  .pane
 
-    list data="menu_data"
+    p Destinations
+    / list data="data.destinations"
+    select multiple="" ng-model="selected_apps" ng-options="destination.description for destination in data.destinations"
+
+  .pane
+    button Deploy
+
+  .pane
+    p Log
+    list data="data.log"
+    .control Email
+

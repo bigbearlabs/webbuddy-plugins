@@ -14,17 +14,30 @@ angular.module('app')
           description: item.description
 
       # stub
-      $scope.menu_data = [
-        new RenderableItem
-          description: 'Reset'
-      ,
-        new RenderableItem
-          description: '---'
-      ,
-        new RenderableItem
-          description: 'About'
-      ,
-      ]
+      $scope.data = 
+        apps: [
+            new RenderableItem
+              description: 'WorxMail'
+          ,
+            new RenderableItem
+              description: 'WorxMail-ch'
+          ,
+            new RenderableItem
+              description: 'WorxMail-gb'
+          ,
+            new RenderableItem
+              description: '...'
+          ,
+          ]
+        destinations: [
+            new RenderableItem
+              description: 'CH-ETIT'
+          ,
+            new RenderableItem
+              description: 'CH-ADIT'
+          ]
+        log: [
+        ]
 
 
       ## doit
