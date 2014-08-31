@@ -8,7 +8,7 @@ task :release => [ :build, :'stage:gdrive' ]
 desc "loop"
 task :loop do
   sh %(
-    brunch watch --server -p 9000
+    brunch watch --server -p 9002
   )
 end
 
