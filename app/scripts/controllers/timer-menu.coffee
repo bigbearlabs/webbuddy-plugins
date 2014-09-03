@@ -40,23 +40,19 @@ angular.module('app')
         ]
 
 
+      $scope.deploy = (apps, destinations) ->
+        # package, clone, deploy TODO
+        cmd = "TODO #{apps.map (e)-> e.description} to #{destinations.map (e)-> e.description}"
+
+        # update log.
+        $scope.data.log = $scope.data.log.concat [
+          new RenderableItem
+            description: cmd
+        ]
+
+
       ## doit
 
-      # request data for id.
-      id = $route.current.params.id
-
-      # throw "id must not be nil" unless id?  # DEBUG
-      id ||= 'stub'
-
-      $q.when(host_env.get id)
-      .then (data) ->
-        items = _.keys(data).map (k)->
-          new RenderableItem
-            description: data[k]
-            template: 'editable-text'
-
-        $scope.entity_data = items
-        # $scope.$apply()
 
 
 
