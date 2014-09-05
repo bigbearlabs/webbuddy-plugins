@@ -47,6 +47,12 @@ angular.module('app')
               model: e
           
           $scope.$apply()
+      Restangular.all('destinations').getList()
+        .then (destinations)->
+          $scope.data.destinations = destinations.map (e) ->
+            new RenderableItem
+              description: e.id
+              model: e
 
 
 
