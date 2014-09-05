@@ -15,9 +15,9 @@ h2 Quick + Dirty PackagingFactory UI
 
   section
     button ng-click="deploy(data.selected_apps, data.selected_destinations)" Deploy
+    button ng-show="data.log.length > 0" Email Log
 
   section
     p Log
     list data="data.log"
-    button ng-show="data.log.length > 0" Email Log to Development Team
 
