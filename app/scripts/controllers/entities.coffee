@@ -18,15 +18,20 @@ angular.module('app')
           description: item.description
 
 
-
       $scope.deploy = (apps, destinations) ->
         # package, clone, deploy TODO
-        cmd = "TODO #{apps.map (e)-> e.description} to #{destinations.map (e)-> e.description}"
+        # cmd = "TODO #{apps.map (e)-> e.description} to #{destinations.map (e)-> e.description}"
+
+        tasks = [ 'package', 'clone', 'deploy' ]
+        cmds = apps.map (app) ->
+          app_cmd = "rake app:{#{tasks}}[#{app.description},#{destinations.map (e) -> e.description}]"
+      
+        # POST deployment request. TODO
 
         # update log.
         $scope.data.log = $scope.data.log.concat [
           new RenderableItem
-            description: cmd
+            description: cmds
         ]
 
 
