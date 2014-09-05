@@ -15,20 +15,6 @@ angular.module('app')
 
       # stub
       $scope.data = 
-        apps: [
-            new RenderableItem
-              description: 'WorxMail'
-          ,
-            new RenderableItem
-              description: 'WorxMail-ch'
-          ,
-            new RenderableItem
-              description: 'WorxMail-gb'
-          ,
-            new RenderableItem
-              description: '...'
-          ,
-          ]
         destinations: [
             new RenderableItem
               description: 'CH-ETIT'
@@ -52,7 +38,15 @@ angular.module('app')
 
 
       ## doit
-
+      Restangular.setBaseUrl("#{$location.protocol()}://#{$location.host()}:9292")
+      Restangular.all('apps').getList()
+        .then (apps)->
+          $scope.data.apps = apps.map (e) ->
+            new RenderableItem
+              description: e.id
+              model: e
+          
+          $scope.$apply()
 
 
 
