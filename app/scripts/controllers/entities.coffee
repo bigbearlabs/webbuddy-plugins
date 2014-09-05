@@ -24,7 +24,7 @@ angular.module('app')
 
         tasks = [ 'package', 'clone', 'deploy' ]
         cmds = apps.map (app) ->
-          app_cmd = "rake app:{#{tasks}}[#{app.description},#{destinations.map (e) -> e.description}]"
+          app_cmd = "rake app:{#{tasks}}[ #{app.description}, (#{destinations.map((e) -> e.description).join('|')}) ]"
       
         # POST deployment request. TODO
 
