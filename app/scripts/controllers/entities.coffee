@@ -44,7 +44,7 @@ angular.module('app')
               description: e.id
               model: e
           
-          $scope.$apply()
+          # $scope.$apply()
       Restangular.all('destinations').getList()
         .then (destinations)->
           $scope.data.destinations = destinations.map (e) ->
