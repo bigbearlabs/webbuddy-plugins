@@ -5,6 +5,10 @@ angular.module('app')
 
   .controller 'EntitiesCtrl',
     ($scope, $route, $location, $window, $timeout, $q, host_env, Restangular, debounce ) ->
+      $scope.data = 
+        apps: []
+        destinations: []
+        log: []
 
       $scope.select = (item) ->
         item.on_select()
@@ -13,17 +17,6 @@ angular.module('app')
         host_env.update item.id,
           description: item.description
 
-      # stub
-      $scope.data = 
-        destinations: [
-            new RenderableItem
-              description: 'CH-ETIT'
-          ,
-            new RenderableItem
-              description: 'CH-ADIT'
-          ]
-        log: [
-        ]
 
 
       $scope.deploy = (apps, destinations) ->
