@@ -3,7 +3,7 @@
 
 angular.module('app')
 
-  .controller 'TimerMenuCtrl',
+  .controller 'EntitiesCtrl',
     ($scope, $route, $location, $window, $timeout, $q, host_env, Restangular, debounce ) ->
 
       $scope.select = (item) ->
