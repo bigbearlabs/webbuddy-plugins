@@ -55,8 +55,8 @@ exports.config =
 
       '''
     ]
-    # autoReload:
-    #   delay: 100
+    autoReload:
+      delay: 700
 
   # Enable or disable minifying of result js / css files.
   minify: true

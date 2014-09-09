@@ -44,5 +44,12 @@ angular.module('app')
           $scope.list = new RenderableList new_val
 
 
+      $scope.select = (item) ->
+        item.on_select()
+
+      $scope.edit_done = (item) ->
+        host_env.update item.id,
+          description: item.description
+
 
 
