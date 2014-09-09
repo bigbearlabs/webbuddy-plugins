@@ -9,14 +9,40 @@ angular.module('app')
 
       # stub
       $scope.menu_data = [
+      #   # timer operation. immature
+
+      #   new RenderableItem
+      #     description: 'Reset'
+      # ,
+      #   new RenderableItem
+      #     description: '---'
+      # ,
+
         new RenderableItem
-          description: 'Reset'
-      ,
-        new RenderableItem
-          description: '---'
+          description: 'Help'
+          on_select: ->
+            # TODO load help.
       ,
         new RenderableItem
           description: 'About'
+          on_select: ->
+            # TODO show menu.
+          menu: [
+            new RenderableList
+              description: 'News'
+          ,
+            new RenderableItem
+              description: 'View in App Store'
+          ,
+            new RenderableItem
+              description: 'Lovingly crafted by Big Bear Labs.'
+          ,
+          ]
+      ,
+        new RenderableItem
+          description: 'More from Big Bear Labs'
+          on_select: ->
+            # TODO load company page.
       ,
       ]
 
