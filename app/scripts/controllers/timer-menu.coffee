@@ -6,12 +6,6 @@ angular.module('app')
   .controller 'TimerMenuCtrl',
     ($scope, $route, $location, $window, $timeout, $q, host_env, Restangular, debounce ) ->
 
-      $scope.select = (item) ->
-        item.on_select()
-
-      $scope.edit_done = (item) ->
-        host_env.update item.id,
-          description: item.description
 
       # stub
       $scope.menu_data = [
