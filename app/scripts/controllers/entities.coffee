@@ -27,6 +27,9 @@ angular.module('app')
           app_cmd = "rake app:{#{tasks}}[ #{app.description}, (#{destinations.map((e) -> e.description).join('|')}) ]"
       
         # POST deployment request. TODO
+        Restangular.all('runs').post 
+          apps: apps.map (e) -> e.description
+          destinations: destinations.map (e) -> e.description
 
         # update log.
         $scope.data.log = $scope.data.log.concat [
