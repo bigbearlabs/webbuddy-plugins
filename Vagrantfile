@@ -10,7 +10,7 @@ VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
-  config.trigger.after :provision, :stdout => true do
+  config.trigger.after :up, :stdout => true do
     run "bash -i -c 'rake'"
     # run "bash -i -c 'echo $PATH'"
   end
