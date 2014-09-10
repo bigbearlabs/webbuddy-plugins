@@ -22,21 +22,17 @@ angular.module('app')
         # package, clone, deploy TODO
         # cmd = "TODO #{apps.map (e)-> e.description} to #{destinations.map (e)-> e.description}"
 
-        tasks = [ 'package', 'clone', 'deploy' ]
-        cmds = apps.map (app) ->
-          app_cmd = "rake app:{#{tasks}}[ #{app.description}, (#{destinations.map((e) -> e.description).join('|')}) ]"
-      
         # POST deployment request. TODO
         Restangular.all('runs').post 
           apps: apps.map (e) -> e.description
           destinations: destinations.map (e) -> e.description
-
-        # update log.
-        $scope.data.log = $scope.data.log.concat [
-          new RenderableItem
-            description: cmds
-        ]
-
+        .then (data) ->
+          # update log.
+          $scope.data.log = $scope.data.log.concat [
+            new RenderableItem
+              description: data
+          ]
+              
 
       ## doit
       Restangular.setBaseUrl("#{$location.protocol()}://#{$location.host()}:9292")
