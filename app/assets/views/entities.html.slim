@@ -3,18 +3,17 @@ h2 Quick + Dirty PackagingFactory UI
 .menu.timer( ng-controller='EntitiesCtrl')
 
   section
-
-      p Apps
+      p 1. Select an app.
       / list data="data.apps"
       select multiple="" ng-model="data.selected_apps" ng-options="app.description for app in data.apps" 
 
   section
-      p Destinations
-      / list data="data.destinations"
-      select multiple="" ng-model="data.selected_destinations" ng-options="destination.description for destination in data.destinations"
+      p 2. Select targets.
+      / list data="data.targets"
+      select multiple="" ng-model="data.selected_targets" ng-options="target.description for target in data.targets"
 
   section
-    button ng-click="deploy(data.selected_apps, data.selected_destinations)" Deploy
+    button ng-click="deploy(data.selected_apps, data.selected_targets)" Deploy
     button ng-show="data.log.length > 0" Email Log
 
   section

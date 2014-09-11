@@ -4,10 +4,10 @@
 angular.module('app')
 
   .controller 'EntitiesCtrl',
-    ($scope, $route, $location, $window, $timeout, $q, host_env, Restangular, debounce ) ->
+    ($scope, $route, $location, $window, $interval, $q, host_env, Restangular, debounce ) ->
       $scope.data = 
         apps: []
-        destinations: []
+        targets: []
         log: []
 
       $scope.select = (item) ->
@@ -18,24 +18,38 @@ angular.module('app')
           description: item.description
 
 
-      $scope.deploy = (apps, destinations) ->
+      $scope.deploy = (apps, targets) ->
         # package, clone, deploy TODO
-        # cmd = "TODO #{apps.map (e)-> e.description} to #{destinations.map (e)-> e.description}"
+        # cmd = "TODO #{apps.map (e)-> e.description} to #{targets.map (e)-> e.description}"
 
         # POST deployment request. TODO
         Restangular.all('runs').post 
           apps: apps.map (e) -> e.description
-          destinations: destinations.map (e) -> e.description
+          targets: targets.map (e) -> e.description
         .then (data) ->
-          # update log.
-          $scope.data.log = $scope.data.log.concat [
-            new RenderableItem
-              description: data
-          ]
+          run_id = 'stub'
+
+          $scope.append_log data
+
+          # poll.
+          $interval ->
+            Restangular.one('runs', run_id).get()
+            .then (run) ->
+              $scope.append_log run.log
+            
+          , 5000
               
+
+      $scope.append_log = (msg) ->
+        $scope.data.log = $scope.data.log.concat [
+          new RenderableItem
+            description: msg
+        ]          
+
 
       ## doit
       Restangular.setBaseUrl("#{$location.protocol()}://#{$location.host()}:9292")
+      
       Restangular.all('apps').getList()
         .then (apps)->
           $scope.data.apps = apps.map (e) ->
@@ -44,9 +58,9 @@ angular.module('app')
               model: e
           
           # $scope.$apply()
-      Restangular.all('destinations').getList()
-        .then (destinations)->
-          $scope.data.destinations = destinations.map (e) ->
+      Restangular.all('targets').getList()
+        .then (targets)->
+          $scope.data.targets = targets.map (e) ->
             new RenderableItem
               description: e.id
               model: e
