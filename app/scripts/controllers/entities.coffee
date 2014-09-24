@@ -19,26 +19,36 @@ angular.module('app')
 
 
       $scope.deploy = (apps, targets) ->
-        # package, clone, deploy TODO
-        # cmd = "TODO #{apps.map (e)-> e.description} to #{targets.map (e)-> e.description}"
-
-        # POST deployment request. TODO
+        # POST deployment request.
         Restangular.all('runs').post 
           apps: apps.map (e) -> e.description
           targets: targets.map (e) -> e.description
+
         .then (data) ->
-          run_id = 'stub'
+          run_id = data.run_id
 
           $scope.log data
 
-          # poll.
-          $interval ->
+          # poll the results.
+          # TODO impl interrupt conditions:
+          # - new deployment requested
+          # - deployment finished TODO
+          # - timed out TODO
+          if previous_poll = $scope.poll_promise
+            console.log "cancelling previous promise"
+            $interval.cancel previous_poll
+
+          $scope.poll_promise = $interval ->
             Restangular.one('runs', run_id).get()
             .then (run) ->
               $scope.log run.log
 
+              if run.state is 'finished'
+                $interval ->
+                  $interval.cancel $scope.poll_promise
+                , 5000
+
           , 5000
-              
 
 
       $scope.log = (msg) ->
