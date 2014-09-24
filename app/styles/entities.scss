@@ -29,14 +29,6 @@ p {
   margin: 0;
 }
 
-//## colours.
-body {
-  background: #696d73 !important;
-
-  h1, h2, h3, h4, h5, h6, p, a {
-    color: #eee;
-  }
-}
 
 //## visual roles.
 
@@ -98,8 +90,6 @@ section.detail {
 
   text-align: center;
   // text-align-last: left;  // doesn't work due to webkit bug
-
-  background-color: #878787;
 
   display: none;
 }
@@ -220,7 +210,7 @@ section.detail {
 
 
   .selected {
-    // background-color: #999999;
+    background-color: #999999;
 
     // 'zoom'.
     font-size: 400% !important;
