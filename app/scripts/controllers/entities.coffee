@@ -29,22 +29,20 @@ angular.module('app')
         .then (data) ->
           run_id = 'stub'
 
-          $scope.append_log data
+          $scope.log data
 
           # poll.
           $interval ->
             Restangular.one('runs', run_id).get()
             .then (run) ->
-              $scope.append_log run.log
-            
+              $scope.log run.log
+
           , 5000
               
 
-      $scope.append_log = (msg) ->
-        $scope.data.log = $scope.data.log.concat [
-          new RenderableItem
-            description: msg
-        ]          
+
+      $scope.log = (msg) ->
+        $scope.data.log = msg
 
 
       ## doit
