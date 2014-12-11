@@ -1,6 +1,7 @@
 angular.module('app').service 'host_env', ($window, $q, Restangular) ->
 
   envs =
+
     stub:
       get: (id)->
         console.log "TODO get"
@@ -12,6 +13,7 @@ angular.module('app').service 'host_env', ($window, $q, Restangular) ->
 
       update: (id, data) ->
         console.log "TODO update timer data: #{data}"
+
 
     motion_kit:
 
@@ -36,10 +38,20 @@ angular.module('app').service 'host_env', ($window, $q, Restangular) ->
         console.log "TODO update timer data: #{data}"
 
 
+      do: (method_name) ->
+        msg =
+          do: method_name
+
+        deferred = $q.defer()
+
+        $window.WebViewJavascriptBridge.send msg, (data) ->
+          deferred.resolve data
+
+        deferred.promise
 
 
   # end service obj def.
 
 
   envs.motion_kit
-  envs.stub  # DEV
+  # envs.stub  # DEV

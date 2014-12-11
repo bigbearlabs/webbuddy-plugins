@@ -19,6 +19,11 @@ angular.module('app')
       # ,
 
         new RenderableItem
+          description: 'set to 5s'
+          on_select: ->
+            host_env.do 'start_5s'
+      ,
+        new RenderableItem
           description: 'Help'
           on_select: ->
             # TODO load help.
