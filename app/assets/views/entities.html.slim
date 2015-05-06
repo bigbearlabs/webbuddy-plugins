@@ -1,22 +1,41 @@
 h2 Quick + Dirty PackagingFactory UI
 
-.menu.timer( ng-controller='EntitiesCtrl')
+.app( ng-controller='EntitiesCtrl')
 
   section
-      p 1. Select an app.
-      / list data="data.apps"
-      select multiple="" ng-model="data.selected_apps" ng-options="app.description for app in data.apps" 
+    p Apps
+    / list data="data.apps"
+    select multiple="" ng-model="data.app_selection" ng-options="description(app) for app in data.app_enum"
 
   section
-      p 2. Select targets.
-      / list data="data.targets"
-      select multiple="" ng-model="data.selected_targets" ng-options="target.description for target in data.targets"
+    p Targets
+    / list data="data.targets"
+    select multiple="" ng-model="data.target_selection" ng-options="description(target) for target in data.target_enum"
+
 
   section
-    button ng-click="deploy(data.selected_apps, data.selected_targets)" Deploy
-    button ng-show="data.log.length > 0" Email Log
+    span Produce variants
+    input type="checkbox" ng-model="data.should_clone"
+
+    span MDX Toolkit version
+    select ng-model="data.selected_toolkit_version" ng-options="app.description for app in data.apps" 
+
+    span Enable aternity
+    input type="checkbox" ng-model="data.should_wrap_aternity"
+
+
+
+  section
+    button ng-click="deploy()" Package + Deploy
+
 
   section
     p Log
     pre() {{ data.log }}
 
+
+  iframe#status_url seamless="true" ng-src="{{status_url()}}"
+
+
+
+/ FIXME rename data to view_model

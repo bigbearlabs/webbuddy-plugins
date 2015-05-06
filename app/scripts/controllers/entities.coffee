@@ -1,90 +1,67 @@
 'use strict'
 
 
-angular.module('app')
+angular.module('app').config ($sceDelegateProvider)->
+  $sceDelegateProvider.resourceUrlWhitelist([
+    # // Allow same origin resource loads.
+    'self',
+    # // Allow loading from our assets domain.  Notice the difference between * and **.
+    'http://localhost:9292/**'])
 
+
+
+angular.module('app')
   .controller 'EntitiesCtrl',
-    ($scope, $route, $location, $window, $interval, $q, host_env, Restangular, debounce ) ->
+    ($scope, $location, $q, $sce, Restangular) ->
+      
+      Restangular.setBaseUrl("#{$location.protocol()}://#{$location.host()}:9292")
+      
+      ## data
+
       $scope.data = 
-        apps: []
-        targets: []
+        app_enum: 
+          Restangular.all('apps').getList()
+            .$object
+        app_selection: []
+
+        target_enum:
+          Restangular.all('targets').getList()
+            .$object
+        target_selection: []
+        
         log: []
 
-      $scope.select = (item) ->
-        item.on_select()
 
-      $scope.edit_done = (item) ->
-        host_env.update item.id,
-          description: item.description
+      ## view -> controller interface
 
-
-      $scope.deploy = (apps, targets) ->
+      $scope.deploy = () ->
         # POST deployment request.
         Restangular.all('runs').post 
-          apps: apps.map (e) -> e.description
-          targets: targets.map (e) -> e.description
-
+          apps: $scope.data.app_selection.map (e) -> e.id
+          targets: $scope.data.target_selection.map (e) -> e.id
         .then (data) ->
           run_id = data.run_id
 
-          $scope.log data
+          status_url = "http://localhost:9292/resque/statuses/#{run_id}"
+          $scope.log "Packaging / deployment request made. #{status_url}"
 
-          # poll the results.
-          # TODO impl interrupt conditions:
-          # - new deployment requested
-          # - deployment finished TODO
-          # - timed out TODO
-          if previous_poll = $scope.poll_promise
-            console.log "cancelling previous promise"
-            $interval.cancel previous_poll
-
-          $scope.poll_promise = $interval ->
-            Restangular.one('runs', run_id).get()
-            .then (run) ->
-              $scope.log run.log
-
-              if run.state is 'finished'
-                $interval ->
-                  $interval.cancel $scope.poll_promise
-                , 5000
-
-          , 5000
-
+          $scope.data.status_url = status_url
 
       $scope.log = (msg) ->
         $scope.data.log = msg
 
 
-      ## doit
-      Restangular.setBaseUrl("#{$location.protocol()}://#{$location.host()}:9292")
+      ## transformations
+
+      $scope.status_url = ->
+        $scope.data.status_url
+        # $sce.getTrustedResourceUrl $scope.data.status_url
       
-      Restangular.all('apps').getList()
-        .then (apps)->
-          $scope.data.apps = apps.map (e) ->
-            new RenderableItem
-              description: e.id
-              model: e
-          
-          # $scope.$apply()
-      Restangular.all('targets').getList()
-        .then (targets)->
-          $scope.data.targets = targets.map (e) ->
-            new RenderableItem
-              description: e.id
-              model: e
+      $scope.description = (app)->
+        app.id
 
 
+      ## doit
+      
 
-  .directive 'contenteditable', ->
-    restrict: 'A'
-    require: 'ngModel'
-    link: (scope, element, attrs, ngModel) ->
-      read = ->
-        ngModel.$setViewValue(element.html())
-
-      ngModel.$render = ->
-        element.html(ngModel.$viewValue || "")
-
-      element.bind "blur keyup change", ->
-        scope.$apply read
 
