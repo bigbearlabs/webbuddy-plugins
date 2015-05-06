@@ -9,27 +9,32 @@ angular.module('app').config ($sceDelegateProvider)->
     'http://localhost:9292/**'])
 
 
+# define enum and selection properties for each collection requested to be sourced from server..
+angular.module('app')
+  .service 'sync_data', (Restangular) ->
+    (path_on_scope, collection_names)->
+      new_properties = collection_names.map (collection_name) ->
+        delta = {}
+        Restangular.all("#{collection_name}s").getList()
+        .then (list) ->
+          delta["#{collection_name}_enum"] = list
+
+          delta["#{collection_name}_selection"] = []
+        
+          _.merge path_on_scope, delta
+
 
 angular.module('app')
   .controller 'EntitiesCtrl',
-    ($scope, $location, $q, $sce, Restangular) ->
+    ($scope, $location, $q, $sce, Restangular, sync_data) ->
       
       Restangular.setBaseUrl("#{$location.protocol()}://#{$location.host()}:9292")
       
-      ## data
-
+      ## data sourced from API using sync_data service.
       $scope.data = 
-        app_enum: 
-          Restangular.all('apps').getList()
-            .$object
-        app_selection: []
-
-        target_enum:
-          Restangular.all('targets').getList()
-            .$object
-        target_selection: []
-        
         log: []
+        
+      sync_data $scope.data, [ 'app', 'target' ]
 
 
       ## view -> controller interface
@@ -64,5 +69,3 @@ angular.module('app')
 
       ## doit
       
-
-
