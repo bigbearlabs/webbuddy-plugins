@@ -39,6 +39,7 @@ angular.module('app')
         Restangular.all('runs').post 
           apps: $scope.data.app_selection.map (e) -> e.id
           targets: $scope.data.target_selection.map (e) -> e.id
+
         .then (data) ->
           run_id = data.run_id
 
@@ -48,7 +49,7 @@ angular.module('app')
           $scope.data.status_url = status_url
 
       $scope.log = (msg) ->
-        $scope.data.log = msg
+        $scope.data.log.unshift "#{new Date()}: #{msg}"
 
 
       ## transformations

@@ -31,7 +31,7 @@ h2 Quick + Dirty PackagingFactory UI
 
   section
     p Log
-    pre() {{ data.log }}
+    pre ng-repeat="log in data.log" {{log}}
 
 
   iframe#status_url seamless="true" ng-src="{{status_url()}}"
