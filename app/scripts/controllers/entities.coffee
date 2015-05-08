@@ -6,7 +6,7 @@ angular.module('app').config ($sceDelegateProvider)->
     # // Allow same origin resource loads.
     'self',
     # // Allow loading from our assets domain.  Notice the difference between * and **.
-    'http://localhost:9292/**'])
+    '/**'])
 
 
 # define enum and selection properties for each collection requested to be sourced from server..
@@ -28,7 +28,8 @@ angular.module('app')
   .controller 'EntitiesCtrl',
     ($scope, $location, $q, $sce, Restangular, sync_data) ->
       
-      Restangular.setBaseUrl("#{$location.protocol()}://#{$location.host()}:9292")
+      Restangular.setBaseUrl("/api")
+      # Restangular.setBaseUrl("#{$location.protocol()}://#{$location.host()}:9292/api")  ## DEV
       
       ## data sourced from API using sync_data service.
       $scope.data = 
@@ -45,10 +46,10 @@ angular.module('app')
           apps: $scope.data.app_selection.map (e) -> e.id
           targets: $scope.data.target_selection.map (e) -> e.id
 
-        .then (data) ->
-          run_id = data.run_id
+        .then (response) ->
+          run_id = response.run_id
 
-          status_url = "http://localhost:9292/resque/statuses/#{run_id}"
+          status_url = "/resque/statuses/#{run_id}"
           $scope.log "Packaging / deployment request made. #{status_url}"
 
           $scope.data.status_url = status_url
