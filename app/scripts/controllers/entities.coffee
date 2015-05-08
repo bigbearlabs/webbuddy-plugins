@@ -34,8 +34,8 @@ angular.module('app')
       ## data sourced from API using sync_data service.
       $scope.data = 
         log: []
-        
-      sync_data $scope.data, [ 'app', 'target' ]
+
+      sync_data $scope.data, [ 'app', 'target', 'default' ]
 
 
       ## view -> controller interface
