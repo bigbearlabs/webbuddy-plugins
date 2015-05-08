@@ -8,10 +8,6 @@ h2 Quick + Dirty PackagingFactory UI
       / list data="data.apps"
       select multiple="" ng-model="data.app_selection" ng-options="description(app) for app in data.app_enum"
 
-      p()
-        a ng-click="show_onboard_details = true" {{"Can't see your app?"}}
-        p ng-show="show_onboard_details" Please <a href="mailto:andy.park@credit-suisse.com">get in touch with the MM2 Engineering team</a> to on-board your app to PackagingFactory.
-
     section
       p Targets
       / list data="data.targets"
@@ -25,6 +21,9 @@ h2 Quick + Dirty PackagingFactory UI
 
         input ng-if="!(default.enum)" type="checkbox" ng-model="data.default_selection[default.id]"
         
+  section.blurbs
+    a ng-click="show_onboard_details = ! show_onboard_details" {{"Can't see your app?"}}
+    p ng-show="show_onboard_details" Please <a href="mailto:andy.park@credit-suisse.com">get in touch with the MM2 Engineering team</a> to on-board your app to PackagingFactory.
 
   section.main-actions
     button ng-click="deploy()" Package + Deploy
