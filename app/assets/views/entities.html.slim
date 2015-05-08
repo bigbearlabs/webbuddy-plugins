@@ -2,17 +2,22 @@ h2 Quick + Dirty PackagingFactory UI
 
 .app( ng-controller='EntitiesCtrl')
 
-  section
-    p Apps
-    / list data="data.apps"
-    select multiple="" ng-model="data.app_selection" ng-options="description(app) for app in data.app_enum"
+  section.task-inputs
+    section
+      p Apps
+      / list data="data.apps"
+      select multiple="" ng-model="data.app_selection" ng-options="description(app) for app in data.app_enum"
 
-  section
-    p Targets
-    / list data="data.targets"
-    select multiple="" ng-model="data.target_selection" ng-options="description(target) for target in data.target_enum"
+      p()
+        a ng-click="show_onboard_details = true" {{"Can't see your app?"}}
+        p ng-show="show_onboard_details" Please <a href="mailto:andy.park@credit-suisse.com">get in touch with the MM2 Engineering team</a> to on-board your app to PackagingFactory.
 
-  section
+    section
+      p Targets
+      / list data="data.targets"
+      select multiple="" ng-model="data.target_selection" ng-options="description(target) for target in data.target_enum"
+
+    section
       .option ng-repeat="default in data.default_enum"
         p() {{default.name}}
 

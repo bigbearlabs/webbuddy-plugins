@@ -12,6 +12,24 @@ iframe#status_url {
   height: 800px;
 }
 
+section.task-inputs {
+  select {
+    width: 100%;
+    height: 30vh;
+  }
+
+  display: flex;
+
+  section {
+    flex: 1 1 auto;
+  }
+}
+
+section.main-actions {
+  text-align: center;
+  zoom: 200%;
+}
+
 .editable-controls {
   textarea {
     width: 100% !important;
