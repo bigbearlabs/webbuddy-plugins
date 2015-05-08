@@ -19,11 +19,12 @@ h2 Quick + Dirty PackagingFactory UI
 
     section
       .option ng-repeat="default in data.default_enum"
-        p() {{default.name}}
+        p() {{default.id}}
 
-        select ng-if="default.value.enum" ng-model="data.default_selection[default_opt.name]" ng-options="default_opt for default_opt in default.value.enum" ng-init="data.default_selection[default_opt.name] = default_opt.value.default"
+        select ng-if="default.enum" ng-model="data.default_selection[default.id]" ng-options="default_opt for default_opt in default.enum"
 
-        input ng-if="!(default.value.enum)" type="checkbox" ng-model="data.default_selection[default_opt.name]" ng-init="data.default_selection[default_opt.name] = default_opt.value.default"
+        input ng-if="!(default.enum)" type="checkbox" ng-model="data.default_selection[default.id]"
+        
 
   section.main-actions
     button ng-click="deploy()" Package + Deploy

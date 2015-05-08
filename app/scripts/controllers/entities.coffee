@@ -19,7 +19,15 @@ angular.module('app')
         .then (list) ->
           delta["#{collection_name}_enum"] = list
 
-          delta["#{collection_name}_selection"] = []
+          if subenum = list[0]?.enum
+            # the list item is itself enumerable - prep the selection elem accordingly.
+            selection = {}
+            list.map (list_item)->
+              selection[list_item.id] = list_item.default
+
+              delta["#{collection_name}_selection"] = selection
+          else
+            delta["#{collection_name}_selection"] = []
         
           _.merge path_on_scope, delta
 
