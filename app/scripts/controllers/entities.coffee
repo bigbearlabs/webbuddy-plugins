@@ -53,6 +53,7 @@ angular.module('app')
         Restangular.all('runs').post 
           apps: $scope.data.app_selection.map (e) -> e.id
           targets: $scope.data.target_selection.map (e) -> e.id
+          defaults: $scope.data.default_selection
 
         .then (response) ->
           run_id = response.run_id
