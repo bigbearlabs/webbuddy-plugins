@@ -1,10 +1,44 @@
-@import '../../bower_components/bourbon/app/assets/stylesheets/bourbon';
+@import '../../bower_components/bourbon/dist/bourbon';
 
 
 //## DEV
 .item {
   // background-color: lightyellow;
 }
+
+
+//##
+
+iframe#status_url {
+  width: 100%;
+  height: 800px;
+}
+
+section.task-inputs {
+  @include display(flex);
+
+  > section {
+    flex: 1 1 auto;
+    @include flex(1 1 auto);
+
+    > select {
+      width: 100%;
+      height: 30vh;
+    }
+
+  }
+}
+
+section.main-actions {
+  text-align: center;
+
+  > * {
+    zoom: 200%;
+  }
+}
+
+
+//###
 
 .editable-controls {
   textarea {
@@ -29,12 +63,6 @@ p {
   margin: 0;
 }
 
-//## colours.
-body {
-  h1, h2, h3, h4, h5, h6, p, a {
-    color: #eee;
-  }
-}
 
 //## visual roles.
 
@@ -96,8 +124,6 @@ section.detail {
 
   text-align: center;
   // text-align-last: left;  // doesn't work due to webkit bug
-
-  background-color: #878787;
 
   display: none;
 }
@@ -218,7 +244,7 @@ section.detail {
 
 
   .selected {
-    // background-color: #999999;
+    background-color: #999999;
 
     // 'zoom'.
     font-size: 400% !important;

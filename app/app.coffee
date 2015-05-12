@@ -23,12 +23,12 @@ App.config(
 
     $routeProvider
 
-      .when('/timer-menu', {templateUrl: 'views/timer-menu.html'})
+      .when('/entities', {templateUrl: 'views/entities.html'})
       .when('/eval', {templateUrl: 'views/eval.html'})
       .when('/action', {templateUrl: 'views/action.html'})
 
       # Catch all
-      .otherwise({redirectTo: '/timer-menu'})
+      .otherwise({redirectTo: '/entities'})
 
     # Without server side support html5 must be disabled. -- from BNWH template.
     # $locationProvider.html5Mode(false)
