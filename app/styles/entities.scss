@@ -1,4 +1,4 @@
-@import '../../bower_components/bourbon/app/assets/stylesheets/bourbon';
+@import '../../bower_components/bourbon/dist/bourbon';
 
 
 //## DEV
@@ -15,10 +15,11 @@ iframe#status_url {
 }
 
 section.task-inputs {
-  display: flex;
+  @include display(flex);
 
   > section {
     flex: 1 1 auto;
+    @include flex(1 1 auto);
 
     > select {
       width: 100%;

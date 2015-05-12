@@ -17,7 +17,7 @@
     "angular-route": "",
     "angular-cookies": "",
     "angular-mocks": "",
-    "bourbon": "~3.1.8",
+    "bourbon": "~3",
     "angular-bindonce": "~0.2.2",
     "restangular": "",
     "angular-animate": "~1.2.0",
